@@ -1,4 +1,3 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -9,6 +8,14 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Merchants } from './collections/Merchants'
+import { Venues } from './collections/Venues'
+import { Categories } from './collections/Categories'
+import { Offers } from './collections/Offers'
+import { OfferSlots } from './collections/OfferSlots'
+import { Claims } from './collections/Claims'
+import { Reviews } from './collections/Reviews'
+import { Favorites } from './collections/Favorites'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,7 +27,18 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    Merchants,
+    Venues,
+    Categories,
+    Offers,
+    OfferSlots,
+    Claims,
+    Reviews,
+    Favorites,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -28,7 +46,7 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      connectionString: process.env.DATABASE_URI || process.env.POSTGRES_URL || '',
     },
   }),
   sharp,

@@ -1,67 +1,272 @@
-# Payload Blank Template
+# Off-Peak Offers Platform
 
-This template comes configured with the bare minimum to get started on anything you need.
+A platform where merchants can publish short-duration, limited-quantity micro-offers to fill cold hours. Users discover nearby live offers on a map & list, claim, and redeem in-store.
 
-## Quick start
+## 🚀 Features
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+- **Time-Limited Offers**: Short-duration offers to boost foot traffic during cold hours
+- **Location-Based Discovery**: Find nearby offers with geofence controls
+- **Real-Time Inventory**: Live stock tracking with atomic claim management
+- **QR Code Redemption**: Secure in-store redemption with QR codes or 6-digit codes
+- **Multi-Role System**: Support for customers, merchants, staff, and admins
+- **OTP Authentication**: Phone-based authentication with verification
+- **Merchant Dashboard**: Create and manage offers, view analytics
+- **Staff Redemption Interface**: Quick claim verification for venue staff
 
-## Quick Start - local setup
+## 📋 Project Structure
 
-To spin up this template locally, follow these steps:
+```
+src/
+├── collections/          # Payload CMS collections
+│   ├── Users.ts          # User management with roles
+│   ├── Merchants.ts      # Merchant accounts
+│   ├── Venues.ts         # Venue locations
+│   ├── Offers.ts         # Offer definitions
+│   ├── OfferSlots.ts    # Time-based offer windows
+│   ├── Claims.ts         # User claims
+│   ├── Reviews.ts         # User reviews
+│   └── Favorites.ts       # User favorites
+├── app/
+│   ├── (frontend)/       # Public-facing pages
+│   │   ├── page.tsx      # Home page
+│   │   ├── offers/       # Offers list view
+│   │   ├── merchant/     # Merchant dashboard
+│   │   └── staff/        # Staff redemption
+│   ├── (payload)/        # Payload admin panel
+│   └── api/              # API endpoints
+│       ├── offers/       # Offers browsing
+│       ├── claims/       # Claims management
+│       ├── auth/         # OTP authentication
+│       └── cron/         # Background jobs
+├── hooks/                # Business logic hooks
+└── access/               # Access control helpers
+```
 
-### Clone
+## 🛠️ Setup
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+### Prerequisites
 
-### Development
+- Node.js 18.20.2+ or 20.9.0+
+- pnpm 9+
+- PostgreSQL database (local, Docker, or managed service)
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+### Installation
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+1. Clone the repository:
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+```bash
+git clone <repository-url>
+cd off-peak
+```
 
-#### Docker (Optional)
+2. Install dependencies:
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+```bash
+pnpm install
+```
 
-To do so, follow these steps:
+3. Set up environment variables:
 
-- Modify the `MONGODB_URI` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URI` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+```bash
+cp .env.example .env
+```
 
-## How it works
+Edit `.env` with your configuration:
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+```env
+PAYLOAD_SECRET=your-secret-key-here
+DATABASE_URI=postgresql://user:password@localhost:5432/off-peak
 
-### Collections
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+CRON_SECRET=your-cron-secret
+```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+4. Generate types and import map:
 
-- #### Users (Authentication)
+```bash
+pnpm generate:types
+pnpm generate:importmap
+```
 
-  Users are auth-enabled collections that have access to the admin panel.
+5. Run the development server:
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+```bash
+pnpm dev
+```
 
-- #### Media
+6. Open the application:
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+- Frontend: http://localhost:3000
+- Admin Panel: http://localhost:3000/admin
 
-### Docker
+## 📱 User Flows
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+### 1. Customer Flow
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+1. Browse live offers at http://localhost:3000/offers
+2. Click on an offer to view details
+3. Click "Claim Now" to reserve the offer (you have 7 minutes to redeem)
+4. Show QR code or 6-digit code to staff at venue
+5. Staff verifies and redeems
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+### 2. Merchant Flow
 
-## Questions
+1. Sign in to admin panel at http://localhost:3000/admin
+2. Create merchant account and venue
+3. Create offers with offer slots
+4. Monitor live offers on dashboard
+5. View analytics and redemption rates
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+### 3. Staff Flow
+
+1. Navigate to http://localhost:3000/staff/redeem
+2. Enter the 6-digit code or scan QR code
+3. System verifies and redeems the claim
+4. Track successful redemptions
+
+## 🎯 API Endpoints
+
+### Public Endpoints
+
+- `GET /api/offers` - Get live/upcoming offers
+  - Query params: `lat`, `lng`, `radius`, `filter`, `category`
+- `POST /api/auth/otp/start` - Start OTP flow
+  - Body: `{ phone: string }`
+- `POST /api/auth/otp/verify` - Verify OTP and login
+  - Body: `{ phone: string, code: string }`
+
+### Protected Endpoints
+
+- `POST /api/claims` - Claim an offer
+  - Body: `{ slotId: string }`
+- `GET /api/claims/[id]` - Get claim details
+- `PATCH /api/claims/[id]` - Update claim (redeem, cancel)
+- `POST /api/claims/redeem` - Staff redemption
+  - Body: `{ code: string }` or `{ qrToken: string }`
+- `POST /api/cron/expire-claims` - Expire old claims (cron)
+
+## 🎨 Collections
+
+### Users
+
+- Phone authentication with OTP
+- Roles: customer, merchant_owner, staff, admin
+- Device fingerprinting for fraud prevention
+
+### Merchants
+
+- Business information and branding
+- Stripe Connect integration
+- KYC status tracking
+- Category management
+
+### Venues
+
+- Location data (lat/lng)
+- Address, hours, photos
+- Active status management
+
+### Offers
+
+- Types: percent, fixed, BOGO, addon
+- Visibility windows
+- User limits and cooldowns
+- Geofence controls
+
+### OfferSlots
+
+- Time-based windows (startsAt, endsAt)
+- Inventory management (qtyTotal, qtyRemaining)
+- Release modes: flash, drip
+- State: scheduled, live, paused, ended
+
+### Claims
+
+- Status: RESERVED, REDEEMED, EXPIRED, CANCELLED
+- QR tokens and 6-digit codes
+- Expiry timestamps
+- Staff tracking for redemption
+
+## 🔐 Security Features
+
+- Phone verification via OTP
+- Device fingerprinting
+- Per-user claim limits
+- Geofence validation
+- Atomic claim operations
+- QR code rotation and verification
+- Rate limiting and fraud detection
+
+## 🚦 Roadmap
+
+### v1 (Current MVP)
+
+- ✅ Basic offer creation and browsing
+- ✅ Claim management with atomic operations
+- ✅ QR code redemption
+- ✅ Staff interface
+- ✅ OTP authentication
+
+### v2 (Planned)
+
+- [ ] Map view with clusters
+- [ ] Lottery/Queue offer modes
+- [ ] Favorites and notifications
+- [ ] User reviews
+- [ ] Advanced analytics
+- [ ] Stripe Connect integration
+
+### v3 (Future)
+
+- [ ] AI-powered timing suggestions
+- [ ] A/B testing for offers
+- [ ] Waitlists
+- [ ] Social sharing
+- [ ] Multi-language support
+
+## 📝 Development
+
+### Database Migrations
+
+Payload handles PostgreSQL schema automatically based on your collection definitions. Use the admin panel to view and manage your database schema.
+
+### Adding Custom Fields
+
+Edit collection files in `src/collections/` and Payload will update the schema.
+
+### Running Tests
+
+```bash
+pnpm test          # Run all tests
+pnpm test:int      # Integration tests
+pnpm test:e2e      # End-to-end tests
+```
+
+### Building for Production
+
+```bash
+pnpm build
+pnpm start
+```
+
+## 🐛 Troubleshooting
+
+### PostgreSQL Connection Issues
+
+Ensure PostgreSQL is running and the connection string is correct in `.env`.
+
+### Type Generation Errors
+
+Run `pnpm generate:types` after making collection changes.
+
+### API Authentication
+
+Ensure cookies are enabled and the auth flow completes properly.
+
+## 📄 License
+
+MIT License
+
+## 👥 Contributing
+
+Contributions welcome! Please open an issue or submit a pull request.

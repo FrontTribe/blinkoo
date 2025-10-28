@@ -1,5 +1,5 @@
 {
-  "name": "off-peak",
+  "name": "blinkoo",
   "version": "1.0.0",
   "description": "A blank template to get started with Payload 3.0",
   "license": "MIT",
@@ -12,39 +12,56 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "seed:merchant": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/seed-merchant.ts",
+    "migrate:categories": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/migrate-offer-categories.ts",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --no-experimental-strip-types\" pnpm exec playwright test",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
+    "@payloadcms/db-postgres": "3.61.1",
     "@payloadcms/next": "3.61.1",
     "@payloadcms/payload-cloud": "3.61.1",
     "@payloadcms/richtext-lexical": "3.61.1",
     "@payloadcms/ui": "3.61.1",
+    "@types/mapbox-gl": "^3.4.1",
+    "@types/react-datepicker": "^7.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
+    "drizzle-orm": "^0.44.7",
+    "framer-motion": "^12.23.24",
     "graphql": "^16.8.1",
+    "mapbox-gl": "^3.16.0",
     "next": "15.4.4",
     "payload": "3.61.1",
+    "qrcode.react": "^4.2.0",
     "react": "19.1.0",
+    "react-datepicker": "^8.8.0",
     "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
+    "react-map-gl": "^8.1.0",
     "sharp": "0.34.2",
-    "@payloadcms/db-postgres": "3.61.1"
+    "twilio": "^5.10.3"
   },
   "devDependencies": {
     "@playwright/test": "1.54.1",
+    "@tailwindcss/postcss": "^4.1.16",
     "@testing-library/react": "16.3.0",
     "@types/node": "^22.5.4",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "@vitejs/plugin-react": "4.5.2",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.16.0",
     "eslint-config-next": "15.4.4",
     "jsdom": "26.1.0",
     "playwright": "1.54.1",
     "playwright-core": "1.54.1",
+    "postcss": "^8.5.6",
     "prettier": "^3.4.2",
+    "tailwindcss": "^4.1.16",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.3"
@@ -59,5 +76,6 @@
       "esbuild",
       "unrs-resolver"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8"
 }

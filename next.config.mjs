@@ -3,12 +3,30 @@ import { withPayload } from '@payloadcms/next/withPayload'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Your Next.js config here
-  webpack: (webpackConfig) => {
+  webpack: (webpackConfig, { isServer }) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
     }
+
+    // Add fallbacks for mapbox-gl
+    webpackConfig.resolve.fallback = {
+      fs: false,
+      net: false,
+      tls: false,
+    }
+
+    // Exclude mapbox-gl from server-side bundle
+    if (!isServer) {
+      webpackConfig.externals = [...(webpackConfig.externals || []), { canvas: 'commonjs canvas' }]
+    }
+
+    // Prevent WebAssembly from being processed by webpack for mapbox-gl
+    webpackConfig.module.rules.push({
+      test: /\.worker\.(js|ts)$/,
+      type: 'asset/resource',
+    })
 
     return webpackConfig
   },

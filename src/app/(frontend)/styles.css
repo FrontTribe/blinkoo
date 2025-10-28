@@ -1,3 +1,50 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Primary Colors - Airbnb inspired */
+  --color-primary: #ff385c;
+  --color-primary-hover: #e61e4d;
+  --color-primary-light: #ff5a8c;
+
+  /* Background Colors */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f7f7f7;
+  --color-bg-hover: #f7f7f7;
+
+  /* Text Colors */
+  --color-text-primary: #222222;
+  --color-text-secondary: #717171;
+  --color-text-tertiary: #a0a0a0;
+
+  /* Border Colors */
+  --color-border: #dddddd;
+  --color-border-hover: #222222;
+  --color-border-light: #f0f0f0;
+
+  /* Status Colors */
+  --color-success: #00a699;
+  --color-error: #ff385c;
+  --color-warning: #f59e0b;
+
+  /* Legacy Support (keeping for backward compatibility) */
+  --color-orange-primary: #ff385c;
+  --color-orange-light: #ff5a8c;
+  --color-orange-accent: #ff385c;
+  --color-black: #222222;
+  --color-black-soft: #2a2a2a;
+  --color-gray-900: #222222;
+  --color-gray-800: #717171;
+  --color-gray-700: #a0a0a0;
+  --color-gray-600: #b0b0b0;
+  --color-gray-400: #717171;
+  --color-white: #ffffff;
+  --color-success-green: #00a699;
+  --color-alert-amber: #f59e0b;
+
+  --font-heading: var(--font-bricolage-grotesque), system-ui, sans-serif;
+  --font-body: var(--font-bricolage-grotesque), system-ui, sans-serif;
+}
+
 :root {
   --font-mono: 'Roboto Mono', monospace;
 }
@@ -9,8 +56,6 @@
 html {
   font-size: 18px;
   line-height: 32px;
-
-  background: rgb(0, 0, 0);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -21,17 +66,25 @@ body,
 }
 
 body {
-  font-family: system-ui;
-  font-size: 18px;
-  line-height: 32px;
-
+  font-family: var(--font-bricolage-grotesque), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
   margin: 0;
-  color: rgb(1000, 1000, 1000);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
 
   @media (max-width: 1024px) {
     font-size: 15px;
-    line-height: 24px;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-bricolage-grotesque), system-ui, sans-serif;
 }
 
 img {
@@ -64,7 +117,7 @@ h1 {
 }
 
 p {
-  margin: 24px 0;
+  margin: 0;
 
   @media (max-width: 1024px) {
     margin: calc(var(--base) * 0.75) 0;

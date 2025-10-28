@@ -69,6 +69,14 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    merchants: Merchant;
+    venues: Venue;
+    categories: Category;
+    offers: Offer;
+    'offer-slots': OfferSlot;
+    claims: Claim;
+    reviews: Review;
+    favorites: Favorite;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,12 +85,20 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    merchants: MerchantsSelect<false> | MerchantsSelect<true>;
+    venues: VenuesSelect<false> | VenuesSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    offers: OffersSelect<false> | OffersSelect<true>;
+    'offer-slots': OfferSlotsSelect<false> | OfferSlotsSelect<true>;
+    claims: ClaimsSelect<false> | ClaimsSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    favorites: FavoritesSelect<false> | FavoritesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   globals: {};
   globalsSelect: {};
@@ -118,7 +134,20 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  name?: string | null;
+  phone?: string | null;
+  phoneVerified?: boolean | null;
+  role: 'customer' | 'merchant_owner' | 'staff' | 'admin';
+  onboardingCompleted?: boolean | null;
+  deviceFingerprint?: string | null;
+  merchant?: (number | null) | Merchant;
+  venues?:
+    | {
+        venue?: (number | null) | Venue;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -139,10 +168,41 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merchants".
+ */
+export interface Merchant {
+  id: number;
+  owner: number | User;
+  name: string;
+  description?: string | null;
+  logo?: (number | null) | Media;
+  stripeAccountId?: string | null;
+  kycStatus: 'pending' | 'approved' | 'rejected';
+  approvedAt?: string | null;
+  categories?:
+    | {
+        category:
+          | 'food_beverage'
+          | 'cafe'
+          | 'restaurant'
+          | 'bar'
+          | 'retail'
+          | 'services'
+          | 'entertainment'
+          | 'fitness'
+          | 'other';
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -158,23 +218,259 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "venues".
+ */
+export interface Venue {
+  id: number;
+  merchant: number | Merchant;
+  name: string;
+  description?: string | null;
+  address: string;
+  city: string;
+  country: string;
+  lat: number;
+  lng: number;
+  phone?: string | null;
+  email?: string | null;
+  openHours?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  photos?:
+    | {
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  category: number | Category;
+  status: 'active' | 'inactive' | 'closed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from name if left empty
+   */
+  slug: string;
+  /**
+   * Select an icon for this category
+   */
+  icon:
+    | 'FiGrid'
+    | 'FiCoffee'
+    | 'FiFilm'
+    | 'FiShoppingBag'
+    | 'FiTool'
+    | 'FiActivity'
+    | 'FiHeart'
+    | 'FiMusic'
+    | 'FiCamera'
+    | 'FiSmile'
+    | 'FiBook'
+    | 'FiGamepad'
+    | 'FiPenTool'
+    | 'FiMap'
+    | 'FiMapPin'
+    | 'FiHome'
+    | 'FiBuilding'
+    | 'FiGlobe'
+    | 'FiStar'
+    | 'FiTag';
+  /**
+   * Color class for this category (e.g., "orange-primary")
+   */
+  color?: string | null;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offers".
+ */
+export interface Offer {
+  id: number;
+  venue: number | Venue;
+  /**
+   * Auto-populated from venue
+   */
+  category?: (number | null) | Category;
+  title: string;
+  description?: string | null;
+  terms?: string | null;
+  type: 'percent' | 'fixed' | 'bogo' | 'addon';
+  /**
+   * Percentage (0-100) for percent type, or fixed amount for fixed type
+   */
+  discountValue?: number | null;
+  /**
+   * Minimum price for price-drop mechanics
+   */
+  priceFloor?: number | null;
+  photo?: (number | null) | Media;
+  visibleFrom?: string | null;
+  visibleTo?: string | null;
+  /**
+   * How many times a user can claim this offer
+   */
+  perUserLimit?: number | null;
+  /**
+   * Cooldown period between user claims
+   */
+  cooldownMinutes?: number | null;
+  /**
+   * Distance requirement to claim (0 = no restriction)
+   */
+  geofenceKm?: number | null;
+  status: 'active' | 'paused' | 'archived';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer-slots".
+ */
+export interface OfferSlot {
+  id: number;
+  offer: number | Offer;
+  startsAt: string;
+  endsAt: string;
+  /**
+   * Total units available in this slot
+   */
+  qtyTotal: number;
+  qtyRemaining: number;
+  mode: 'flash' | 'drip';
+  /**
+   * For drip mode: release units every X minutes
+   */
+  dripEveryMinutes?: number | null;
+  /**
+   * For drip mode: how many units per release
+   */
+  dripQty?: number | null;
+  state: 'scheduled' | 'live' | 'paused' | 'ended';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "claims".
+ */
+export interface Claim {
+  id: number;
+  user: number | User;
+  offer: number | Offer;
+  slot: number | OfferSlot;
+  status: 'RESERVED' | 'REDEEMED' | 'EXPIRED' | 'CANCELLED';
+  reservedAt?: string | null;
+  expiresAt: string;
+  redeemedAt?: string | null;
+  qrToken?: string | null;
+  sixCode?: string | null;
+  staff?: (number | null) | User;
+  /**
+   * Optional: Total basket value for ROI calculations
+   */
+  basketTotal?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  user: number | User;
+  venue: number | Venue;
+  /**
+   * Rating from 1 to 5
+   */
+  rating: number;
+  text?: string | null;
+  photos?:
+    | {
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "favorites".
+ */
+export interface Favorite {
+  id: number;
+  user: number | User;
+  venue: number | Venue;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'merchants';
+        value: number | Merchant;
+      } | null)
+    | ({
+        relationTo: 'venues';
+        value: number | Venue;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'offers';
+        value: number | Offer;
+      } | null)
+    | ({
+        relationTo: 'offer-slots';
+        value: number | OfferSlot;
+      } | null)
+    | ({
+        relationTo: 'claims';
+        value: number | Claim;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'favorites';
+        value: number | Favorite;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -184,10 +480,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -207,7 +503,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -218,6 +514,19 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  phone?: T;
+  phoneVerified?: T;
+  role?: T;
+  onboardingCompleted?: T;
+  deviceFingerprint?: T;
+  merchant?: T;
+  venues?:
+    | T
+    | {
+        venue?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -252,6 +561,154 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merchants_select".
+ */
+export interface MerchantsSelect<T extends boolean = true> {
+  owner?: T;
+  name?: T;
+  description?: T;
+  logo?: T;
+  stripeAccountId?: T;
+  kycStatus?: T;
+  approvedAt?: T;
+  categories?:
+    | T
+    | {
+        category?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "venues_select".
+ */
+export interface VenuesSelect<T extends boolean = true> {
+  merchant?: T;
+  name?: T;
+  description?: T;
+  address?: T;
+  city?: T;
+  country?: T;
+  lat?: T;
+  lng?: T;
+  phone?: T;
+  email?: T;
+  openHours?: T;
+  photos?:
+    | T
+    | {
+        photo?: T;
+        id?: T;
+      };
+  category?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  icon?: T;
+  color?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offers_select".
+ */
+export interface OffersSelect<T extends boolean = true> {
+  venue?: T;
+  category?: T;
+  title?: T;
+  description?: T;
+  terms?: T;
+  type?: T;
+  discountValue?: T;
+  priceFloor?: T;
+  photo?: T;
+  visibleFrom?: T;
+  visibleTo?: T;
+  perUserLimit?: T;
+  cooldownMinutes?: T;
+  geofenceKm?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer-slots_select".
+ */
+export interface OfferSlotsSelect<T extends boolean = true> {
+  offer?: T;
+  startsAt?: T;
+  endsAt?: T;
+  qtyTotal?: T;
+  qtyRemaining?: T;
+  mode?: T;
+  dripEveryMinutes?: T;
+  dripQty?: T;
+  state?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "claims_select".
+ */
+export interface ClaimsSelect<T extends boolean = true> {
+  user?: T;
+  offer?: T;
+  slot?: T;
+  status?: T;
+  reservedAt?: T;
+  expiresAt?: T;
+  redeemedAt?: T;
+  qrToken?: T;
+  sixCode?: T;
+  staff?: T;
+  basketTotal?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  user?: T;
+  venue?: T;
+  rating?: T;
+  text?: T;
+  photos?:
+    | T
+    | {
+        photo?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "favorites_select".
+ */
+export interface FavoritesSelect<T extends boolean = true> {
+  user?: T;
+  venue?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
