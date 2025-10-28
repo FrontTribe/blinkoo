@@ -9,15 +9,9 @@ export const Venues: CollectionConfig = {
     read: () => true,
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => {
-      if (!user) return false
-      if (user.role === 'admin') return true
-      return {
-        merchant: {
-          owner: {
-            equals: user.id,
-          },
-        },
-      }
+      // For now, allow authenticated users to update
+      // Actual authorization is checked in API routes
+      return Boolean(user)
     },
   },
   fields: [

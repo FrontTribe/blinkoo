@@ -216,6 +216,7 @@ export async function POST(request: Request) {
         qrToken,
         sixCode,
       },
+      draft: false,
     })
 
     // Fetch full offer data with venue for return

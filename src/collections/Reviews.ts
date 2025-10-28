@@ -27,11 +27,11 @@ export const Reviews: CollectionConfig = {
       label: 'User',
     },
     {
-      name: 'venue',
+      name: 'offer',
       type: 'relationship',
-      relationTo: 'venues',
+      relationTo: 'offers',
       required: true,
-      label: 'Venue',
+      label: 'Offer',
     },
     {
       name: 'rating',
@@ -45,9 +45,9 @@ export const Reviews: CollectionConfig = {
       },
     },
     {
-      name: 'text',
+      name: 'comment',
       type: 'textarea',
-      label: 'Review Text',
+      label: 'Review Comment',
     },
     {
       name: 'photos',

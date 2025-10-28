@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { MdEmail, MdLockOutline, MdPerson, MdPhone, MdArrowForward } from 'react-icons/md'
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const role = searchParams.get('role') || 'customer'
@@ -220,5 +220,17 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>
+      }
+    >
+      <SignupForm />
+    </Suspense>
   )
 }

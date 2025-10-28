@@ -87,15 +87,15 @@ export async function GET(request: Request) {
           // Slots that start on this date
           {
             and: [
-              { startsAt: { greater_than_or_equal: startDate.toISOString() } },
-              { startsAt: { less_than_or_equal: endDate.toISOString() } },
+              { startsAt: { greater_than_equal: startDate.toISOString() } },
+              { startsAt: { less_than_equal: endDate.toISOString() } },
             ],
           },
           // Slots that end on this date
           {
             and: [
-              { endsAt: { greater_than_or_equal: startDate.toISOString() } },
-              { endsAt: { less_than_or_equal: endDate.toISOString() } },
+              { endsAt: { greater_than_equal: startDate.toISOString() } },
+              { endsAt: { less_than_equal: endDate.toISOString() } },
             ],
           },
           // Slots that span this date
@@ -116,8 +116,8 @@ export async function GET(request: Request) {
       where: {
         offer: { in: offerIds },
         reservedAt: {
-          greater_than_or_equal: startDate.toISOString(),
-          less_than_or_equal: endDate.toISOString(),
+          greater_than_equal: startDate.toISOString(),
+          less_than_equal: endDate.toISOString(),
         },
       },
       depth: 2,

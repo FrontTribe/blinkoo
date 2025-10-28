@@ -1,4 +1,6 @@
-import { User } from 'payload/types'
+type User = {
+  role?: string
+}
 
 export function checkRole(user: User | null, allowedRoles: string[]): boolean {
   if (!user) return false
@@ -19,4 +21,3 @@ export function isStaff(user: User | null): boolean {
 export function isMerchant(user: User | null): boolean {
   return checkRole(user, ['admin', 'merchant_owner'])
 }
-

@@ -394,12 +394,12 @@ export interface Claim {
 export interface Review {
   id: number;
   user: number | User;
-  venue: number | Venue;
+  offer: number | Offer;
   /**
    * Rating from 1 to 5
    */
   rating: number;
-  text?: string | null;
+  comment?: string | null;
   photos?:
     | {
         photo?: (number | null) | Media;
@@ -688,9 +688,9 @@ export interface ClaimsSelect<T extends boolean = true> {
  */
 export interface ReviewsSelect<T extends boolean = true> {
   user?: T;
-  venue?: T;
+  offer?: T;
   rating?: T;
-  text?: T;
+  comment?: T;
   photos?:
     | T
     | {

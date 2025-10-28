@@ -104,6 +104,7 @@ export async function POST(request: Request) {
         rating,
         comment: comment || '',
       },
+      draft: false,
     })
 
     return NextResponse.json({ review })

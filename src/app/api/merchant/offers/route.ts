@@ -87,6 +87,7 @@ export async function POST(request: Request) {
         geofenceKm: parseFloat(body.geofenceKm) || 0,
         status: 'active',
       },
+      draft: false,
     })
 
     console.log('Offer created successfully:', offer.id)
@@ -124,6 +125,7 @@ export async function POST(request: Request) {
     const slot = await payload.create({
       collection: 'offer-slots',
       data: slotData,
+      draft: false,
     })
 
     console.log('Offer slot created successfully:', slot.id)

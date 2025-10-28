@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import { cookies } from 'next/headers'
 import configPromise from '@/payload.config'
 import { OTP_STORAGE } from '../../otpStorage'
+import crypto from 'crypto'
 
 /**
  * POST /api/auth/otp/verify
@@ -40,13 +41,18 @@ export async function POST(request: Request) {
         user = user.docs[0]
       } else {
         // Create new user
+        // Generate a synthetic email for phone-based authentication
+        const syntheticEmail = `phone+${phone.replace(/[^0-9]/g, '')}@offpeak.app`
         user = await payload.create({
           collection: 'users',
           data: {
+            email: syntheticEmail,
+            password: crypto.randomBytes(32).toString('hex'), // Random password since we use OTP
             phone,
             phoneVerified: true,
             role: 'customer',
           },
+          draft: false,
         })
       }
     } catch (error) {

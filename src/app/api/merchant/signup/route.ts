@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
         phone,
         role: 'merchant_owner',
       },
+      draft: false,
     })
 
     // Create the merchant record
@@ -37,6 +38,7 @@ export async function POST(req: NextRequest) {
         name: businessName,
         kycStatus: 'pending',
       },
+      draft: false,
     })
 
     // Return user and merchant info

@@ -62,10 +62,10 @@ export async function GET(request: Request) {
     // Build date filter
     const dateFilter: any = {}
     if (startDate) {
-      dateFilter.greater_than_or_equal = startDate
+      dateFilter.greater_than_equal = startDate
     }
     if (endDate) {
-      dateFilter.less_than_or_equal = endDate
+      dateFilter.less_than_equal = endDate
     }
 
     // Get all offer slots for these offers (for fill rate calculation)

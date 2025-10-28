@@ -153,6 +153,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     const slot = await payload.create({
       collection: 'offer-slots',
       data: slotData,
+      draft: false,
     })
 
     return NextResponse.json({ slot })

@@ -118,6 +118,7 @@ export async function POST(request: Request) {
         status: 'active',
         openHours: body.openHours || {},
       },
+      draft: false,
     })
 
     console.log('Venue created successfully:', venue.id)

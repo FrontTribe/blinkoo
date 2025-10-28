@@ -59,7 +59,7 @@ export async function GET(request: Request) {
       where: {
         offer: { in: offerIds },
         state: { equals: 'live' },
-        startsAt: { less_than_or_equal: now.toISOString() },
+        startsAt: { less_than_equal: now.toISOString() },
         endsAt: { greater_than: now.toISOString() },
       },
       depth: 2,

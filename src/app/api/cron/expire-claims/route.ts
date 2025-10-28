@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 
   try {
     const result = await expireClaims()
-    return NextResponse.json({ success: true, ...result })
+    return NextResponse.json(result)
   } catch (error) {
     console.error('Error in expire-claims cron:', error)
     return NextResponse.json({ error: 'Failed to expire claims' }, { status: 500 })
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
   try {
     const result = await expireClaims()
-    return NextResponse.json({ success: true, ...result })
+    return NextResponse.json(result)
   } catch (error) {
     console.error('Error in expire-claims cron:', error)
     return NextResponse.json({ error: 'Failed to expire claims' }, { status: 500 })

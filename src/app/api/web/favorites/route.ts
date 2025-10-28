@@ -62,7 +62,12 @@ export async function POST(request: Request) {
     })
 
     // Extract venue ID
-    const venueId = typeof offer.venue === 'string' ? offer.venue : offer.venue?.id
+    let venueId: string | number | undefined
+    if (typeof offer.venue === 'string' || typeof offer.venue === 'number') {
+      venueId = offer.venue
+    } else if (offer.venue && typeof offer.venue === 'object' && 'id' in offer.venue) {
+      venueId = offer.venue.id
+    }
     console.log('Extracted venue ID:', venueId, 'from offer:', offer.id)
 
     if (!venueId) {
@@ -90,6 +95,7 @@ export async function POST(request: Request) {
         user: user.id as any,
         venue: venueId as any,
       },
+      draft: false,
     })
 
     return NextResponse.json({ favorite })
@@ -128,7 +134,12 @@ export async function DELETE(request: Request) {
     })
 
     // Extract venue ID
-    const venueId = typeof offer.venue === 'string' ? offer.venue : offer.venue?.id
+    let venueId: string | number | undefined
+    if (typeof offer.venue === 'string' || typeof offer.venue === 'number') {
+      venueId = offer.venue
+    } else if (offer.venue && typeof offer.venue === 'object' && 'id' in offer.venue) {
+      venueId = offer.venue.id
+    }
 
     if (!venueId) {
       return NextResponse.json({ error: 'Offer has no venue' }, { status: 400 })

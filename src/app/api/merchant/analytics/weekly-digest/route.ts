@@ -71,8 +71,8 @@ export async function GET(request: Request) {
       where: {
         offer: { in: offerIds },
         reservedAt: {
-          greater_than_or_equal: startDate.toISOString(),
-          less_than_or_equal: endDate.toISOString(),
+          greater_than_equal: startDate.toISOString(),
+          less_than_equal: endDate.toISOString(),
         },
       },
       depth: 2,
@@ -87,12 +87,12 @@ export async function GET(request: Request) {
         or: [
           {
             startsAt: {
-              greater_than_or_equal: startDate.toISOString(),
+              greater_than_equal: startDate.toISOString(),
             },
           },
           {
             endsAt: {
-              less_than_or_equal: endDate.toISOString(),
+              less_than_equal: endDate.toISOString(),
             },
           },
         ],
@@ -174,7 +174,8 @@ export async function GET(request: Request) {
       return date >= midpoint
     }).length
 
-    const trend = firstHalf > 0 ? (((secondHalf - firstHalf) / firstHalf) * 100).toFixed(1) : '0'
+    const trend = firstHalf > 0 ? ((secondHalf - firstHalf) / firstHalf) * 100 : 0
+    const trendFormatted = trend.toFixed(1)
 
     return NextResponse.json({
       period: {
@@ -188,7 +189,7 @@ export async function GET(request: Request) {
         expiredClaims,
         fillRate: `${fillRate}%`,
         redemptionRate: `${redemptionRate}%`,
-        trend: `${trend > 0 ? '+' : ''}${trend}%`,
+        trend: `${trend > 0 ? '+' : ''}${trendFormatted}%`,
       },
       dailyBreakdown: Object.entries(dailyBreakdown).map(([date, data]) => ({
         date,

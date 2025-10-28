@@ -55,14 +55,14 @@ export async function GET(request: Request) {
     let slotsQuery = {
       state: { equals: 'live' },
       qtyRemaining: { greater_than: 0 },
-      startsAt: { less_than_or_equal: now.toISOString() },
+      startsAt: { less_than_equal: now.toISOString() },
       endsAt: { greater_than: now.toISOString() },
     }
 
     if (filter === 'soon') {
       slotsQuery.startsAt = {
         greater_than: now.toISOString(),
-        less_than_or_equal: new Date(now.getTime() + 60 * 60 * 1000).toISOString(), // Next hour
+        less_than_equal: new Date(now.getTime() + 60 * 60 * 1000).toISOString(), // Next hour
       } as any
       slotsQuery.state = { equals: 'scheduled' } as any
     }
@@ -96,8 +96,12 @@ export async function GET(request: Request) {
         slots.docs = slots.docs.filter((slot) => {
           if (typeof slot.offer === 'object' && slot.offer !== null && 'category' in slot.offer) {
             const offerCategory = slot.offer.category
-            const offerCategoryId =
-              typeof offerCategory === 'string' ? offerCategory : offerCategory?.id
+            let offerCategoryId: string | number | undefined
+            if (typeof offerCategory === 'string' || typeof offerCategory === 'number') {
+              offerCategoryId = offerCategory
+            } else if (offerCategory && typeof offerCategory === 'object' && 'id' in offerCategory) {
+              offerCategoryId = offerCategory.id
+            }
             return offerCategoryId === categoryId
           }
           return false
@@ -119,7 +123,8 @@ export async function GET(request: Request) {
         offers.set(slot.offer.id, slot.offer)
 
         if (typeof slot.offer.venue === 'object' && slot.offer.venue !== null) {
-          venueIds.add(slot.offer.venue.id as string)
+          const venueId = slot.offer.venue.id
+          venueIds.add(String(venueId))
         }
       }
     }
