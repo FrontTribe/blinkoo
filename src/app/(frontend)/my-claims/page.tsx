@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { QRCodeSVG } from 'qrcode.react'
+import { FiMessageSquare, FiCheckCircle } from 'react-icons/fi'
+import { toast } from 'react-toastify'
+import { OfferSuggestions } from '@/components/OfferSuggestions'
 
 export default function MyClaimsPage() {
   const [claims, setClaims] = useState<any[]>([])
@@ -78,27 +81,44 @@ export default function MyClaimsPage() {
     }
   }
 
+  async function handleWriteReview(claim: any) {
+    const offer = typeof claim.offer === 'object' ? claim.offer : null
+    if (!offer) return
+
+    // Navigate to offer page with review prompt
+    window.location.href = `/offers/${offer.id}?review=true`
+  }
+
   return (
     <div className="min-h-screen bg-bg-secondary">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header Section */}
         <div className="mb-8">
-          <h1 className="font-heading text-3xl font-bold text-text-primary">My Claims</h1>
-          <p className="mt-2 text-sm text-text-secondary">View and manage your claimed offers</p>
+          <h1 className="font-heading text-4xl font-bold text-text-primary mb-2">My Claims</h1>
+          <p className="text-text-secondary text-sm">View and manage your claimed offers</p>
         </div>
 
         {claims.length === 0 ? (
-          <div className="bg-white border border-border p-12 text-center">
-            <p className="text-text-secondary mb-4 text-sm">You haven't claimed any offers yet</p>
-            <Link
-              href="/offers"
-              className="inline-block bg-text-primary text-white px-6 py-3 hover:bg-text-secondary transition-colors font-semibold text-sm"
-              style={{ color: 'white' }}
-            >
-              Browse Offers
-            </Link>
+          <div className="bg-white border border-border p-16 text-center">
+            <div className="max-w-md mx-auto">
+              <div className="text-6xl mb-6">🎟️</div>
+              <h2 className="font-heading text-2xl font-bold text-text-primary mb-3">
+                No Claims Yet
+              </h2>
+              <p className="text-text-secondary mb-6 text-sm">
+                Start claiming offers and enjoying great deals!
+              </p>
+              <Link
+                href="/offers"
+                className="inline-block bg-primary text-white px-8 py-4 hover:bg-primary-hover transition-colors font-semibold text-sm"
+                style={{ color: 'white' }}
+              >
+                Browse Offers
+              </Link>
+            </div>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {claims.map((claim) => {
               const claimData = claim as any
               const offer = claimData.offer
@@ -107,84 +127,158 @@ export default function MyClaimsPage() {
               if (!offer || !venue) return null
 
               return (
-                <div key={claim.id} className="bg-white border border-border">
-                  <div className="p-4">
-                    <div className="flex items-start justify-between mb-3">
+                <div key={claim.id} className="bg-white border-2 border-border overflow-hidden">
+                  {/* Card Header */}
+                  <div className="border-b border-border p-6">
+                    <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
-                        <h3 className="font-heading text-base font-semibold text-text-primary">
+                        <h3 className="font-heading text-xl font-bold text-text-primary mb-2">
                           {offer.title}
                         </h3>
-                        <p className="text-xs text-text-secondary">{venue.name}</p>
+                        <p className="text-sm text-text-secondary font-medium">{venue.name}</p>
                       </div>
-                      <span
-                        className={`px-3 py-1 text-xs font-medium border ${getStatusColor(claimData.status)}`}
-                      >
-                        {claimData.status}
-                      </span>
+                      <div className={`px-4 py-2 border-2 ${getStatusColor(claimData.status)}`}>
+                        <span className="text-xs font-bold uppercase tracking-wider">
+                          {claimData.status}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="space-y-2 text-xs text-text-secondary mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-text-tertiary">Claimed:</span>
-                        {claimData.reservedAt ? formatDate(claimData.reservedAt) : 'N/A'}
+                    {/* Timeline Info */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 pt-4 border-t border-border">
+                      <div>
+                        <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-1">
+                          Claimed
+                        </p>
+                        <p className="text-sm font-medium text-text-primary">
+                          {claimData.reservedAt ? formatDate(claimData.reservedAt) : 'N/A'}
+                        </p>
                       </div>
                       {claimData.redeemedAt && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-text-tertiary">Redeemed:</span>
-                          {formatDate(claimData.redeemedAt)}
+                        <div>
+                          <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-1">
+                            Redeemed
+                          </p>
+                          <p className="text-sm font-medium text-text-primary">
+                            {formatDate(claimData.redeemedAt)}
+                          </p>
                         </div>
                       )}
                       {claimData.expiresAt && claimData.status === 'RESERVED' && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-text-tertiary">Expires:</span>
-                          {formatDate(claimData.expiresAt)}
+                        <div>
+                          <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-1">
+                            Expires
+                          </p>
+                          <p className="text-sm font-medium text-text-primary">
+                            {formatDate(claimData.expiresAt)}
+                          </p>
                         </div>
                       )}
                     </div>
+                  </div>
 
-                    {claimData.status === 'RESERVED' && claimData.qrToken && (
-                      <div className="space-y-4">
-                        {/* Time Remaining */}
-                        <div className="bg-error/10 border border-error p-3">
-                          <p className="text-xs font-semibold text-error mb-1 text-center uppercase tracking-wider">
-                            Time Remaining
-                          </p>
-                          <p className="text-2xl font-bold text-center text-text-primary">
-                            {timeRemaining[claim.id] !== undefined
-                              ? getTimeRemaining(timeRemaining[claim.id])
-                              : 'Calculating...'}
-                          </p>
-                        </div>
+                  {/* Active Claim Content */}
+                  {claimData.status === 'RESERVED' && claimData.qrToken && (
+                    <div className="p-6 bg-primary/5 border-t border-border">
+                      {/* Time Remaining */}
+                      <div className="bg-error border-2 border-error p-4 mb-4">
+                        <p className="text-xs font-bold text-white mb-2 text-center uppercase tracking-wider">
+                          Time Remaining
+                        </p>
+                        <p className="text-4xl font-bold text-center text-white">
+                          {timeRemaining[claim.id] !== undefined
+                            ? getTimeRemaining(timeRemaining[claim.id])
+                            : '--:--'}
+                        </p>
+                      </div>
 
-                        {/* QR Code and 6-Digit Code */}
-                        <div className="bg-primary/10 border border-primary/20 p-4">
-                          {/* 6-Digit Code */}
-                          <p className="text-xs font-medium text-text-secondary mb-2 text-center uppercase tracking-wider">
-                            Show this code to staff
-                          </p>
-                          <p className="font-heading text-3xl font-bold text-center text-primary tracking-wider mb-4">
-                            {claimData.sixCode}
-                          </p>
+                      {/* QR Code and 6-Digit Code */}
+                      <div className="bg-white border-2 border-primary p-6">
+                        {/* 6-Digit Code */}
+                        <p className="text-xs font-bold text-text-secondary mb-3 text-center uppercase tracking-wider">
+                          Show This Code to Staff
+                        </p>
+                        <p className="font-heading text-5xl font-bold text-center text-primary tracking-widest mb-6">
+                          {claimData.sixCode}
+                        </p>
 
-                          {/* QR Code */}
-                          <div className="flex justify-center">
-                            <div className="bg-white p-2">
-                              <QRCodeSVG
-                                value={claimData.qrToken || claimData.sixCode}
-                                size={120}
-                                level="H"
-                                bgColor="#FFFFFF"
-                                fgColor="#222222"
-                              />
-                            </div>
+                        {/* QR Code */}
+                        <div className="flex justify-center">
+                          <div className="bg-white border-2 border-border p-3">
+                            <QRCodeSVG
+                              value={claimData.qrToken || claimData.sixCode}
+                              size={180}
+                              level="H"
+                              bgColor="#FFFFFF"
+                              fgColor="#222222"
+                            />
                           </div>
                         </div>
+
+                        <p className="text-xs text-text-tertiary text-center mt-4">
+                          Or scan the QR code with a mobile device
+                        </p>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
+
+                  {/* Review Prompt for Redeemed Offers */}
+                  {claimData.status === 'REDEEMED' && !claimData.reviewed && (
+                    <div className="border-t border-border p-6 bg-primary/5">
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="bg-primary/10 border-2 border-primary p-3">
+                          <FiMessageSquare className="text-primary text-2xl" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-heading text-lg font-bold text-text-primary mb-1">
+                            Share Your Experience
+                          </h4>
+                          <p className="text-sm text-text-secondary">
+                            Help others discover great deals by leaving a review
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleWriteReview(claim)}
+                        className="w-full bg-primary text-white py-3 px-4 hover:bg-primary-hover transition-colors font-bold text-sm flex items-center justify-center gap-2"
+                        style={{ color: 'white' }}
+                      >
+                        <FiMessageSquare />
+                        Write a Review
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Review Submitted Confirmation */}
+                  {claimData.status === 'REDEEMED' && claimData.reviewed && (
+                    <div className="border-t border-border p-6 bg-success/10 border-2 border-success">
+                      <div className="flex items-center gap-3">
+                        <FiCheckCircle className="text-success text-2xl flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-bold text-success uppercase tracking-wider">
+                            Review Submitted
+                          </p>
+                          <p className="text-xs text-text-secondary mt-0.5">
+                            Thank you for your feedback!
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )
             })}
+          </div>
+        )}
+
+        {/* Show suggestions if user has redeemed offers */}
+        {claims.length > 0 && (
+          <div className="mt-8">
+            <OfferSuggestions
+              offerId={claims[0]?.offer?.id || ''}
+              userId={claims[0]?.user?.id}
+              limit={4}
+            />
           </div>
         )}
       </div>

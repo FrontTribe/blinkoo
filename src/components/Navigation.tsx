@@ -43,22 +43,54 @@ export async function Navigation() {
               {user && (
                 <>
                   {user.role === 'customer' && (
-                    <Link
-                      href="/my-claims"
-                      className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
-                    >
-                      My Claims
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
-                    </Link>
+                    <>
+                      <Link
+                        href="/my-claims"
+                        className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
+                      >
+                        My Claims
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
+                      </Link>
+                      <Link
+                        href="/saved-offers"
+                        className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
+                      >
+                        Saved
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
+                      </Link>
+                    </>
                   )}
                   {(user.role === 'merchant_owner' || user.role === 'admin') && (
-                    <Link
-                      href="/merchant/dashboard"
-                      className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
-                    >
-                      Dashboard
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
-                    </Link>
+                    <>
+                      <Link
+                        href="/merchant/dashboard"
+                        className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
+                      >
+                        Dashboard
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
+                      </Link>
+                      <Link
+                        href="/merchant/offers"
+                        className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
+                      >
+                        Offers
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
+                      </Link>
+                      <Link
+                        href="/merchant/venues"
+                        className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
+                      >
+                        Venues
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
+                      </Link>
+                      <Link
+                        href="/merchant/analytics"
+                        className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
+                      >
+                        Analytics
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
+                      </Link>
+                    </>
                   )}
                 </>
               )}

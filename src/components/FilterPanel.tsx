@@ -133,18 +133,18 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
             className="fixed right-0 top-0 h-full bg-white z-[70] w-full md:w-[400px] border-l border-border"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b">
-              <h2 className="text-base font-semibold text-text-primary">Filters</h2>
+            <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+              <h2 className="text-lg font-semibold text-text-primary">Filters</h2>
               <button onClick={onClose} className="p-2 hover:bg-bg-secondary transition-colors">
-                <FiX className="text-base text-text-secondary" />
+                <FiX className="text-lg text-text-secondary" />
               </button>
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto h-[calc(100vh-140px)] px-6 py-4 space-y-6">
+            <div className="overflow-y-auto h-[calc(100vh-140px)] px-6 py-6 space-y-6">
               {/* Distance Filter */}
               <div>
-                <h3 className="text-xs font-semibold text-text-secondary mb-3 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
                   Distance
                 </h3>
                 <div className="space-y-3">
@@ -157,10 +157,10 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                           handleDistanceChange(option.value)
                           setCustomDistance(option.value)
                         }}
-                        className={`px-3 py-1.5 text-xs font-medium transition-colors border ${
+                        className={`px-3 py-2 text-sm font-medium transition-colors border border-border ${
                           localFilters.distance === option.value
                             ? 'bg-text-primary text-white border-text-primary'
-                            : 'bg-white text-text-primary border-border hover:bg-bg-secondary'
+                            : 'bg-white text-text-primary hover:bg-bg-secondary'
                         }`}
                       >
                         {option.label}
@@ -169,8 +169,8 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                   </div>
 
                   {/* Custom Distance Slider */}
-                  <div className="pt-2">
-                    <div className="flex justify-between text-xs text-text-secondary mb-2">
+                  <div className="pt-3">
+                    <div className="flex justify-between text-sm text-text-secondary mb-3">
                       <span>Custom: {localFilters.distance || customDistance} km</span>
                       <button
                         onClick={() => handleDistanceChange(null)}
@@ -198,7 +198,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
 
               {/* Time Filter */}
               <div>
-                <h3 className="text-xs font-semibold text-text-secondary mb-3 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
                   Time
                 </h3>
                 <div className="space-y-2">
@@ -212,10 +212,10 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                             : (option.value as 'ending-soon' | 'all-day'),
                         )
                       }
-                      className={`w-full text-left px-3 py-2 text-xs transition-colors border ${
+                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors border border-border ${
                         localFilters.timeFilter === option.value
                           ? 'bg-text-primary text-white border-text-primary'
-                          : 'bg-white text-text-primary border-border hover:bg-bg-secondary'
+                          : 'bg-white text-text-primary hover:bg-bg-secondary'
                       }`}
                     >
                       {option.label}
@@ -226,7 +226,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
 
               {/* Discount Type Filter */}
               <div>
-                <h3 className="text-xs font-semibold text-text-secondary mb-3 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
                   Discount
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -234,10 +234,10 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                     <button
                       key={option.value}
                       onClick={() => handleDiscountTypeToggle(option.value)}
-                      className={`px-3 py-1.5 text-xs font-medium transition-colors border ${
+                      className={`px-3 py-2 text-sm font-medium transition-colors border border-border ${
                         localFilters.discountTypes?.includes(option.value)
                           ? 'bg-text-primary text-white border-text-primary'
-                          : 'bg-white text-text-primary border-border hover:bg-bg-secondary'
+                          : 'bg-white text-text-primary hover:bg-bg-secondary'
                       }`}
                     >
                       {option.label}
@@ -248,7 +248,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
 
               {/* Sort By */}
               <div>
-                <h3 className="text-xs font-semibold text-text-secondary mb-3 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
                   Sort
                 </h3>
                 <div className="space-y-2">
@@ -256,10 +256,10 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                     <button
                       key={option.value}
                       onClick={() => handleSortByChange(option.value as typeof localFilters.sortBy)}
-                      className={`w-full text-left px-3 py-2 text-xs transition-colors border ${
+                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors border border-border ${
                         localFilters.sortBy === option.value
                           ? 'bg-text-primary text-white border-text-primary'
-                          : 'bg-white text-text-primary border-border hover:bg-bg-secondary'
+                          : 'bg-white text-text-primary hover:bg-bg-secondary'
                       }`}
                     >
                       {option.label}
@@ -270,17 +270,18 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 left-0 right-0 px-6 py-4 bg-white border-t">
-              <div className="flex gap-2">
+            <div className="sticky bottom-0 left-0 right-0 px-6 py-5 bg-white border-t border-border">
+              <div className="flex gap-3">
                 <button
                   onClick={handleClear}
-                  className="flex-1 py-2 text-text-secondary font-medium hover:text-text-primary transition-colors text-sm"
+                  className="flex-1 py-3 text-text-secondary font-medium hover:text-text-primary transition-colors text-sm border border-border"
                 >
                   Clear all
                 </button>
                 <button
                   onClick={handleApply}
-                  className="flex-1 py-2 bg-text-primary text-white font-semibold hover:opacity-90 transition-opacity text-sm"
+                  className="flex-1 py-3 bg-text-primary text-white font-semibold hover:bg-text-secondary transition-colors text-sm"
+                  style={{ color: 'white' }}
                 >
                   Show results {countActiveFilters() > 0 && `(${countActiveFilters()})`}
                 </button>

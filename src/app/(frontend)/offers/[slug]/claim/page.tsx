@@ -7,6 +7,7 @@ import { QRCodeSVG } from 'qrcode.react'
 import { HelpTooltip } from '@/components/HelpTooltip'
 import { Confetti } from '@/components/Confetti'
 import { ClaimSuccess } from '@/components/ClaimSuccess'
+import { useGeolocation } from '@/hooks/useGeolocation'
 
 type ClaimResponse = {
   claim: {
@@ -33,12 +34,12 @@ export default function ClaimOfferPage() {
   const [timeRemaining, setTimeRemaining] = useState<number>(0)
   const [user, setUser] = useState<any>(null)
   const [authLoading, setAuthLoading] = useState(true)
-  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null)
-  const [locationError, setLocationError] = useState<string | null>(null)
-  const [gettingLocation, setGettingLocation] = useState(false)
   const [venueData, setVenueData] = useState<any>(null)
   const [offerData, setOfferData] = useState<any>(null)
   const [showConfetti, setShowConfetti] = useState(false)
+  
+  // Use cached location from useGeolocation hook
+  const { lat, lng, loading: locationLoading, error: locationError } = useGeolocation()
 
   // Check authentication on mount
   useEffect(() => {
@@ -79,58 +80,13 @@ export default function ClaimOfferPage() {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  async function getCurrentLocation() {
-    return new Promise<{ lat: number; lng: number }>((resolve, reject) => {
-      if (!navigator.geolocation) {
-        reject(new Error('Geolocation is not supported by your browser'))
-        return
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          })
-        },
-        (error) => {
-          reject(error)
-        },
-        { timeout: 10000 },
-      )
-    })
-  }
-
-  async function handleGetLocation() {
-    setGettingLocation(true)
-    setLocationError(null)
-
-    try {
-      const coords = await getCurrentLocation()
-      setLocation(coords)
-    } catch (err: any) {
-      setLocationError(
-        err.message || 'Could not get your location. Please enable location access and try again.',
-      )
-    } finally {
-      setGettingLocation(false)
-    }
-  }
-
   async function handleClaim() {
     setLoading(true)
     setError(null)
 
     try {
-      // Get location if not already available
-      let userLocation = location
-      if (!userLocation) {
-        try {
-          userLocation = await getCurrentLocation()
-        } catch (err) {
-          console.log('Location not available, proceeding without it')
-        }
-      }
+      // Location is automatically requested by useGeolocation hook and cached
+      const userLocation = lat && lng ? { lat, lng } : null
 
       const response = await fetch('/api/web/claims', {
         method: 'POST',
@@ -229,30 +185,25 @@ export default function ClaimOfferPage() {
             Click the button below to claim this offer. You'll have 7 minutes to redeem it.
           </p>
 
-          {/* Location Status */}
-          {!location && (
+          {/* Location Status - Passive Indicator */}
+          {locationLoading && (
             <div className="mb-6 bg-bg-secondary border border-border p-4">
-              <p className="text-xs text-text-secondary mb-3 font-medium uppercase tracking-wider">
-                Location Access
-              </p>
-              <p className="text-sm text-text-primary mb-3">
-                Enable location for geofence validation (recommended)
-              </p>
-              <button
-                onClick={handleGetLocation}
-                disabled={gettingLocation}
-                className="w-full bg-white text-text-primary py-3 px-4 border border-border hover:bg-bg-secondary transition-colors text-sm font-medium"
-              >
-                {gettingLocation ? 'Getting Location...' : 'Enable Location'}
-              </button>
-              {locationError && <p className="text-error text-xs mt-2">{locationError}</p>}
+              <p className="text-sm text-text-secondary">Getting your location...</p>
             </div>
           )}
 
-          {location && (
+          {lat && lng && (
             <div className="mb-6 bg-success/10 border border-success p-4">
               <p className="text-sm text-success font-medium flex items-center gap-2">
-                <span>✓</span> Location enabled
+                <span>✓</span> Location ready
+              </p>
+            </div>
+          )}
+
+          {locationError && !lat && !lng && (
+            <div className="mb-6 bg-bg-secondary border border-border p-4">
+              <p className="text-xs text-text-tertiary">
+                Location unavailable. Claims may have geofence restrictions.
               </p>
             </div>
           )}

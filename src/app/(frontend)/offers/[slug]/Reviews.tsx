@@ -17,9 +17,10 @@ type Review = {
 
 interface ReviewsProps {
   offerId: string
+  autoOpenForm?: boolean
 }
 
-export function Reviews({ offerId }: ReviewsProps) {
+export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -30,6 +31,16 @@ export function Reviews({ offerId }: ReviewsProps) {
   useEffect(() => {
     fetchReviews()
   }, [offerId])
+
+  useEffect(() => {
+    if (autoOpenForm) {
+      setShowForm(true)
+      // Scroll to reviews section
+      setTimeout(() => {
+        document.querySelector('#reviews-section')?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }, [autoOpenForm])
 
   async function fetchReviews() {
     try {
@@ -114,29 +125,35 @@ export function Reviews({ offerId }: ReviewsProps) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="font-heading text-xl font-semibold text-text-primary mb-2">Reviews</h2>
-          <div className="flex items-center gap-2">
+          <h2 className="font-heading text-2xl font-bold text-text-primary mb-3 flex items-center gap-2">
+            <span className="h-1 w-1 bg-primary" />
+            Customer Reviews
+          </h2>
+          <div className="flex items-center gap-3">
             {averageRating > 0 ? (
               <>
                 <div className="flex items-center gap-0.5">
                   {renderStars(Math.round(averageRating))}
                 </div>
-                <span className="text-text-secondary text-xs">
-                  {averageRating.toFixed(1)} · {reviews.length}{' '}
-                  {reviews.length === 1 ? 'review' : 'reviews'}
+                <span className="text-text-secondary text-sm font-medium">
+                  {averageRating.toFixed(1)} out of 5
+                </span>
+                <span className="text-text-tertiary text-sm">
+                  · {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
                 </span>
               </>
             ) : (
-              <span className="text-text-secondary text-xs">No reviews yet</span>
+              <span className="text-text-secondary text-sm">No reviews yet - be the first!</span>
             )}
           </div>
         </div>
         {!showForm && (
           <button
             onClick={() => setShowForm(true)}
-            className="bg-white text-text-primary border border-border px-4 py-2 hover:bg-bg-secondary transition-colors text-xs font-medium"
+            className="bg-primary text-white px-4 py-2 hover:bg-primary-hover transition-colors text-sm font-semibold"
+            style={{ color: 'white' }}
           >
             Write Review
           </button>
@@ -144,9 +161,9 @@ export function Reviews({ offerId }: ReviewsProps) {
       </div>
 
       {showForm && (
-        <div className="mb-6 bg-bg-secondary border border-border p-4">
-          <h3 className="font-heading text-base font-semibold text-text-primary mb-4">
-            Write a Review
+        <div className="mb-8 bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20 p-6">
+          <h3 className="font-heading text-lg font-bold text-text-primary mb-4">
+            Share Your Experience
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">

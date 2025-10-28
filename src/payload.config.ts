@@ -16,6 +16,9 @@ import { OfferSlots } from './collections/OfferSlots'
 import { Claims } from './collections/Claims'
 import { Reviews } from './collections/Reviews'
 import { Favorites } from './collections/Favorites'
+import { SavedOffers } from './collections/SavedOffers'
+import { Achievements } from './collections/Achievements'
+import { UserStats } from './collections/UserStats'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -38,6 +41,9 @@ export default buildConfig({
     Claims,
     Reviews,
     Favorites,
+    SavedOffers,
+    Achievements,
+    UserStats,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -77,6 +77,9 @@ export interface Config {
     claims: Claim;
     reviews: Review;
     favorites: Favorite;
+    'saved-offers': SavedOffer;
+    achievements: Achievement;
+    'user-stats': UserStat;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -93,6 +96,9 @@ export interface Config {
     claims: ClaimsSelect<false> | ClaimsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     favorites: FavoritesSelect<false> | FavoritesSelect<true>;
+    'saved-offers': SavedOffersSelect<false> | SavedOffersSelect<true>;
+    achievements: AchievementsSelect<false> | AchievementsSelect<true>;
+    'user-stats': UserStatsSelect<false> | UserStatsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -148,6 +154,11 @@ export interface User {
         id?: string | null;
       }[]
     | null;
+  notificationPreferences?: {
+    inApp?: boolean | null;
+    email?: boolean | null;
+    push?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -384,6 +395,10 @@ export interface Claim {
    * Optional: Total basket value for ROI calculations
    */
   basketTotal?: number | null;
+  /**
+   * Whether the user has submitted a review for this claim
+   */
+  reviewed?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -417,6 +432,87 @@ export interface Favorite {
   id: number;
   user: number | User;
   venue: number | Venue;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "saved-offers".
+ */
+export interface SavedOffer {
+  id: number;
+  user: number | User;
+  offer: number | Offer;
+  /**
+   * Get notified when a new slot becomes available for this offer
+   */
+  notifyOnSlotStart?: boolean | null;
+  /**
+   * Get notified 30 minutes before a slot starts
+   */
+  notify30MinBefore?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  name: string;
+  description: string;
+  /**
+   * Emoji or icon identifier (e.g., 🎯, 🏆, ⭐)
+   */
+  icon: string;
+  tier: 'bronze' | 'silver' | 'gold' | 'platinum';
+  /**
+   * JSON object defining the criteria to unlock this achievement
+   */
+  criteria?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-stats".
+ */
+export interface UserStat {
+  id: number;
+  user: number | User;
+  totalClaims?: number | null;
+  totalReviews?: number | null;
+  categoriesClaimed?:
+    | {
+        category?: (number | null) | Category;
+        id?: string | null;
+      }[]
+    | null;
+  venuesClaimed?:
+    | {
+        venue?: (number | null) | Venue;
+        id?: string | null;
+      }[]
+    | null;
+  longestStreak?: number | null;
+  currentStreak?: number | null;
+  lastClaimDate?: string | null;
+  unlockedAchievements?:
+    | {
+        achievement?: (number | null) | Achievement;
+        unlockedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -466,6 +562,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'favorites';
         value: number | Favorite;
+      } | null)
+    | ({
+        relationTo: 'saved-offers';
+        value: number | SavedOffer;
+      } | null)
+    | ({
+        relationTo: 'achievements';
+        value: number | Achievement;
+      } | null)
+    | ({
+        relationTo: 'user-stats';
+        value: number | UserStat;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -526,6 +634,13 @@ export interface UsersSelect<T extends boolean = true> {
     | {
         venue?: T;
         id?: T;
+      };
+  notificationPreferences?:
+    | T
+    | {
+        inApp?: T;
+        email?: T;
+        push?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -679,6 +794,7 @@ export interface ClaimsSelect<T extends boolean = true> {
   sixCode?: T;
   staff?: T;
   basketTotal?: T;
+  reviewed?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -707,6 +823,64 @@ export interface ReviewsSelect<T extends boolean = true> {
 export interface FavoritesSelect<T extends boolean = true> {
   user?: T;
   venue?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "saved-offers_select".
+ */
+export interface SavedOffersSelect<T extends boolean = true> {
+  user?: T;
+  offer?: T;
+  notifyOnSlotStart?: T;
+  notify30MinBefore?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements_select".
+ */
+export interface AchievementsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  icon?: T;
+  tier?: T;
+  criteria?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-stats_select".
+ */
+export interface UserStatsSelect<T extends boolean = true> {
+  user?: T;
+  totalClaims?: T;
+  totalReviews?: T;
+  categoriesClaimed?:
+    | T
+    | {
+        category?: T;
+        id?: T;
+      };
+  venuesClaimed?:
+    | T
+    | {
+        venue?: T;
+        id?: T;
+      };
+  longestStreak?: T;
+  currentStreak?: T;
+  lastClaimDate?: T;
+  unlockedAchievements?:
+    | T
+    | {
+        achievement?: T;
+        unlockedAt?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

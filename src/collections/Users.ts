@@ -100,5 +100,30 @@ export const Users: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'notificationPreferences',
+      type: 'group',
+      label: 'Notification Preferences',
+      fields: [
+        {
+          name: 'inApp',
+          type: 'checkbox',
+          label: 'In-App Notifications',
+          defaultValue: true,
+        },
+        {
+          name: 'email',
+          type: 'checkbox',
+          label: 'Email Notifications',
+          defaultValue: false,
+        },
+        {
+          name: 'push',
+          type: 'checkbox',
+          label: 'Push Notifications',
+          defaultValue: false,
+        },
+      ],
+    },
   ],
 }

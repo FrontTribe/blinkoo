@@ -5,6 +5,51 @@ export const Reviews: CollectionConfig = {
   admin: {
     useAsTitle: 'id',
   },
+  hooks: {
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if (operation === 'create') {
+          const review = doc as any
+          const userId = typeof review.user === 'object' ? review.user.id : review.user
+
+          if (!userId) return doc
+
+          // Get or create user stats
+          const userStats = await req.payload.find({
+            collection: 'user-stats',
+            where: {
+              user: { equals: userId },
+            },
+            limit: 1,
+          })
+
+          if (userStats.docs.length === 0) {
+            await req.payload.create({
+              collection: 'user-stats',
+              data: {
+                user: userId as any,
+                totalClaims: 0,
+                totalReviews: 1,
+                longestStreak: 0,
+                currentStreak: 0,
+              },
+            })
+          } else {
+            const stats = userStats.docs[0]
+            await req.payload.update({
+              collection: 'user-stats',
+              id: stats.id,
+              data: {
+                totalReviews: (stats.totalReviews || 0) + 1,
+              },
+            })
+          }
+        }
+
+        return doc
+      },
+    ],
+  },
   access: {
     read: () => true,
     create: ({ req: { user } }) => Boolean(user),
@@ -63,4 +108,3 @@ export const Reviews: CollectionConfig = {
     },
   ],
 }
-

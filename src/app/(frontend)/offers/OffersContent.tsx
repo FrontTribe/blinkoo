@@ -7,6 +7,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { FiMap, FiList, FiFilter, FiGrid } from 'react-icons/fi'
 import { DynamicIcon } from '@/components/DynamicIcon'
 import { FavoriteButton } from '@/components/FavoriteButton'
+import { SavedButton } from '@/components/SavedButton'
 import { FilterPanel } from '@/components/FilterPanel'
 import { OnboardingModal } from '@/components/OnboardingModal'
 import { useOnboarding } from '@/hooks/useOnboarding'
@@ -216,21 +217,21 @@ export default function OffersContent({
       {/* Left Column - 40% */}
       <div className="w-2/5 border-r border-border flex flex-col overflow-hidden">
         {/* Header Row */}
-        <div className="flex items-center justify-between h-10 px-4 shrink-0">
-          <h4 className="text-xs font-semibold text-text-primary">{offers.length} offers</h4>
+        <div className="flex items-center justify-between h-14 px-4 shrink-0">
+          <h4 className="text-base font-semibold text-text-primary">{offers.length} offers</h4>
           <button
             onClick={() => setShowFilters(true)}
-            className={`relative h-7 px-2 text-xs font-medium border border-border transition-colors ${
+            className={`relative h-8 px-3 text-sm font-medium border border-border transition-colors ${
               getActiveFilterCount() > 0
                 ? 'text-primary border-primary bg-primary/5'
                 : 'text-text-secondary hover:border-primary'
             }`}
           >
-            <div className="flex items-center gap-1.5">
-              <FiFilter className="text-xs" />
-              <span className="text-[10px]">Filters</span>
+            <div className="flex items-center gap-2">
+              <FiFilter className="text-sm" />
+              <span className="text-xs">Filters</span>
               {getActiveFilterCount() > 0 && (
-                <span className="bg-primary text-white text-[8px] px-1 py-0.5">
+                <span className="bg-primary text-white text-[10px] px-1.5 py-0.5">
                   {getActiveFilterCount()}
                 </span>
               )}
@@ -240,7 +241,7 @@ export default function OffersContent({
 
         {/* Categories Row */}
         <div className="overflow-x-auto border-b border-border shrink-0">
-          <div className="flex gap-1.5 px-4 py-1.5">
+          <div className="flex gap-2 px-4 py-2.5">
             {categories.map((category) => {
               const isActive =
                 selectedCategory === (category.slug === 'all' ? 'all' : category.slug)
@@ -257,21 +258,21 @@ export default function OffersContent({
                     }
                     router.push(`${pathname}?${params.toString()}`)
                   }}
-                  className={`whitespace-nowrap px-2.5 py-1 text-xs font-medium transition-colors border border-border ${
+                  className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors border border-border ${
                     isActive
                       ? 'bg-text-primary text-white border-text-primary'
                       : 'bg-white text-text-secondary hover:bg-bg-secondary'
                   }`}
                 >
                   {category.slug === 'all' ? (
-                    <span className="flex items-center gap-1">
-                      <FiGrid className="text-[10px]" />
-                      <span className="text-xs">{category.name}</span>
+                    <span className="flex items-center gap-1.5">
+                      <FiGrid className="text-sm" />
+                      <span className="text-sm">{category.name}</span>
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1">
-                      <DynamicIcon iconName={category.icon} className="text-[10px]" />
-                      <span className="text-xs">{category.name}</span>
+                    <span className="flex items-center gap-1.5">
+                      <DynamicIcon iconName={category.icon} className="text-sm" />
+                      <span className="text-sm">{category.name}</span>
                     </span>
                   )}
                 </button>
@@ -294,18 +295,19 @@ export default function OffersContent({
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {offers.map((item) => (
                   <Link
                     key={item.slot.id}
                     href={`/offers/${item.offer.id}`}
                     className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white"
                   >
-                    {/* Favorite Button */}
+                    {/* Action Buttons */}
                     <div
-                      className="absolute top-2 right-2 z-10"
+                      className="absolute top-2 right-2 z-10 flex gap-1"
                       onClick={(e) => e.preventDefault()}
                     >
+                      <SavedButton offerId={item.offer.id} />
                       <FavoriteButton offerId={item.offer.id} />
                     </div>
 
@@ -318,53 +320,53 @@ export default function OffersContent({
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-bg-secondary text-text-tertiary text-xs">
+                        <div className="w-full h-full flex items-center justify-center bg-bg-secondary text-text-tertiary text-sm">
                           No Image
                         </div>
                       )}
 
                       {/* Discount Badge */}
-                      <div className="absolute top-2 left-2 bg-text-primary text-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
+                      <div className="absolute top-2 left-2 bg-text-primary text-white px-2.5 py-1 text-xs font-semibold uppercase tracking-wider">
                         {getOfferLabel(item.offer.type, item.offer.discountValue || 0)}
                       </div>
 
                       {/* Quantity Badge */}
                       {item.slot.qtyRemaining < 10 && (
-                        <div className="absolute bottom-2 left-2 bg-error text-white px-2 py-0.5 text-[10px] font-semibold">
+                        <div className="absolute bottom-2 left-2 bg-error text-white px-2.5 py-1 text-xs font-semibold">
                           Only {item.slot.qtyRemaining} left
                         </div>
                       )}
                     </div>
 
                     {/* Content */}
-                    <div className="p-3">
+                    <div className="p-4">
                       {/* Offer Title */}
-                      <h3 className="text-xs font-semibold text-text-primary line-clamp-1 mb-1">
+                      <h3 className="text-sm font-semibold text-text-primary line-clamp-2 mb-2">
                         {item.offer.title}
                       </h3>
 
                       {/* Venue Name */}
-                      <p className="text-[10px] text-text-secondary mb-1.5 line-clamp-1 !my-0">
+                      <p className="text-xs text-text-secondary mb-2 line-clamp-1 !my-0">
                         {item.venue.name}
                       </p>
 
                       {/* Meta Info */}
-                      <div className="space-y-1">
+                      <div className="space-y-1.5">
                         {/* Time Remaining */}
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] text-text-secondary">Ends in</span>
-                          <span className="text-xs font-semibold text-primary">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-text-secondary">Ends in</span>
+                          <span className="text-sm font-semibold text-primary">
                             {getTimeRemaining(item.slot.endsAt)}
                           </span>
                         </div>
 
                         {/* Additional Info */}
-                        <div className="flex items-center gap-1.5 text-[10px] text-text-secondary">
+                        <div className="flex items-center gap-2 text-xs text-text-secondary">
                           {item.venue.category && (
                             <>
                               <DynamicIcon
                                 iconName={item.venue.category.icon}
-                                className="text-[10px]"
+                                className="text-xs"
                               />
                               <span className="capitalize">{item.venue.category.name}</span>
                               <span>•</span>

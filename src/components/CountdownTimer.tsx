@@ -39,54 +39,64 @@ export function CountdownTimer({ endDate }: CountdownTimerProps) {
 
   if (!timeLeft) {
     return (
-      <div className="inline-flex items-center gap-2 text-primary">
-        <span className="text-xs font-medium">Loading...</span>
+      <div className="inline-flex items-center gap-2">
+        <div className="flex flex-col items-center bg-bg-secondary border border-border px-3 py-2">
+          <span className="text-sm font-semibold text-text-tertiary">--</span>
+        </div>
       </div>
     )
   }
 
   if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0) {
     return (
-      <div className="inline-flex items-center gap-2 text-error">
-        <span className="text-xs font-medium">Offer Ended</span>
+      <div className="inline-flex items-center gap-2 bg-error/10 border border-error px-3 py-1.5">
+        <span className="text-sm font-bold text-error uppercase tracking-wide">Ended</span>
       </div>
     )
   }
 
   return (
-    <div className="inline-flex items-center gap-2">
-      <div className="flex items-center gap-1">
-        <span className="text-[10px] text-text-secondary uppercase tracking-wider">Ends in</span>
+    <div className="inline-flex items-center gap-3">
+      <div className="flex items-center gap-2">
+        <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
+          Ends in
+        </span>
       </div>
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         {/* Hours */}
-        <div className="flex flex-col items-center bg-white border border-border px-2 py-1">
-          <span className="text-sm font-bold text-text-primary tabular-nums">
+        <div className="flex flex-col items-center bg-primary/10 border-2 border-primary px-3 py-2">
+          <span className="text-2xl font-bold text-primary tabular-nums leading-none">
             {String(timeLeft.hours).padStart(2, '0')}
           </span>
-          <span className="text-[8px] text-text-secondary uppercase tracking-wider">h</span>
+          <span className="text-[10px] text-primary font-semibold uppercase tracking-wider mt-1">
+            hr
+          </span>
         </div>
 
         {/* Separator */}
-        <span className="text-lg font-bold text-text-primary">:</span>
+        <span className="text-2xl font-bold text-primary">:</span>
 
         {/* Minutes */}
-        <div className="flex flex-col items-center bg-white border border-border px-2 py-1">
-          <span className="text-sm font-bold text-text-primary tabular-nums">
+        <div className="flex flex-col items-center bg-primary/10 border-2 border-primary px-3 py-2">
+          <span className="text-2xl font-bold text-primary tabular-nums leading-none">
             {String(timeLeft.minutes).padStart(2, '0')}
           </span>
-          <span className="text-[8px] text-text-secondary uppercase tracking-wider">m</span>
+          <span className="text-[10px] text-primary font-semibold uppercase tracking-wider mt-1">
+            min
+          </span>
         </div>
 
         {/* Separator */}
-        <span className="text-lg font-bold text-text-primary">:</span>
+        <span className="text-2xl font-bold text-primary">:</span>
 
         {/* Seconds */}
-        <div className="flex flex-col items-center bg-white border border-border px-2 py-1">
-          <span className="text-sm font-bold text-text-primary tabular-nums">
+        <div className="flex flex-col items-center bg-primary/10 border-2 border-primary px-3 py-2">
+          <span className="text-2xl font-bold text-primary tabular-nums leading-none">
             {String(timeLeft.seconds).padStart(2, '0')}
           </span>
-          <span className="text-[8px] text-text-secondary uppercase tracking-wider">s</span>
+          <span className="text-[10px] text-primary font-semibold uppercase tracking-wider mt-1">
+            sec
+          </span>
         </div>
       </div>
     </div>

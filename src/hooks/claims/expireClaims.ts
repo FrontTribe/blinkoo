@@ -41,21 +41,27 @@ export async function expireClaims() {
 
         // Return quantity to slot
         const slot = claimData.slot
-        if (typeof slot === 'object' && slot.id) {
+        const slotId = typeof slot === 'object' ? slot.id : slot
+
+        if (slotId) {
           const currentSlot = await payload.findByID({
             collection: 'offer-slots',
-            id: slot.id,
+            id: slotId,
           })
+
+          const currentSlotData = currentSlot as any
 
           await payload.update({
             collection: 'offer-slots',
-            id: slot.id,
+            id: slotId,
             data: {
-              qtyRemaining: ((slot as any).qtyRemaining || 0) + 1,
+              qtyRemaining: (currentSlotData.qtyRemaining || 0) + 1,
             },
           })
 
-          console.log(`Returned quantity to slot ${slot.id}`)
+          console.log(
+            `Returned quantity to slot ${slotId}. New qtyRemaining: ${(currentSlotData.qtyRemaining || 0) + 1}`,
+          )
         }
       } catch (error) {
         console.error(`Error processing claim ${claim.id}:`, error)
@@ -68,4 +74,3 @@ export async function expireClaims() {
     throw error
   }
 }
-

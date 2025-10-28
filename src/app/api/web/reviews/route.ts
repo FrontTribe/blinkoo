@@ -107,6 +107,27 @@ export async function POST(request: Request) {
       draft: false,
     })
 
+    // Mark the claim as reviewed
+    const claims = await payload.find({
+      collection: 'claims',
+      where: {
+        user: { equals: user.id },
+        offer: { equals: offerId },
+        status: { equals: 'REDEEMED' },
+      },
+      limit: 1,
+    })
+
+    if (claims.docs.length > 0) {
+      await payload.update({
+        collection: 'claims',
+        id: claims.docs[0].id,
+        data: {
+          reviewed: true,
+        },
+      })
+    }
+
     return NextResponse.json({ review })
   } catch (error: any) {
     console.error('Error creating review:', error)

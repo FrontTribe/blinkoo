@@ -5,7 +5,8 @@ import configPromise from '@/payload.config'
 import { Reviews } from './Reviews'
 import { OfferMap } from './OfferMap'
 import { CountdownTimer } from '@/components/CountdownTimer'
-import { FiMapPin, FiClock, FiUsers, FiArrowLeft } from 'react-icons/fi'
+import { OfferDetailsClient, OfferBookingCard } from './OfferDetailsClient'
+import { FiArrowLeft } from 'react-icons/fi'
 
 async function getOffer(idOrSlug: string) {
   const cookieStore = await cookies()
@@ -59,24 +60,16 @@ async function getOffer(idOrSlug: string) {
   }
 }
 
-function getTimeRemaining(endsAt: string): string {
-  const now = new Date()
-  const end = new Date(endsAt)
-  const diff = end.getTime() - now.getTime()
-
-  if (diff <= 0) return 'Ended'
-
-  const minutes = Math.floor(diff / 1000 / 60)
-  const hours = Math.floor(minutes / 60)
-
-  if (hours > 0) {
-    return `Ends in ${hours}h ${minutes % 60}m`
-  }
-  return `Ends in ${minutes}m`
-}
-
-export default async function OfferDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function OfferDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const { slug } = await params
+  const resolvedSearchParams = await searchParams
+  const shouldShowReview = resolvedSearchParams.review === 'true'
   const data = await getOffer(slug)
 
   if (!data) {
@@ -111,7 +104,7 @@ export default async function OfferDetailPage({ params }: { params: Promise<{ sl
   return (
     <div className="min-h-screen bg-bg-secondary">
       {/* Header Bar - Back & Countdown */}
-      <div className="border-b border-border bg-white sticky top-20 z-40">
+      <div className="border-b border-border bg-white sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             <Link
@@ -134,6 +127,15 @@ export default async function OfferDetailPage({ params }: { params: Promise<{ sl
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column - Content */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Header with Location-Aware Info - Now First */}
+            <OfferDetailsClient
+              slug={slug}
+              offer={offer}
+              venue={venue}
+              slot={slot}
+              geofenceKm={offer.geofenceKm}
+            />
+
             {/* Photo */}
             {offer.photo && (
               <div className="aspect-[16/9] overflow-hidden bg-white border border-border">
@@ -149,70 +151,22 @@ export default async function OfferDetailPage({ params }: { params: Promise<{ sl
               </div>
             )}
 
-            {/* Header */}
-            <div className="bg-white border border-border p-6">
-              <h1 className="font-heading text-3xl font-bold text-text-primary mb-3">
-                {offer.title}
-              </h1>
-
-              {/* Venue Info */}
-              <div className="flex items-center gap-2 mb-4">
-                <FiMapPin className="text-text-secondary" />
-                <span className="text-text-secondary text-sm">{venue.name}</span>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-3 gap-3">
-                {/* Countdown - Mobile */}
-                <div className="bg-bg-secondary border border-border p-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <FiClock className="text-primary text-sm" />
-                  </div>
-                  <div className="sm:hidden block">
-                    <CountdownTimer endDate={slot.endsAt} />
-                  </div>
-                  <div className="hidden sm:block text-xs text-text-secondary">Time Remaining</div>
-                  <div className="hidden sm:block text-sm font-semibold mt-1 text-primary">
-                    {getTimeRemaining(slot.endsAt)}
-                  </div>
-                </div>
-
-                {/* Quantity */}
-                <div className="bg-bg-secondary border border-border p-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <FiUsers className="text-primary text-sm" />
-                  </div>
-                  <div className="text-xs text-text-secondary mb-1">Available</div>
-                  <div className="text-sm font-semibold text-text-primary">
-                    {slot.qtyRemaining} left
-                  </div>
-                </div>
-
-                {/* Total */}
-                <div className="bg-bg-secondary border border-border p-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <FiUsers className="text-text-secondary text-sm" />
-                  </div>
-                  <div className="text-xs text-text-secondary mb-1">Total</div>
-                  <div className="text-sm font-semibold text-text-primary">{slot.qtyTotal}</div>
-                </div>
-              </div>
-            </div>
-
             {/* Description */}
-            <div className="bg-white border border-border p-6">
-              <h2 className="font-heading text-xl font-semibold text-text-primary mb-3">
+            <div className="bg-white border border-border p-8">
+              <h2 className="font-heading text-2xl font-bold text-text-primary mb-4 flex items-center gap-2">
+                <span className="h-1 w-1 bg-primary" />
                 About this offer
               </h2>
-              <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-line">
+              <p className="text-text-secondary leading-relaxed whitespace-pre-line">
                 {offer.description || 'No description available'}
               </p>
             </div>
 
             {/* Terms */}
             {offer.terms && (
-              <div className="bg-white border border-border p-6">
-                <h2 className="font-heading text-xl font-semibold text-text-primary mb-3">
+              <div className="bg-amber-50 border border-amber-200 p-8">
+                <h2 className="font-heading text-2xl font-bold text-text-primary mb-4 flex items-center gap-2">
+                  <span className="h-1 w-1 bg-amber-600" />
                   Terms & Conditions
                 </h2>
                 <p className="text-text-secondary text-sm whitespace-pre-line leading-relaxed">
@@ -223,11 +177,12 @@ export default async function OfferDetailPage({ params }: { params: Promise<{ sl
 
             {/* Venue Map */}
             {venue.lat && venue.lng && (
-              <div className="bg-white border border-border p-6">
-                <h2 className="font-heading text-xl font-semibold text-text-primary mb-4">
+              <div className="bg-white border border-border p-8">
+                <h2 className="font-heading text-2xl font-bold text-text-primary mb-4 flex items-center gap-2">
+                  <span className="h-1 w-1 bg-primary" />
                   Where you'll go
                 </h2>
-                <div className="h-64 overflow-hidden border border-border bg-bg-secondary">
+                <div className="h-80 overflow-hidden border border-border bg-bg-secondary">
                   <OfferMap
                     markers={[
                       {
@@ -243,35 +198,24 @@ export default async function OfferDetailPage({ params }: { params: Promise<{ sl
                     zoom={14}
                   />
                 </div>
-                <p className="mt-3 text-sm text-text-secondary">{venue.address}</p>
+                <p className="mt-4 text-text-secondary font-medium">{venue.address}</p>
               </div>
             )}
 
             {/* Reviews */}
-            <div className="bg-white border border-border p-6">
-              <Reviews offerId={offer.id} />
+            <div id="reviews-section" className="bg-white border border-border p-8">
+              <Reviews offerId={offer.id} autoOpenForm={shouldShowReview} />
             </div>
           </div>
 
           {/* Right Column - Sticky Booking Card */}
           <div className="lg:col-span-1">
-            <div className="lg:sticky lg:top-24 bg-white border border-border p-6">
-              <div className="space-y-4">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-semibold text-text-primary">Free</span>
-                </div>
-                <div className="pt-4 border-t border-border">
-                  <Link
-                    href={`/offers/${slug}/claim`}
-                    className="block w-full text-center bg-text-primary text-white py-4 px-6 hover:bg-text-secondary font-semibold text-base transition-colors"
-                    style={{ color: 'white' }}
-                  >
-                    Claim This Offer
-                  </Link>
-                </div>
-                <p className="text-xs text-center text-text-tertiary">Terms and conditions apply</p>
-              </div>
-            </div>
+            <OfferBookingCard
+              slug={slug}
+              offerId={offer.id}
+              venue={venue}
+              geofenceKm={offer.geofenceKm}
+            />
           </div>
         </div>
       </div>
