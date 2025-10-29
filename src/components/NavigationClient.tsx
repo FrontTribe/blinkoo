@@ -155,17 +155,19 @@ export default function NavigationClient() {
 
             {/* Main Navigation Links - For all users (offers), and logged-in customers */}
             <div className="hidden md:flex items-center gap-1">
-              <Link
-                href="/offers"
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
-                  isActive('/offers')
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
-                }`}
-              >
-                <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
-                Offers
-              </Link>
+              {(!user || user.role === 'customer') && (
+                <Link
+                  href="/offers"
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                    isActive('/offers')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
+                  Offers
+                </Link>
+              )}
               {user && user.role === 'customer' && (
                 <Link
                   href="/my-claims"
@@ -252,7 +254,7 @@ export default function NavigationClient() {
                       : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
                   }`}
                 >
-                  <FiPackage
+                  <FiShoppingBag
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/offers') ? 'text-primary' : ''}`}
                   />
                   Offers
@@ -390,14 +392,6 @@ export default function NavigationClient() {
                         {(user.role === 'merchant_owner' || user.role === 'admin') && (
                           <>
                             <Link
-                              href="/merchant/offers"
-                              onClick={() => setShowUserMenu(false)}
-                              className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
-                            >
-                              <FiPackage className="w-4 h-4" />
-                              My Offers
-                            </Link>
-                            <Link
                               href="/merchant/venues"
                               onClick={() => setShowUserMenu(false)}
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
@@ -475,19 +469,21 @@ export default function NavigationClient() {
         {/* Mobile Menu */}
         {showMobileMenu && (
           <div className="md:hidden border-t border-border py-2 space-y-1">
-            {/* Offers link - visible to everyone */}
-            <Link
-              href="/offers"
-              onClick={() => setShowMobileMenu(false)}
-              className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
-                isActive('/offers')
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-text-secondary hover:bg-bg-secondary'
-              }`}
-            >
-              <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
-              Browse Offers
-            </Link>
+            {/* Offers link - visible to everyone except merchants */}
+            {(!user || user.role === 'customer') && (
+              <Link
+                href="/offers"
+                onClick={() => setShowMobileMenu(false)}
+                className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
+                  isActive('/offers')
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-text-secondary hover:bg-bg-secondary'
+                }`}
+              >
+                <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
+                Browse Offers
+              </Link>
+            )}
 
             {/* Customer-specific links */}
             {user && user.role === 'customer' && (
@@ -579,7 +575,7 @@ export default function NavigationClient() {
                       : 'text-text-secondary hover:bg-bg-secondary'
                   }`}
                 >
-                  <FiPackage
+                  <FiShoppingBag
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/offers') ? 'text-primary' : ''}`}
                   />
                   Offers

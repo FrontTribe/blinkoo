@@ -106,11 +106,12 @@ export async function GET(request: Request) {
 
     let customers = Object.values(customerData)
 
+    // Calculate date threshold for segmentation
+    const now = new Date()
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+
     // Apply segmentation
     if (segment) {
-      const now = new Date()
-      const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
-
       switch (segment) {
         case 'new':
           customers = customers.filter((c: any) => new Date(c.firstClaim) >= thirtyDaysAgo)

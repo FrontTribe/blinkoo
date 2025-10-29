@@ -45,8 +45,8 @@ export async function GET(request: Request) {
     const venue = typeof offerData.venue === 'object' ? offerData.venue : null
 
     // Get user's past claims to personalize suggestions
-    let userClaimedCategories: Set<string> = new Set()
-    let userClaimedVenues: Set<string> = new Set()
+    const userClaimedCategories: Set<string> = new Set()
+    const userClaimedVenues: Set<string> = new Set()
 
     if (userId) {
       const userClaims = await payload.find({
@@ -100,7 +100,7 @@ export async function GET(request: Request) {
         const offerVenue = typeof offer.venue === 'object' ? offer.venue : null
 
         let score = 0
-        let reasons: string[] = []
+        const reasons: string[] = []
 
         // Same category - highest priority
         if (offerCategory && categoryId && String(offerCategory) === String(categoryId)) {

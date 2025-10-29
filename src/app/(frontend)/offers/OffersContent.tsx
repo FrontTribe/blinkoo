@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import { FiMap, FiList, FiFilter, FiGrid } from 'react-icons/fi'
 import { DynamicIcon } from '@/components/DynamicIcon'
@@ -16,6 +17,7 @@ import { OfferCardSkeleton, SkeletonLoader } from '@/components/SkeletonLoader'
 import { EmptyState } from '@/components/EmptyState'
 import { SearchBar } from '@/components/SearchBar'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { RecentlyViewed } from '@/components/RecentlyViewed'
 
 // Dynamically import MapView to avoid SSR issues with mapbox-gl
 const MapView = dynamic(() => import('./MapView'), {
@@ -41,7 +43,7 @@ type Offer = {
     description: string
     type: string
     discountValue: number
-    photo?: string
+    photo?: string | { url: string }
   }
   venue: {
     id: string
@@ -79,9 +81,37 @@ function getTimeRemaining(endsAt: string): string {
   const hours = Math.floor(minutes / 60)
 
   if (hours > 0) {
-    return `Ends in ${hours}h ${minutes % 60}m`
+    return `${hours}h ${minutes % 60}m`
   }
-  return `Ends in ${minutes}m`
+  return `${minutes}m`
+}
+
+// Client component for real-time countdown
+function CountdownDisplay({ endsAt }: { endsAt: string }) {
+  const [timeRemaining, setTimeRemaining] = useState(() => getTimeRemaining(endsAt))
+
+  useEffect(() => {
+    const updateTimer = () => {
+      setTimeRemaining(getTimeRemaining(endsAt))
+    }
+
+    // Update immediately
+    updateTimer()
+
+    // Update every 30 seconds
+    const interval = setInterval(updateTimer, 30000)
+
+    return () => clearInterval(interval)
+  }, [endsAt])
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-text-secondary">Ends in</span>
+      <span className="text-sm font-semibold text-primary">
+        {timeRemaining}
+      </span>
+    </div>
+  )
 }
 
 function getMinutesRemaining(endsAt: string): number {
@@ -392,6 +422,9 @@ export default function OffersContent({
           </div>
         </div>
 
+        {/* Recently Viewed Section */}
+        <RecentlyViewed />
+
         {/* Offers List - Scrollable */}
         <div className="flex-1 overflow-y-auto">
           <div className="px-4 py-4">
@@ -458,9 +491,13 @@ export default function OffersContent({
                       {item.offer.photo ? (
                         <Image
                           src={
-                            typeof item.offer.photo === 'object' && item.offer.photo.url
-                              ? item.offer.photo.url
-                              : item.offer.photo
+                            typeof item.offer.photo === 'object' &&
+                            'url' in item.offer.photo &&
+                            item.offer.photo.url
+                              ? (item.offer.photo.url as string)
+                              : typeof item.offer.photo === 'string'
+                                ? item.offer.photo
+                                : ''
                           }
                           alt={item.offer.title}
                           fill
@@ -502,12 +539,7 @@ export default function OffersContent({
                       {/* Meta Info */}
                       <div className="space-y-1.5">
                         {/* Time Remaining */}
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-text-secondary">Ends in</span>
-                          <span className="text-sm font-semibold text-primary">
-                            {getTimeRemaining(item.slot.endsAt)}
-                          </span>
-                        </div>
+                        <CountdownDisplay endsAt={item.slot.endsAt} />
 
                         {/* Additional Info */}
                         <div className="flex items-center gap-2 text-xs text-text-secondary">

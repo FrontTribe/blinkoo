@@ -64,7 +64,7 @@ export function Testimonials() {
             >
               <div className="mb-4">{renderStars(testimonial.rating)}</div>
               <p className="text-sm text-text-secondary leading-relaxed mb-4">
-                "{testimonial.quote}"
+                &ldquo;{testimonial.quote}&rdquo;
               </p>
               <div>
                 <div className="font-semibold text-text-primary text-sm">{testimonial.author}</div>

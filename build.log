@@ -1,0 +1,134 @@
+
+> blinkoo@1.0.0 build /Users/kresimirgalic/Projects/off-peak
+> cross-env NODE_OPTIONS="--no-deprecation --max-old-space-size=8000" next build
+
+   ▲ Next.js 15.4.4
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 27.0s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/76) ...
+   Generating static pages (19/76) 
+   Generating static pages (38/76) 
+Error fetching offers: TypeError: Failed to parse URL from /api/merchant/offers
+    at async s (.next/server/app/(frontend)/merchant/notifications/page.js:2:7704) {
+  [cause]: TypeError: Invalid URL
+      at async s (.next/server/app/(frontend)/merchant/notifications/page.js:2:7704) {
+    code: 'ERR_INVALID_URL',
+    input: '/api/merchant/offers'
+  }
+}
+   Generating static pages (57/76) 
+ ✓ Generating static pages (76/76)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                     Size  First Load JS
+┌ ƒ /                                        2.62 kB         115 kB
+├ ○ /_not-found                                 1 kB         102 kB
+├ ƒ /admin/[[...segments]]                     387 B         538 kB
+├ ƒ /api/[...slug]                             177 B         102 kB
+├ ƒ /api/cron/expire-claims                    266 B         102 kB
+├ ƒ /api/cron/send-slot-reminders              266 B         102 kB
+├ ƒ /api/graphql                               266 B         102 kB
+├ ƒ /api/graphql-playground                    177 B         102 kB
+├ ƒ /api/merchant/analytics                    266 B         102 kB
+├ ƒ /api/merchant/analytics/benchmarks         266 B         102 kB
+├ ƒ /api/merchant/analytics/comparison         266 B         102 kB
+├ ƒ /api/merchant/analytics/daily-summary      266 B         102 kB
+├ ƒ /api/merchant/analytics/export             266 B         102 kB
+├ ƒ /api/merchant/analytics/peak-hours         266 B         102 kB
+├ ƒ /api/merchant/analytics/timing-insights    266 B         102 kB
+├ ƒ /api/merchant/analytics/weekly-digest      266 B         102 kB
+├ ƒ /api/merchant/claims                       266 B         102 kB
+├ ƒ /api/merchant/claims/bulk                  266 B         102 kB
+├ ƒ /api/merchant/claims/export                266 B         102 kB
+├ ƒ /api/merchant/customers                    266 B         102 kB
+├ ƒ /api/merchant/customers/[id]               266 B         102 kB
+├ ƒ /api/merchant/dashboard                    266 B         102 kB
+├ ƒ /api/merchant/offers                       266 B         102 kB
+├ ƒ /api/merchant/offers/[id]                  266 B         102 kB
+├ ƒ /api/merchant/offers/[id]/bulk-slots       266 B         102 kB
+├ ƒ /api/merchant/offers/[id]/slots            266 B         102 kB
+├ ƒ /api/merchant/onboarding                   266 B         102 kB
+├ ƒ /api/merchant/signup                       266 B         102 kB
+├ ƒ /api/merchant/venues                       266 B         102 kB
+├ ƒ /api/merchant/venues/[id]                  266 B         102 kB
+├ ƒ /api/merchant/venues/[id]/analytics        266 B         102 kB
+├ ƒ /api/staff/history                         266 B         102 kB
+├ ƒ /api/users/me                              266 B         102 kB
+├ ƒ /api/web/auth/confirm-phone                266 B         102 kB
+├ ƒ /api/web/auth/logout                       266 B         102 kB
+├ ƒ /api/web/auth/me                           266 B         102 kB
+├ ƒ /api/web/auth/otp/start                    266 B         102 kB
+├ ƒ /api/web/auth/otp/verify                   266 B         102 kB
+├ ƒ /api/web/auth/verify-phone                 266 B         102 kB
+├ ƒ /api/web/categories                        266 B         102 kB
+├ ƒ /api/web/claims                            266 B         102 kB
+├ ƒ /api/web/claims/[id]/can-review            266 B         102 kB
+├ ƒ /api/web/claims/redeem                     266 B         102 kB
+├ ƒ /api/web/favorites                         266 B         102 kB
+├ ƒ /api/web/my-claims                         266 B         102 kB
+├ ƒ /api/web/notifications/send                266 B         102 kB
+├ ƒ /api/web/notifications/subscribe           266 B         102 kB
+├ ƒ /api/web/notifications/unsubscribe         266 B         102 kB
+├ ƒ /api/web/offers                            266 B         102 kB
+├ ƒ /api/web/offers/[slug]/activity            266 B         102 kB
+├ ƒ /api/web/offers/[slug]/waitlist            266 B         102 kB
+├ ƒ /api/web/offers/suggestions                266 B         102 kB
+├ ƒ /api/web/offers/updates                    266 B         102 kB
+├ ƒ /api/web/reviews                           266 B         102 kB
+├ ƒ /api/web/saved-offers                      266 B         102 kB
+├ ƒ /api/web/user                              266 B         102 kB
+├ ƒ /api/web/user/preferences                  266 B         102 kB
+├ ƒ /api/web/users/achievements                266 B         102 kB
+├ ○ /auth/login                              2.52 kB         109 kB
+├ ○ /auth/signup                             2.75 kB         109 kB
+├ ○ /auth/verify-phone                       2.56 kB         106 kB
+├ ○ /favorites                               2.16 kB         115 kB
+├ ○ /manifest.webmanifest                      266 B         102 kB
+├ ○ /merchant/analytics                       4.7 kB         112 kB
+├ ○ /merchant/claims                         9.45 kB         227 kB
+├ ○ /merchant/customers                      2.85 kB         110 kB
+├ ƒ /merchant/customers/[id]                 2.22 kB         214 kB
+├ ○ /merchant/dashboard                      2.09 kB         107 kB
+├ ○ /merchant/notifications                  3.13 kB         116 kB
+├ ○ /merchant/offers                         4.14 kB         119 kB
+├ ƒ /merchant/offers/[id]                    4.42 kB         164 kB
+├ ƒ /merchant/offers/[id]/bulk-slots         3.22 kB         115 kB
+├ ƒ /merchant/offers/[id]/calendar           3.04 kB         110 kB
+├ ƒ /merchant/offers/[id]/edit                 822 B         161 kB
+├ ○ /merchant/offers/create                    779 B         161 kB
+├ ○ /merchant/onboarding                     1.88 kB         103 kB
+├ ○ /merchant/pending-approval                 166 B         105 kB
+├ ○ /merchant/signup                         1.52 kB         106 kB
+├ ○ /merchant/venues                         2.57 kB         109 kB
+├ ƒ /merchant/venues/[id]/analytics          1.93 kB         214 kB
+├ ƒ /merchant/venues/[id]/edit               2.99 kB         552 kB
+├ ○ /merchant/venues/create                  2.87 kB         552 kB
+├ ○ /my-claims                               8.84 kB         128 kB
+├ ○ /my-favorites                            2.62 kB         115 kB
+├ ƒ /my-route                                  266 B         102 kB
+├ ƒ /offers                                    48 kB         166 kB
+├ ƒ /offers/[slug]                           8.17 kB         129 kB
+├ ƒ /offers/[slug]/claim                     7.93 kB         121 kB
+├ ○ /offers/map                              2.34 kB         541 kB
+├ ○ /profile                                 3.74 kB         116 kB
+├ ○ /saved-offers                            3.14 kB         122 kB
+├ ○ /staff/dashboard                         2.17 kB         110 kB
+├ ○ /staff/history                           2.45 kB         106 kB
+└ ○ /staff/redeem                             111 kB         215 kB
++ First Load JS shared by all                 101 kB
+  ├ chunks/722-73f1580efb00d5bf.js           43.9 kB
+  ├ chunks/d01fe480-b38dfe6b5454663f.js      54.1 kB
+  └ other shared chunks (total)              3.27 kB
+
+
+ƒ Middleware                                 33.6 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

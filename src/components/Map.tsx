@@ -34,15 +34,8 @@ export function MapComponent({ markers = [], center, zoom = 12, onMarkerClick }:
     [onMarkerClick],
   )
 
-  if (!mapboxToken) {
-    return (
-      <div className="w-full h-full min-h-[400px] flex items-center justify-center bg-[#F7F7F7] border border-border">
-        <p className="text-text-secondary">Mapbox token not found</p>
-      </div>
-    )
-  }
-
   useEffect(() => {
+    if (!mapboxToken) return
     if (!mapContainer.current || map.current) return
 
     const centerCoords = center || [-74.5, 40]

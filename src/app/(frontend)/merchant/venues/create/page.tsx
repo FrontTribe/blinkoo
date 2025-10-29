@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { MdArrowBack, MdLocationOn, MdPhone, MdEmail } from 'react-icons/md'
+import { FiArrowLeft, FiMapPin, FiPhone, FiMail, FiInfo, FiClock } from 'react-icons/fi'
 import { LocationMap } from '@/components/LocationMap'
 import { VenueHoursEditor } from '@/components/VenueHoursEditor'
 import mapboxgl from 'mapbox-gl'
@@ -195,47 +195,98 @@ export default function CreateVenuePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <Link
-          href="/merchant/venues"
-          className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary mb-6 transition-colors"
-        >
-          <MdArrowBack />
-          Back to venues
-        </Link>
-
-        <div className="bg-white border border-border p-8 md:p-10">
-          <h1 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-6">
+    <div className="min-h-screen bg-white py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
+        {/* Header */}
+        <div>
+          <Link
+            href="/merchant/venues"
+            className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary mb-4 transition-colors"
+          >
+            <FiArrowLeft className="w-4 h-4" />
+            Back to Venues
+          </Link>
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
             Add New Venue
           </h1>
+          <p className="mt-2 text-sm md:text-base text-text-secondary">
+            Create a new venue location where your offers will be available
+          </p>
+        </div>
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 p-4 mb-6">
-              <p className="text-sm text-red-600">{error}</p>
+        {/* Error Message */}
+        {error && (
+          <div className="bg-error/10 border border-error rounded-lg p-4">
+            <p className="text-sm text-error">{error}</p>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Information */}
+          <div className="bg-white border border-border rounded-lg p-6 space-y-6">
+            <div className="flex items-center gap-2 border-b border-border pb-4">
+              <FiInfo className="text-primary text-lg" />
+              <h2 className="font-heading text-lg font-bold text-text-primary">Basic Information</h2>
             </div>
-          )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
-                Venue Name *
+              <label className="block text-sm font-semibold text-text-primary mb-2">
+                Venue Name <span className="text-error">*</span>
               </label>
               <div className="relative">
-                <MdLocationOn className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
+                <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
+                  className="w-full pl-12 pr-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
+                  placeholder="e.g., Downtown Coffee Shop"
                   required
                 />
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-semibold text-text-primary mb-2">Description</label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                rows={3}
+                className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors resize-none rounded"
+                placeholder="Brief description of your venue..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-text-primary mb-2">
+                Category <span className="text-error">*</span>
+              </label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
+                required
+              >
+                <option value="">Select a category</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="bg-white border border-border rounded-lg p-6 space-y-6">
+            <div className="flex items-center gap-2 border-b border-border pb-4">
+              <FiMapPin className="text-primary text-lg" />
+              <h2 className="font-heading text-lg font-bold text-text-primary">Location</h2>
+            </div>
+
             <div className="relative">
-              <label className="block text-sm font-medium text-text-secondary mb-2">
-                Search Location *
+              <label className="block text-sm font-semibold text-text-primary mb-2">
+                Search Location <span className="text-error">*</span>
               </label>
               <div className="relative">
                 <input
@@ -248,20 +299,20 @@ export default function CreateVenuePage() {
                   }}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                   onFocus={() => setShowSuggestions(suggestions.length > 0)}
-                  className="w-full pl-12 pr-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
+                  className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
                   required
                 />
-                <MdLocationOn className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
+                <FiMapPin className="absolute right-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
               </div>
 
               {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-border max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto">
                   {suggestions.map((suggestion, index) => (
                     <button
                       key={index}
                       type="button"
                       onClick={() => selectSuggestion(suggestion)}
-                      className="w-full text-left px-4 py-3 hover:bg-[#F7F7F7] border-b border-border last:border-0 transition-colors"
+                      className="w-full text-left px-4 py-3 hover:bg-bg-secondary border-b border-border last:border-0 transition-colors"
                     >
                       <div className="font-medium text-text-primary">{suggestion.text}</div>
                       <div className="text-sm text-text-secondary">{suggestion.place_name}</div>
@@ -273,138 +324,140 @@ export default function CreateVenuePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">City</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">City</label>
                 <input
                   type="text"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
+                  className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">
-                  Country
-                </label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Country</label>
                 <input
                   type="text"
                   value={formData.country}
                   onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
+                  className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">
-                  Postal Code
-                </label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Postal Code</label>
                 <input
                   type="text"
                   value={formData.postalCode}
                   onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
+                  className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
                 />
               </div>
             </div>
 
-            {/* Hidden lat/lng inputs for form submission */}
-            <input type="hidden" name="lat" value={formData.lat} />
-            <input type="hidden" name="lng" value={formData.lng} />
-
             {/* Map preview */}
             {formData.lat && formData.lng ? (
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2">
                   Location Preview
                 </label>
-                <LocationMap
-                  center={[parseFloat(formData.lng), parseFloat(formData.lat)]}
-                  zoom={15}
-                  onLoad={handleMapLoad}
-                />
+                <div className="border border-border rounded-lg overflow-hidden">
+                  <LocationMap
+                    center={[parseFloat(formData.lng), parseFloat(formData.lat)]}
+                    zoom={15}
+                    onLoad={handleMapLoad}
+                  />
+                </div>
                 <p className="mt-2 text-xs text-text-tertiary">
                   Coordinates: {formData.lat}, {formData.lng}
                 </p>
               </div>
             ) : (
-              <div className="bg-bg-secondary border border-border p-12 text-center">
-                <p className="text-text-secondary">
+              <div className="bg-bg-secondary border border-border rounded-lg p-12 text-center">
+                <FiMapPin className="text-text-tertiary text-4xl mx-auto mb-3" />
+                <p className="text-text-secondary text-sm">
                   Search for an address above to see location on map
                 </p>
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Hidden lat/lng inputs for form submission */}
+            <input type="hidden" name="lat" value={formData.lat} />
+            <input type="hidden" name="lng" value={formData.lng} />
+          </div>
+
+          {/* Contact Information */}
+          <div className="bg-white border border-border rounded-lg p-6 space-y-6">
+            <div className="flex items-center gap-2 border-b border-border pb-4">
+              <FiMail className="text-primary text-lg" />
+              <h2 className="font-heading text-lg font-bold text-text-primary">Contact Information</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">Phone</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Phone</label>
                 <div className="relative">
-                  <MdPhone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
+                  <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
+                    className="w-full pl-12 pr-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
+                    placeholder="+385 XX XXX XXXX"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">Email</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Email</label>
                 <div className="relative">
-                  <MdEmail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
+                  <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
+                    className="w-full pl-12 pr-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
+                    placeholder="venue@example.com"
                   />
                 </div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
-                Category *
-              </label>
-              <select
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
-                required
-              >
-                <option value="">Select a category</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+          {/* Opening Hours */}
+          <div className="bg-white border border-border rounded-lg p-6 space-y-6">
+            <div className="flex items-center gap-2 border-b border-border pb-4">
+              <FiClock className="text-primary text-lg" />
+              <h2 className="font-heading text-lg font-bold text-text-primary">Opening Hours</h2>
             </div>
 
             <div>
+              <p className="text-sm text-text-secondary mb-4">
+                Set your venue's operating hours. This helps customers know when you're open.
+              </p>
               <VenueHoursEditor
                 initialHours={formData.openHours}
                 onChange={(hours) => setFormData({ ...formData, openHours: hours })}
               />
             </div>
+          </div>
 
-            <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-[#EBEBEB]">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="px-6 py-3 bg-white text-text-primary border border-border hover:border-primary transition-colors font-semibold"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-6 py-3 bg-primary text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
-                style={{ color: 'white' }}
-              >
-                {loading ? 'Creating...' : 'Create Venue'}
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* Form Actions */}
+          <div className="flex flex-col sm:flex-row justify-end gap-3">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="px-6 py-3 bg-white text-text-secondary border border-border hover:border-primary transition-colors font-semibold rounded"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-6 py-3 bg-primary text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold rounded"
+              style={{ color: 'white' }}
+            >
+              {loading ? 'Creating...' : 'Create Venue'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )

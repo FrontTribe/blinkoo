@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FiStar } from 'react-icons/fi'
+import { FiStar, FiImage } from 'react-icons/fi'
+import Image from 'next/image'
 import toast from 'react-hot-toast'
 
 type Review = {
@@ -9,6 +10,7 @@ type Review = {
   rating: number
   comment: string
   createdAt: string
+  photos?: Array<{ photo: string | { url: string } }>
   user: {
     name?: string
     email: string
@@ -27,6 +29,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [photos, setPhotos] = useState<File[]>([])
 
   useEffect(() => {
     fetchReviews()
@@ -67,10 +70,35 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
     setSubmitting(true)
 
     try {
+      // If photos are uploaded, upload them first
+      let photoIds: string[] = []
+      if (photos.length > 0) {
+        const formData = new FormData()
+        photos.forEach((photo) => {
+          formData.append('files', photo)
+        })
+
+        const uploadResponse = await fetch('/api/media/upload', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        })
+
+        if (uploadResponse.ok) {
+          const uploadData = await uploadResponse.json()
+          photoIds = uploadData.docs.map((doc: any) => doc.id)
+        }
+      }
+
       const response = await fetch('/api/web/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ offerId, rating, comment }),
+        body: JSON.stringify({
+          offerId,
+          rating,
+          comment,
+          photos: photoIds.map((id) => ({ photo: id })),
+        }),
         credentials: 'include',
       })
 
@@ -78,6 +106,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
         toast.success('Review submitted!')
         setRating(5)
         setComment('')
+        setPhotos([])
         setShowForm(false)
         fetchReviews()
       } else {
@@ -88,6 +117,13 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
       toast.error('Failed to submit review')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).slice(0, 5) // Max 5 photos
+      setPhotos((prev) => [...prev, ...fileArray])
     }
   }
 
@@ -201,6 +237,40 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
               />
             </div>
 
+            {/* Photo Upload */}
+            <div className="mb-4">
+              <label className="block text-xs font-medium text-text-secondary mb-2">
+                Add Photos (optional)
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handlePhotoChange}
+                className="w-full text-sm text-text-primary file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-hover"
+              />
+              {photos.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {photos.map((photo, idx) => (
+                    <div key={idx} className="relative">
+                      <img
+                        src={URL.createObjectURL(photo)}
+                        alt="Preview"
+                        className="h-20 w-20 object-cover rounded border border-border"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setPhotos(photos.filter((_, i) => i !== idx))}
+                        className="absolute -top-2 -right-2 bg-error text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="flex gap-2">
               <button
                 type="submit"
@@ -216,6 +286,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
                   setShowForm(false)
                   setRating(5)
                   setComment('')
+                  setPhotos([])
                 }}
                 className="bg-white text-text-primary border border-border px-4 py-2 hover:bg-bg-secondary transition-colors text-xs font-medium"
               >
@@ -247,6 +318,25 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
                 <p className="text-text-secondary text-xs !my-0 leading-relaxed">
                   {review.comment}
                 </p>
+              )}
+              {review.photos && review.photos.length > 0 && (
+                <div className="mt-3 flex gap-2 flex-wrap">
+                  {review.photos.map((photo, idx) => {
+                    const photoUrl =
+                      typeof photo.photo === 'string' ? photo.photo : photo.photo?.url
+                    if (!photoUrl) return null
+                    return (
+                      <div key={idx} className="relative w-20 h-20">
+                        <Image
+                          src={photoUrl}
+                          alt="Review photo"
+                          fill
+                          className="object-cover rounded border border-border"
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
               )}
             </div>
           ))}

@@ -1,10 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { SearchBar } from '@/components/SearchBar'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
-import { FiDownload, FiSearch, FiFilter } from 'react-icons/fi'
+import {
+  FiDownload,
+  FiSearch,
+  FiFilter,
+  FiArrowLeft,
+  FiCheckCircle,
+  FiClock,
+  FiXCircle,
+} from 'react-icons/fi'
 import { BarChart } from '@/components/charts/BarChart'
 import { QRCodeGenerator } from '@/components/QRCodeGenerator'
 
@@ -134,7 +141,7 @@ export default function ClaimsManagementPage() {
   if (loading && claims.length === 0) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-primary">Loading claims...</p>
+        <p className="text-text-secondary text-sm">Loading claims...</p>
       </div>
     )
   }
@@ -152,64 +159,95 @@ export default function ClaimsManagementPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className="min-h-screen bg-white py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
               Claim Management
             </h1>
             <p className="mt-2 text-sm md:text-base text-text-secondary">
-              View and manage all customer claims
+              View and manage all customer claims for your offers
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <button
               onClick={exportClaims}
-              className="inline-flex items-center gap-2 bg-white text-text-primary border border-border px-6 py-3 hover:border-primary transition-colors font-semibold"
+              className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-text-secondary border border-border px-4 py-2 hover:border-primary transition-colors rounded"
             >
-              <FiDownload />
+              <FiDownload className="w-4 h-4" />
               Export
             </button>
             <Link
               href="/merchant/dashboard"
-              className="inline-flex items-center gap-2 bg-white text-text-primary border border-border px-6 py-3 hover:border-primary transition-colors font-semibold"
+              className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-text-secondary border border-border px-4 py-2 hover:border-primary transition-colors rounded"
             >
-              Back to Dashboard
+              <FiArrowLeft className="w-4 h-4" />
+              ← Dashboard
             </Link>
           </div>
         </div>
 
         {/* Summary Stats */}
-        <div className="grid gap-4 md:grid-cols-4 mb-8">
-          <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Total Claims</h3>
+        <div className="grid gap-4 md:grid-cols-4">
+          <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                <FiCheckCircle className="text-blue-600 text-lg" />
+              </div>
+              <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
+                Total Claims
+              </h3>
+            </div>
             <p className="font-heading text-3xl font-bold text-text-primary">
               {summary?.total || 0}
             </p>
           </div>
-          <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Reserved</h3>
-            <p className="font-heading text-3xl font-bold text-yellow-600">
+
+          <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
+                <FiClock className="text-amber-600 text-lg" />
+              </div>
+              <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
+                Reserved
+              </h3>
+            </div>
+            <p className="font-heading text-3xl font-bold text-amber-600">
               {summary?.reserved || 0}
             </p>
           </div>
-          <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Redeemed</h3>
+
+          <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+                <FiCheckCircle className="text-green-600 text-lg" />
+              </div>
+              <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
+                Redeemed
+              </h3>
+            </div>
             <p className="font-heading text-3xl font-bold text-green-600">
               {summary?.redeemed || 0}
             </p>
           </div>
-          <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Expired</h3>
+
+          <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                <FiXCircle className="text-red-600 text-lg" />
+              </div>
+              <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">Expired</h3>
+            </div>
             <p className="font-heading text-3xl font-bold text-red-600">{summary?.expired || 0}</p>
           </div>
         </div>
 
         {/* Chart */}
         {chartData.length > 0 && (
-          <div className="bg-white border border-border p-6 mb-8">
-            <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
+          <div className="bg-white border border-border rounded-lg p-6">
+            <h2 className="font-heading text-lg font-bold text-text-primary mb-4">
               Claims Overview
             </h2>
             <BarChart
@@ -226,31 +264,31 @@ export default function ClaimsManagementPage() {
         )}
 
         {/* Filters */}
-        <div className="bg-white border border-border p-6 mb-8">
+        <div className="bg-white border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
-            <FiFilter />
-            <h2 className="font-heading text-lg font-semibold text-text-primary">Filters</h2>
+            <FiFilter className="text-primary text-lg" />
+            <h2 className="font-heading text-lg font-bold text-text-primary">Filters</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-medium text-text-secondary mb-2">Search</label>
+              <label className="block text-xs font-semibold text-text-primary mb-2">Search</label>
               <div className="relative">
-                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                 <input
                   type="text"
                   value={filters.search}
                   onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                   placeholder="Offer, customer..."
-                  className="w-full pl-10 pr-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary"
+                  className="w-full pl-10 pr-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary rounded"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-text-secondary mb-2">Status</label>
+              <label className="block text-xs font-semibold text-text-primary mb-2">Status</label>
               <select
                 value={filters.status}
                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                className="w-full px-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary"
+                className="w-full px-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary rounded"
               >
                 <option value="">All Statuses</option>
                 <option value="RESERVED">Reserved</option>
@@ -259,23 +297,21 @@ export default function ClaimsManagementPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-text-secondary mb-2">
-                Start Date
-              </label>
+              <label className="block text-xs font-semibold text-text-primary mb-2">Start Date</label>
               <input
                 type="date"
                 value={filters.startDate}
                 onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
-                className="w-full px-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary"
+                className="w-full px-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary rounded"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-text-secondary mb-2">End Date</label>
+              <label className="block text-xs font-semibold text-text-primary mb-2">End Date</label>
               <input
                 type="date"
                 value={filters.endDate}
                 onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
-                className="w-full px-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary"
+                className="w-full px-4 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary rounded"
               />
             </div>
           </div>
@@ -283,26 +319,26 @@ export default function ClaimsManagementPage() {
 
         {/* Bulk Actions */}
         {selectedClaims.size > 0 && (
-          <div className="bg-white border border-primary p-4 mb-8 flex items-center justify-between">
-            <span className="text-sm text-text-primary">
+          <div className="bg-primary/10 border border-primary rounded-lg p-4 flex items-center justify-between">
+            <span className="text-sm font-semibold text-text-primary">
               {selectedClaims.size} claim(s) selected
             </span>
             <div className="flex gap-2">
               <button
                 onClick={() => handleBulkAction('REDEEMED')}
-                className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition-colors text-sm font-semibold rounded"
               >
                 Mark Redeemed
               </button>
               <button
                 onClick={() => handleBulkAction('EXPIRED')}
-                className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors text-sm font-semibold rounded"
               >
                 Mark Expired
               </button>
               <button
                 onClick={() => setSelectedClaims(new Set())}
-                className="px-4 py-2 bg-white text-text-primary border border-border hover:border-primary transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-white text-text-secondary border border-border hover:border-primary transition-colors text-sm font-semibold rounded"
               >
                 Clear Selection
               </button>
@@ -311,15 +347,15 @@ export default function ClaimsManagementPage() {
         )}
 
         {/* Claims Table */}
-        <div className="bg-white border border-border">
-          <div className="px-6 py-4 border-b border-border">
-            <h2 className="font-heading text-lg font-semibold text-text-primary">
+        <div className="bg-white border border-border rounded-lg overflow-hidden">
+          <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-primary/5 to-transparent">
+            <h2 className="font-heading text-lg font-bold text-text-primary">
               All Claims ({claims.length})
             </h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-[#F7F7F7] border-b border-border">
+              <thead className="bg-bg-secondary border-b border-border">
                 <tr>
                   <th className="px-6 py-3 text-left">
                     <input
@@ -332,25 +368,25 @@ export default function ClaimsManagementPage() {
                         }
                       }}
                       checked={selectedClaims.size === claims.length && claims.length > 0}
-                      className="border-border focus:ring-primary"
+                      className="border-border focus:ring-primary rounded"
                     />
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                     Claim ID
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                     Offer
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                     Customer
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                     Reserved
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -358,8 +394,14 @@ export default function ClaimsManagementPage() {
               <tbody className="bg-white divide-y divide-border">
                 {claims.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-6 py-8 text-center text-text-tertiary">
-                      No claims found
+                    <td colSpan={7} className="px-6 py-12 text-center">
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-bg-secondary flex items-center justify-center mb-4">
+                          <FiCheckCircle className="text-text-tertiary text-2xl" />
+                        </div>
+                        <p className="text-text-tertiary font-medium">No claims found</p>
+                        <p className="text-text-tertiary text-sm mt-1">Try adjusting your filters</p>
+                      </div>
                     </td>
                   </tr>
                 ) : (
@@ -369,21 +411,21 @@ export default function ClaimsManagementPage() {
                     const venue = offer?.venue
 
                     return (
-                      <tr key={claim.id} className="hover:bg-[#F7F7F7]">
+                      <tr key={claim.id} className="hover:bg-[#F7F7F7] transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <input
                             type="checkbox"
                             checked={selectedClaims.has(claim.id)}
                             onChange={() => toggleClaimSelection(claim.id)}
-                            className="border-border focus:ring-primary"
+                            className="border-border focus:ring-primary rounded"
                           />
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-text-primary">
-                          #{claim.id}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">
+                          #{String(claim.id).slice(-8)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                           <div>
-                            <div className="text-sm font-medium text-text-primary">
+                            <div className="text-sm font-semibold text-text-primary">
                               {offer?.title || 'Unknown'}
                             </div>
                             <div className="text-xs text-text-tertiary">{venue?.name}</div>
@@ -399,14 +441,23 @@ export default function ClaimsManagementPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
-                            className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border ${
                               claim.status === 'REDEEMED'
-                                ? 'bg-green-100 text-green-800'
+                                ? 'bg-green-50 text-green-700 border-green-200'
                                 : claim.status === 'EXPIRED'
-                                  ? 'bg-red-100 text-red-800'
-                                  : 'bg-yellow-100 text-yellow-800'
+                                  ? 'bg-red-50 text-red-700 border-red-200'
+                                  : 'bg-amber-50 text-amber-700 border-amber-200'
                             }`}
                           >
+                            <span
+                              className={`w-2 h-2 rounded-full ${
+                                claim.status === 'REDEEMED'
+                                  ? 'bg-green-600'
+                                  : claim.status === 'EXPIRED'
+                                    ? 'bg-red-600'
+                                    : 'bg-amber-600'
+                              }`}
+                            />
                             {claim.status}
                           </span>
                         </td>
@@ -416,13 +467,14 @@ export default function ClaimsManagementPage() {
                               <>
                                 <button
                                   onClick={() => handleStatusChange(claim.id, 'REDEEMED')}
-                                  className="text-green-600 hover:text-green-700 font-medium"
+                                  className="text-green-600 hover:text-green-700 font-semibold transition-colors"
                                 >
                                   Redeem
                                 </button>
+                                <span className="text-text-tertiary">•</span>
                                 <button
                                   onClick={() => handleStatusChange(claim.id, 'EXPIRED')}
-                                  className="text-red-600 hover:text-red-700 font-medium"
+                                  className="text-red-600 hover:text-red-700 font-semibold transition-colors"
                                 >
                                   Expire
                                 </button>
@@ -432,9 +484,9 @@ export default function ClaimsManagementPage() {
                               onClick={() =>
                                 setSelectedClaim(selectedClaim?.id === claim.id ? null : claim)
                               }
-                              className="text-primary hover:text-primary-hover font-medium"
+                              className="text-primary hover:text-primary-hover font-semibold transition-colors"
                             >
-                              QR
+                              QR Code
                             </button>
                           </div>
                         </td>
@@ -451,27 +503,29 @@ export default function ClaimsManagementPage() {
         {selectedClaim && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg max-w-md w-full p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-heading text-lg font-semibold text-text-primary">
-                  QR Code for Claim #{selectedClaim.id}
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-heading text-xl font-bold text-text-primary">
+                  QR Code - Claim #{String(selectedClaim.id).slice(-8)}
                 </h3>
                 <button
                   onClick={() => setSelectedClaim(null)}
-                  className="text-text-tertiary hover:text-text-primary"
+                  className="text-text-tertiary hover:text-text-primary transition-colors"
                 >
-                  ✕
+                  <FiXCircle className="w-6 h-6" />
                 </button>
               </div>
               <div className="flex flex-col items-center">
-                <QRCodeGenerator value={selectedClaim.id.toString()} size={256} />
-                <p className="mt-4 text-sm text-text-secondary text-center">
+                <div className="border border-border rounded-lg p-4">
+                  <QRCodeGenerator value={selectedClaim.id.toString()} size={256} />
+                </div>
+                <p className="mt-6 text-sm text-text-secondary text-center">
                   Scan this QR code to verify and redeem this claim
                 </p>
                 <button
                   onClick={() => {
                     window.open(`/merchant/claims/verify/${selectedClaim.id}`, '_blank')
                   }}
-                  className="mt-4 px-4 py-2 bg-primary text-white hover:bg-primary-hover transition-colors font-semibold"
+                  className="mt-4 px-6 py-2 bg-primary text-white hover:bg-primary-hover transition-colors font-semibold rounded"
                   style={{ color: 'white' }}
                 >
                   View Details

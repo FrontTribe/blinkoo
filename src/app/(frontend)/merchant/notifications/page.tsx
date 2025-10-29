@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -33,9 +33,9 @@ export default function MerchantNotificationsPage() {
     }
   }
 
-  useState(() => {
+  useEffect(() => {
     fetchOffers()
-  })
+  }, [])
 
   async function handleSend() {
     if (!message.title || !message.body) {

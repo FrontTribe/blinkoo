@@ -67,7 +67,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         daysOfWeek,
       } = pattern
 
-      let currentDate = new Date(startDate)
+      const currentDate = new Date(startDate)
       const end = new Date(endDate)
 
       while (currentDate <= end) {

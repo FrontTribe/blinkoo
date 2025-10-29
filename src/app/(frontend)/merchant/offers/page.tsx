@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { MdAdd, MdLocalOffer, MdCheckCircle } from 'react-icons/md'
-import { MobileOfferCard } from '@/components/merchant/MobileOfferCard'
-import { SkeletonLoader } from '@/components/SkeletonLoader'
-import { SearchBar } from '@/components/SearchBar'
+import { FiPackage, FiPlus, FiChevronRight, FiSearch, FiEdit2 } from 'react-icons/fi'
+import Image from 'next/image'
 
 export default function ManageOffersPage() {
   const [offers, setOffers] = useState<any[]>([])
@@ -55,170 +53,206 @@ export default function ManageOffersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-bg-secondary p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <div className="h-10 bg-gray-200 rounded w-48 mb-2 animate-pulse" />
-            <div className="h-4 bg-gray-200 rounded w-64 animate-pulse" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-white border border-border p-6 animate-pulse">
-                <div className="h-48 bg-gray-200 rounded mb-4" />
-                <div className="space-y-2 mb-4">
-                  <div className="h-4 bg-gray-200 rounded w-3/4" />
-                  <div className="h-4 bg-gray-200 rounded w-1/2" />
-                </div>
-                <div className="flex gap-2">
-                  <SkeletonLoader className="h-10 flex-1" />
-                  <SkeletonLoader className="h-10 w-10" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-text-secondary text-sm">Loading offers...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col gap-4 mb-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="font-heading text-2xl md:text-3xl font-bold text-text-primary">
-                Manage Offers
-              </h1>
-              <p className="mt-2 text-sm text-text-secondary">Create and manage your offers</p>
-            </div>
-            <Link
-              href="/merchant/offers/create"
-              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
-              style={{ color: 'white' }}
-            >
-              <MdAdd style={{ color: 'white' }} />
-              Create Offer
-            </Link>
+    <div className="min-h-screen bg-white py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
+              Manage Offers
+            </h1>
+            <p className="mt-2 text-sm md:text-base text-text-secondary">
+              Create and manage your off-peak offers
+            </p>
           </div>
-
-          {/* Search Bar */}
-          <SearchBar
-            placeholder="Search offers by title, description, or venue..."
-            onSearch={setSearchQuery}
-            className="max-w-md"
-          />
+          <Link
+            href="/merchant/offers/create"
+            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+            style={{ color: 'white' }}
+          >
+            <FiPlus className="w-5 h-5" />
+            Create Offer
+          </Link>
         </div>
 
+        {/* Search Bar */}
+        {offers.length > 0 && (
+          <div className="relative">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search offers by title, description, or venue..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary placeholder:text-text-tertiary focus:border-primary focus:outline-none"
+            />
+          </div>
+        )}
+
+        {/* Offers Grid or Empty State */}
         {filteredOffers.length === 0 && !loading ? (
-          <div className="bg-white border border-border p-12 text-center">
+          <div className="bg-white border border-border rounded-lg p-12 text-center">
+            <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-6">
+              <FiPackage className="text-primary text-3xl" />
+            </div>
+            <h2 className="font-heading text-2xl font-bold text-text-primary mb-3">
+              {offers.length === 0 ? 'No offers yet' : `No results for "${searchQuery}"`}
+            </h2>
+            <p className="text-text-secondary mb-8 max-w-md mx-auto">
+              {offers.length === 0
+                ? 'Create your first offer to start attracting customers during off-peak hours.'
+                : 'Try a different search term or clear the search to see all offers.'}
+            </p>
             {offers.length === 0 ? (
-              <>
-                <MdLocalOffer className="text-6xl text-text-tertiary mx-auto mb-4" />
-                <p className="text-text-secondary mb-6">You haven't created any offers yet</p>
-                <Link
-                  href="/merchant/offers/create"
-                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
-                  style={{ color: 'white' }}
-                >
-                  <MdAdd style={{ color: 'white' }} />
-                  Create Your First Offer
-                </Link>
-              </>
+              <Link
+                href="/merchant/offers/create"
+                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+                style={{ color: 'white' }}
+              >
+                <FiPlus className="w-5 h-5" />
+                Create Your First Offer
+              </Link>
             ) : (
-              <>
-                <MdLocalOffer className="text-6xl text-text-tertiary mx-auto mb-4" />
-                <p className="text-text-secondary mb-6">No offers found matching "{searchQuery}"</p>
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
-                  style={{ color: 'white' }}
-                >
-                  Clear Search
-                </button>
-              </>
+              <button
+                onClick={() => setSearchQuery('')}
+                className="inline-flex items-center gap-2 bg-white text-text-secondary border border-border px-6 py-3 hover:border-primary font-semibold transition-colors"
+              >
+                Clear Search
+              </button>
             )}
           </div>
         ) : (
-          <>
-            {/* Mobile: Card View */}
-            <div className="md:hidden space-y-4">
-              {filteredOffers.map((offer) => (
-                <MobileOfferCard
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredOffers.map((offer) => {
+              const offerData = offer as any
+              const venue = offerData.venue
+              const isActive = offerData.status === 'active'
+
+              return (
+                <div
                   key={offer.id}
-                  offer={offer}
-                  onEdit={(id) => {
-                    window.location.href = `/merchant/offers/${id}`
-                  }}
-                  onDuplicate={(id) => {
-                    // Duplicate logic would go here
-                    console.log('Duplicate offer:', id)
-                  }}
-                  onTogglePause={(id) => {
-                    // Toggle pause logic would go here
-                    console.log('Toggle pause offer:', id)
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Desktop: Grid View */}
-            <div className="hidden md:grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {filteredOffers.map((offer) => {
-                const offerData = offer as any
-                const venue = offerData.venue
-
-                return (
-                  <div
-                    key={offer.id}
-                    className="bg-white border border-border p-6 hover:border-primary transition-colors"
-                  >
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="bg-primary/10 p-3 border border-primary/20 flex-shrink-0">
-                        <MdLocalOffer className="text-primary text-xl" />
-                      </div>
+                  className="bg-white border border-border rounded-lg overflow-hidden hover:border-primary transition-all group"
+                >
+                  {/* Card Header */}
+                  <div className="p-6 border-b border-border">
+                    <div className="flex items-start gap-4">
+                      {offerData.photo ? (
+                        <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-border">
+                          {typeof offerData.photo === 'object' && offerData.photo.url ? (
+                            <Image
+                              src={offerData.photo.url}
+                              alt={offerData.title}
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-bg-secondary flex items-center justify-center">
+                              <span className="text-text-tertiary text-xs">No image</span>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <FiPackage className="text-primary text-2xl" />
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-heading text-lg font-semibold text-text-primary mb-1 line-clamp-1">
+                        <h3 className="font-heading text-lg font-bold text-text-primary line-clamp-2 mb-1 group-hover:text-primary transition-colors">
                           {offerData.title}
                         </h3>
-                        <p className="text-xs text-text-secondary truncate">
+                        <p className="text-xs font-medium text-text-secondary">
                           {venue?.name || 'Unknown Venue'}
                         </p>
                       </div>
                     </div>
+                  </div>
 
+                  {/* Card Body */}
+                  <div className="p-6 space-y-4">
+                    {/* Description */}
                     {offerData.description && (
-                      <p className="text-sm text-text-secondary mb-4 line-clamp-2">
+                      <p className="text-sm text-text-secondary line-clamp-2">
                         {offerData.description}
                       </p>
                     )}
 
-                    <div className="flex items-center justify-between mb-4">
-                      <span
-                        className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium ${
-                          offerData.status === 'active'
-                            ? 'bg-primary/10 text-primary border border-primary/20'
-                            : 'bg-[#F7F7F7] text-text-tertiary border border-border'
-                        }`}
-                      >
-                        <MdCheckCircle className="text-sm" />
-                        {offerData.status || 'draft'}
+                    {/* Offer Type Badge */}
+                    <div>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border bg-bg-secondary border-border">
+                        {offerData.type === 'percent' && `${offerData.discountValue}% OFF`}
+                        {offerData.type === 'fixed' && `€${offerData.discountValue} OFF`}
+                        {offerData.type === 'bogo' && 'BOGO'}
+                        {offerData.type === 'addon' && 'Free Add-on'}
                       </span>
                     </div>
 
-                    <div className="space-y-2">
-                      <Link
-                        href={`/merchant/offers/${offer.id}`}
-                        className="block w-full text-center bg-white border border-border text-text-primary py-3 px-4 hover:border-primary transition-colors text-sm font-semibold"
+                    {/* Status Badge */}
+                    <div>
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border ${
+                          isActive
+                            ? 'bg-green-50 text-green-700 border-green-200'
+                            : 'bg-gray-50 text-gray-700 border-gray-200'
+                        }`}
                       >
-                        View & Edit
-                      </Link>
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            isActive ? 'bg-green-600' : 'bg-gray-400'
+                          }`}
+                        />
+                        {isActive ? 'Active' : 'Inactive'}
+                      </span>
                     </div>
                   </div>
-                )
-              })}
+
+                  {/* Card Footer */}
+                  <div className="px-6 py-4 bg-bg-secondary border-t border-border flex items-center justify-between">
+                    <Link
+                      href={`/merchant/offers/${offer.id}`}
+                      className="text-sm font-semibold text-primary hover:text-primary-hover flex items-center gap-1"
+                    >
+                      View Details <FiChevronRight className="w-4 h-4" />
+                    </Link>
+                    <Link
+                      href={`/merchant/offers/${offer.id}/edit`}
+                      className="p-2 text-text-secondary hover:text-primary hover:bg-white rounded transition-colors"
+                      title="Edit offer"
+                    >
+                      <FiEdit2 className="w-5 h-5" />
+                    </Link>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Helpful Tip */}
+        {offers.length > 0 && (
+          <div className="bg-gradient-to-r from-blue-50 to-blue-50/50 border border-blue-200 rounded-lg p-6">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <FiPackage className="text-blue-600 text-xl" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-blue-900 mb-2">Offer Management Tips</h3>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  <li>• Create multiple time slots for the same offer to maximize coverage</li>
+                  <li>• Monitor fill rates to optimize pricing and timing</li>
+                  <li>• Use drip mode to gradually release slots throughout the day</li>
+                  <li>• Adjust geofence settings to target the right customer radius</li>
+                </ul>
+              </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

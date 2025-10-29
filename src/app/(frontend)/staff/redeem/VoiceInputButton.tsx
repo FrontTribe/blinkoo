@@ -11,7 +11,7 @@ type VoiceInputButtonProps = {
 export function VoiceInputButton({ onResult, onCancel }: VoiceInputButtonProps) {
   const [isListening, setIsListening] = useState(false)
   const [transcript, setTranscript] = useState('')
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<any>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -34,7 +34,7 @@ export function VoiceInputButton({ onResult, onCancel }: VoiceInputButtonProps) 
       setTranscript('')
     }
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       let interimTranscript = ''
       let finalTranscript = ''
 

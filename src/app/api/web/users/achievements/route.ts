@@ -38,7 +38,16 @@ export async function GET(request: Request) {
           currentStreak: 0,
         },
       })
-      userStats = { docs: [newStats] }
+      userStats = {
+        docs: [newStats],
+        totalDocs: 1,
+        hasNextPage: false,
+        hasPrevPage: false,
+        limit: 1,
+        pagingCounter: 1,
+        totalPages: 1,
+        page: 1,
+      }
     }
 
     const stats = userStats.docs[0] as any

@@ -113,15 +113,18 @@ export async function sendPushNotificationToUsers(
       collection: 'users',
       where: {
         id: { in: userIds },
-        notificationPreferences: {
-          push: { equals: true },
-        },
       },
       limit: 1000,
     })
 
+    // Filter users with push notifications enabled
+    const usersWithPushEnabled = users.docs.filter((user: any) => {
+      const prefs = user.notificationPreferences
+      return prefs && prefs.push === true
+    })
+
     // Extract player IDs (OneSignal limits to 2000 per request)
-    const playerIds = users.docs
+    const playerIds = usersWithPushEnabled
       .map((user: any) => user.oneSignalPlayerId)
       .filter((id: string | null) => id !== null && id !== undefined)
 

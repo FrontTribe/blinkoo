@@ -65,7 +65,7 @@ export function ClaimSuccess({ claim, offer, venue, timeRemaining, onClose }: Cl
         <div className="bg-white border border-border p-8 mb-4 text-center">
           <div className="text-6xl mb-4">🎉</div>
           <h1 className="font-heading text-4xl font-bold text-text-primary mb-2">
-            You've Claimed It!
+            You&apos;ve Claimed It!
           </h1>
           <p className="text-text-secondary text-lg">Show your code to staff at the venue</p>
         </div>

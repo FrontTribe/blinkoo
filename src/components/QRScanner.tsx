@@ -107,7 +107,7 @@ export function QRScanner({ onScan, onClose }: QRScannerProps) {
 
       {/* Instructions */}
       <div className="p-4 bg-black/50 text-center">
-        <p className="text-white/70 text-sm">Point your camera at the customer's QR code</p>
+        <p className="text-white/70 text-sm">Point your camera at the customer&apos;s QR code</p>
       </div>
     </div>
   )

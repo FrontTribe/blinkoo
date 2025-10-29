@@ -1,6 +1,6 @@
 'use client'
 
-import { QRCodeSVG } from 'react-qr-code'
+import QRCodeSVG from 'react-qr-code'
 
 type QRCodeGeneratorProps = {
   value: string

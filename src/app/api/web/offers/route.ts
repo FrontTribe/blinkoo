@@ -56,7 +56,7 @@ export async function GET(request: Request) {
     const now = new Date()
 
     // Build the query for live slots
-    let slotsQuery = {
+    const slotsQuery = {
       state: { equals: 'live' },
       qtyRemaining: { greater_than: 0 },
       startsAt: { less_than_equal: now.toISOString() },

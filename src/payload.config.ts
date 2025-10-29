@@ -13,6 +13,7 @@ import { Venues } from './collections/Venues'
 import { Categories } from './collections/Categories'
 import { Offers } from './collections/Offers'
 import { OfferSlots } from './collections/OfferSlots'
+import { OfferCollections } from './collections/OfferCollections'
 import { OfferTemplates } from './collections/OfferTemplates'
 import { Waitlists } from './collections/Waitlists'
 import { Claims } from './collections/Claims'
@@ -40,6 +41,7 @@ export default buildConfig({
     Categories,
     Offers,
     OfferSlots,
+    OfferCollections,
     OfferTemplates,
     Claims,
     Reviews,

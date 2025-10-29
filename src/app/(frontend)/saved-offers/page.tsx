@@ -16,7 +16,7 @@ type SavedOffer = {
     description: string
     type: string
     discountValue: number
-    photo?: string
+    photo?: string | { url: string }
     venue?: {
       id: string
       name: string
@@ -129,9 +129,13 @@ export default function SavedOffersPage() {
                   {saved.offer.photo ? (
                     <Image
                       src={
-                        typeof saved.offer.photo === 'object' && saved.offer.photo.url
-                          ? saved.offer.photo.url
-                          : saved.offer.photo
+                        typeof saved.offer.photo === 'object' &&
+                        'url' in saved.offer.photo &&
+                        saved.offer.photo.url
+                          ? (saved.offer.photo.url as string)
+                          : typeof saved.offer.photo === 'string'
+                            ? saved.offer.photo
+                            : ''
                       }
                       alt={saved.offer.title}
                       fill

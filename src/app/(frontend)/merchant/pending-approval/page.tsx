@@ -8,8 +8,8 @@ export default function PendingApprovalPage() {
           <div className="text-6xl mb-4">⏳</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Pending Approval</h1>
           <p className="text-gray-600 mb-6">
-            Your merchant account is being reviewed by our admin team. We'll notify you once your
-            account has been approved.
+            Your merchant account is being reviewed by our admin team. We&apos;ll notify you once
+            your account has been approved.
           </p>
           <Link
             href="/"

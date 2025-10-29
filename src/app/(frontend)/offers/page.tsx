@@ -1,4 +1,5 @@
 import OffersContent from './OffersContent'
+import { RecentlyViewed } from '@/components/RecentlyViewed'
 
 type Props = {
   searchParams: Promise<{
@@ -58,5 +59,9 @@ export default async function OffersPage({ searchParams }: Props) {
   const offersData = await fetchOffers(filters)
   console.log('Server: Fetched offers count:', offersData.results?.length || 0)
 
-  return <OffersContent initialFilters={filters} initialOffers={offersData.results || []} />
+  return (
+    <div className="h-screen w-screen bg-white overflow-hidden">
+      <OffersContent initialFilters={filters} initialOffers={offersData.results || []} />
+    </div>
+  )
 }

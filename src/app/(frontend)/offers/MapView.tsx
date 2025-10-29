@@ -38,7 +38,9 @@ export default function MapView({ offers }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const markersRef = useRef<mapboxgl.Marker[]>([])
-  const [mapError, setMapError] = useState<string | null>(null)
+  const [mapError, setMapError] = useState<string | null>(() => {
+    return mapboxToken ? null : 'Mapbox token not configured'
+  })
 
   // Calculate initial viewport
   const venuesWithCoords = offers.filter((item) => item.venue.lat && item.venue.lng)
@@ -63,20 +65,6 @@ export default function MapView({ offers }: MapViewProps) {
     return { lng: avgLng, lat: avgLat, zoom: 10 }
   }
 
-  if (!mapboxToken) {
-    console.error('Mapbox token missing. Add NEXT_PUBLIC_MAPBOX_TOKEN to your .env file')
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-[#F7F7F7] border-l border-[#EBEBEB]">
-        <div className="text-center p-6">
-          <p className="text-text-secondary font-semibold mb-2">Mapbox token not configured</p>
-          <p className="text-xs text-text-tertiary">
-            Please add NEXT_PUBLIC_MAPBOX_TOKEN to your environment variables
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   function getOfferLabel(type: string, value: number): string {
     switch (type) {
       case 'percent':
@@ -94,6 +82,10 @@ export default function MapView({ offers }: MapViewProps) {
 
   // Initialize map
   useEffect(() => {
+    if (!mapboxToken) {
+      setMapError('Mapbox token not configured')
+      return
+    }
     if (!mapContainer.current || map.current) return
 
     // Check if running in browser environment
@@ -207,19 +199,20 @@ export default function MapView({ offers }: MapViewProps) {
     }
   }, [offers])
 
-  if (mapError) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-[#F7F7F7] border-l border-[#EBEBEB]">
-        <div className="text-center p-6 max-w-md">
-          <p className="text-text-secondary font-semibold mb-2">Map Unavailable</p>
-          <p className="text-xs text-text-tertiary mb-4">{mapError}</p>
-          <p className="text-xs text-text-tertiary">
-            Please try refreshing the page or use the list view instead.
-          </p>
-        </div>
+  // Handle map error state
+  const errorDisplay = mapError ? (
+    <div className="w-full h-full flex items-center justify-center bg-[#F7F7F7] border-l border-[#EBEBEB]">
+      <div className="text-center p-6 max-w-md">
+        <p className="text-text-secondary font-semibold mb-2">Map Unavailable</p>
+        <p className="text-xs text-text-tertiary mb-4">{mapError}</p>
+        <p className="text-xs text-text-tertiary">
+          Please try refreshing the page or use the list view instead.
+        </p>
       </div>
-    )
-  }
+    </div>
+  ) : (
+    <div ref={mapContainer} className="w-full h-full" />
+  )
 
-  return <div ref={mapContainer} className="w-full h-full" />
+  return errorDisplay
 }

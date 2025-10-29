@@ -6,12 +6,13 @@ import configPromise from '@/payload.config'
  * GET /api/web/offers/[slug]/activity
  * Get recent claim activity for an offer
  */
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const config = await configPromise
   const payload = await getPayload({ config })
 
   try {
-    const offerId = params.slug
+    const { slug } = await params
+    const offerId = slug
 
     // Get recent claims for this offer (last hour)
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()

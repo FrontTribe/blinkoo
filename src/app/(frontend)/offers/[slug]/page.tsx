@@ -8,6 +8,7 @@ import { OfferMap } from './OfferMap'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { OfferDetailsClient, OfferBookingCard } from './OfferDetailsClient'
 import { RecommendedOffers } from '@/components/RecommendedOffers'
+import { TrackViewWrapper } from './TrackViewWrapper'
 import { FiArrowLeft } from 'react-icons/fi'
 
 async function getOffer(idOrSlug: string) {
@@ -74,6 +75,12 @@ export default async function OfferDetailPage({
   const shouldShowReview = resolvedSearchParams.review === 'true'
   const data = await getOffer(slug)
 
+  // Get user for recommendations
+  const cookieStore = await cookies()
+  const config = await configPromise
+  const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers: cookieStore as any })
+
   if (!data) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -129,6 +136,9 @@ export default async function OfferDetailPage({
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column - Content */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Track View */}
+            <TrackViewWrapper offer={offer} />
+
             {/* Header with Location-Aware Info - Now First */}
             <OfferDetailsClient
               slug={slug}
@@ -224,7 +234,7 @@ export default async function OfferDetailPage({
               <div className="mt-6">
                 <RecommendedOffers
                   currentOfferId={offer.id}
-                  userId={user?.id}
+                  userId={user?.id?.toString()}
                   lat={venue.lat}
                   lng={venue.lng}
                 />

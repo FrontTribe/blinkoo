@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { QRCodeSVG } from 'qrcode.react'
 import { FiMessageSquare, FiCheckCircle } from 'react-icons/fi'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 import { OfferSuggestions } from '@/components/OfferSuggestions'
 import { useOfferUpdates } from '@/hooks/useOfferUpdates'
 import { ClaimsListSkeleton } from '@/components/SkeletonLoader'
@@ -111,7 +111,7 @@ export default function MyClaimsPage() {
           />
         ) : (
           <div className="space-y-4">
-            {claims.map((claim) => {
+            {claims.map((claim: any) => {
               const claimData = claim as any
               const offer = claimData.offer
               const venue = offer?.venue

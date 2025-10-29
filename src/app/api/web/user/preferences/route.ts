@@ -3,6 +3,9 @@ import { getPayload } from 'payload'
 import { headers as getHeaders } from 'next/headers'
 import configPromise from '@/payload.config'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function PUT(request: Request) {
   const config = await configPromise
   const payload = await getPayload({ config })

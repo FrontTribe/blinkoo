@@ -30,7 +30,7 @@ export default function EditVenuePage() {
     lng: '',
     phone: '',
     email: '',
-    openHours: '{}',
+    openHours: {} as any,
     status: 'active',
   })
 
@@ -59,7 +59,9 @@ export default function EditVenuePage() {
           lng: venue.lng?.toString() || '',
           phone: venue.phone || '',
           email: venue.email || '',
-          openHours: venue.openHours || {},
+          openHours:
+            (typeof venue.openHours === 'string' ? JSON.parse(venue.openHours) : venue.openHours) ||
+            {},
           status: venue.status || 'active',
         })
       } catch (err) {
@@ -390,8 +392,12 @@ export default function EditVenuePage() {
 
             <div>
               <VenueHoursEditor
-                initialHours={formData.openHours}
-                onChange={(hours) => setFormData({ ...formData, openHours: hours })}
+                initialHours={
+                  typeof formData.openHours === 'string'
+                    ? JSON.parse(formData.openHours)
+                    : formData.openHours
+                }
+                onChange={(hours) => setFormData({ ...formData, openHours: hours as any })}
               />
             </div>
 

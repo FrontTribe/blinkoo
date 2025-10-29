@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { FiUsers, FiStar, FiTrendingUp } from 'react-icons/fi'
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<any[]>([])
@@ -48,8 +47,8 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-white py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
         <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
@@ -63,42 +62,38 @@ export default function CustomersPage() {
             href="/merchant/dashboard"
             className="inline-flex items-center gap-2 bg-white text-text-primary border border-border px-6 py-3 hover:border-primary transition-colors font-semibold"
           >
-            Back to Dashboard
+            ← Back to Dashboard
           </Link>
         </div>
 
         {/* Summary Stats */}
         {summary && (
-          <div className="grid gap-4 md:grid-cols-4 mb-8">
-            <div className="bg-white border border-border p-6">
-              <div className="flex items-center gap-2 mb-2">
-                <FiUsers className="text-primary" />
-                <h3 className="text-xs font-medium text-text-secondary uppercase">New Customers</h3>
-              </div>
-              <p className="font-heading text-3xl font-bold text-blue-600">{summary.new || 0}</p>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+              <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wider">
+                New Customers
+              </h3>
+              <p className="font-heading text-3xl font-bold text-primary">{summary.new || 0}</p>
             </div>
-            <div className="bg-white border border-border p-6">
-              <div className="flex items-center gap-2 mb-2">
-                <FiTrendingUp className="text-green-600" />
-                <h3 className="text-xs font-medium text-text-secondary uppercase">Regular</h3>
-              </div>
-              <p className="font-heading text-3xl font-bold text-green-600">
+            <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+              <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wider">
+                Regular Customers
+              </h3>
+              <p className="font-heading text-3xl font-bold text-primary">
                 {summary.regular || 0}
               </p>
             </div>
-            <div className="bg-white border border-border p-6">
-              <div className="flex items-center gap-2 mb-2">
-                <FiStar className="text-yellow-600" />
-                <h3 className="text-xs font-medium text-text-secondary uppercase">VIP</h3>
-              </div>
-              <p className="font-heading text-3xl font-bold text-yellow-600">{summary.vip || 0}</p>
+            <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+              <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wider">
+                VIP Customers
+              </h3>
+              <p className="font-heading text-3xl font-bold text-primary">{summary.vip || 0}</p>
             </div>
-            <div className="bg-white border border-border p-6">
-              <div className="flex items-center gap-2 mb-2">
-                <FiUsers className="text-gray-400" />
-                <h3 className="text-xs font-medium text-text-secondary uppercase">Dormant</h3>
-              </div>
-              <p className="font-heading text-3xl font-bold text-gray-600">
+            <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+              <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wider">
+                Dormant Customers
+              </h3>
+              <p className="font-heading text-3xl font-bold text-text-primary">
                 {summary.dormant || 0}
               </p>
             </div>
@@ -106,7 +101,7 @@ export default function CustomersPage() {
         )}
 
         {/* Segmentation Filter */}
-        <div className="bg-white border border-border p-6 mb-8">
+        <div className="bg-white border border-border p-6">
           <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
             Filter by Segment
           </h2>
@@ -116,9 +111,8 @@ export default function CustomersPage() {
               className={`px-4 py-2 text-sm font-medium border transition-colors ${
                 segment === ''
                   ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-text-primary border-border hover:border-primary'
+                  : 'bg-white text-text-secondary border-border hover:border-primary'
               }`}
-              style={segment === '' ? { backgroundColor: '#3B82F6', color: 'white' } : undefined}
             >
               All
             </button>
@@ -127,9 +121,8 @@ export default function CustomersPage() {
               className={`px-4 py-2 text-sm font-medium border transition-colors ${
                 segment === 'new'
                   ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-text-primary border-border hover:border-primary'
+                  : 'bg-white text-text-secondary border-border hover:border-primary'
               }`}
-              style={segment === 'new' ? { backgroundColor: '#3B82F6', color: 'white' } : undefined}
             >
               New
             </button>
@@ -138,11 +131,8 @@ export default function CustomersPage() {
               className={`px-4 py-2 text-sm font-medium border transition-colors ${
                 segment === 'regular'
                   ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-text-primary border-border hover:border-primary'
+                  : 'bg-white text-text-secondary border-border hover:border-primary'
               }`}
-              style={
-                segment === 'regular' ? { backgroundColor: '#3B82F6', color: 'white' } : undefined
-              }
             >
               Regular
             </button>
@@ -151,9 +141,8 @@ export default function CustomersPage() {
               className={`px-4 py-2 text-sm font-medium border transition-colors ${
                 segment === 'vip'
                   ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-text-primary border-border hover:border-primary'
+                  : 'bg-white text-text-secondary border-border hover:border-primary'
               }`}
-              style={segment === 'vip' ? { backgroundColor: '#3B82F6', color: 'white' } : undefined}
             >
               VIP
             </button>
@@ -162,11 +151,8 @@ export default function CustomersPage() {
               className={`px-4 py-2 text-sm font-medium border transition-colors ${
                 segment === 'dormant'
                   ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-text-primary border-border hover:border-primary'
+                  : 'bg-white text-text-secondary border-border hover:border-primary'
               }`}
-              style={
-                segment === 'dormant' ? { backgroundColor: '#3B82F6', color: 'white' } : undefined
-              }
             >
               Dormant
             </button>
@@ -221,34 +207,36 @@ export default function CustomersPage() {
                     }
 
                     return (
-                      <tr key={customer.id} className="hover:bg-[#F7F7F7]">
+                      <tr key={customer.id} className="hover:bg-[#F7F7F7] transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div>
-                            <div className="text-sm font-medium text-text-primary">
-                              {customer.phone || customer.email || 'Unknown'}
-                            </div>
-                            <div className="text-xs text-text-tertiary">
-                              {customer.phone && customer.email ? customer.email : ''}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
                           <Link
                             href={`/merchant/customers/${customer.id}`}
-                            className="text-primary hover:text-primary-hover font-medium"
+                            className="block hover:opacity-75 transition-opacity"
                           >
-                            {customer.totalClaims}
+                            <div className="text-sm font-semibold text-text-primary">
+                              {customer.phone || customer.email || 'Unknown'}
+                            </div>
+                            {customer.phone && customer.email && (
+                              <div className="text-xs text-text-secondary mt-0.5">
+                                {customer.email}
+                              </div>
+                            )}
                           </Link>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
+                          {customer.totalClaims}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
                           {customer.redeemedClaims}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
-                          ${customer.lifetimeValue || 0}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-text-primary">
+                          {typeof customer.lifetimeValue === 'number' 
+                            ? `€${customer.lifetimeValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
+                            : '€0.00'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
-                            className={`inline-flex px-2 py-1 text-xs font-medium rounded-full capitalize ${
+                            className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full capitalize ${
                               segmentColors[customer.segment] || 'bg-gray-100 text-gray-800'
                             }`}
                           >

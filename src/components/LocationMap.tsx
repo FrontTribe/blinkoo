@@ -15,15 +15,8 @@ export function LocationMap({ center, zoom = 13, onLoad }: LocationMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
 
-  if (!mapboxToken) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-bg-secondary">
-        <p className="text-text-secondary">Mapbox token not found</p>
-      </div>
-    )
-  }
-
   useEffect(() => {
+    if (!mapboxToken) return
     if (!mapContainer.current || map.current) return
 
     const centerCoords = center || [15.9819, 45.815]

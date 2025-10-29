@@ -74,6 +74,7 @@ export interface Config {
     categories: Category;
     offers: Offer;
     'offer-slots': OfferSlot;
+    'offer-collections': OfferCollection;
     'offer-templates': OfferTemplate;
     claims: Claim;
     reviews: Review;
@@ -95,6 +96,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     offers: OffersSelect<false> | OffersSelect<true>;
     'offer-slots': OfferSlotsSelect<false> | OfferSlotsSelect<true>;
+    'offer-collections': OfferCollectionsSelect<false> | OfferCollectionsSelect<true>;
     'offer-templates': OfferTemplatesSelect<false> | OfferTemplatesSelect<true>;
     claims: ClaimsSelect<false> | ClaimsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
@@ -393,6 +395,34 @@ export interface OfferSlot {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer-collections".
+ */
+export interface OfferCollection {
+  id: number;
+  title: string;
+  /**
+   * URL-friendly identifier
+   */
+  slug: string;
+  description?: string | null;
+  photo?: (number | null) | Media;
+  /**
+   * Add offers to this collection
+   */
+  offers?: (number | Offer)[] | null;
+  /**
+   * Show on homepage
+   */
+  featured?: boolean | null;
+  active?: boolean | null;
+  category?:
+    | ('date-night' | 'weekend-brunch' | 'happy-hour' | 'family-friendly' | 'budget-eats' | 'special-occasions')
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "offer-templates".
  */
 export interface OfferTemplate {
@@ -630,6 +660,10 @@ export interface PayloadLockedDocument {
         value: number | OfferSlot;
       } | null)
     | ({
+        relationTo: 'offer-collections';
+        value: number | OfferCollection;
+      } | null)
+    | ({
         relationTo: 'offer-templates';
         value: number | OfferTemplate;
       } | null)
@@ -864,6 +898,22 @@ export interface OfferSlotsSelect<T extends boolean = true> {
   dripEveryMinutes?: T;
   dripQty?: T;
   state?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer-collections_select".
+ */
+export interface OfferCollectionsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  photo?: T;
+  offers?: T;
+  featured?: T;
+  active?: T;
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
 }

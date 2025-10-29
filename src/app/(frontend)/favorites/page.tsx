@@ -67,7 +67,9 @@ export default function FavoritesPage() {
         {favorites.length === 0 ? (
           <div className="bg-white border border-border p-12 text-center">
             <FiHeart className="w-16 h-16 text-text-tertiary mx-auto mb-4" />
-            <p className="text-text-secondary mb-4 text-sm">You haven't favorited any venues yet</p>
+            <p className="text-text-secondary mb-4 text-sm">
+              You haven&apos;t favorited any venues yet
+            </p>
             <Link
               href="/offers"
               className="inline-block bg-text-primary text-white px-6 py-3 hover:bg-text-secondary transition-colors font-semibold text-sm"

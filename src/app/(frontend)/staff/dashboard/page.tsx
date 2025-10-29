@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { FiShoppingCart, FiTrendingUp, FiClock } from 'react-icons/fi'
+import { FiShoppingCart, FiTrendingUp, FiClock, FiCheckCircle, FiAlertCircle, FiBarChart2 } from 'react-icons/fi'
 
 export default function StaffDashboardPage() {
   const router = useRouter()
@@ -58,53 +58,118 @@ export default function StaffDashboardPage() {
 
   if (loading || !authenticated) {
     return (
-      <div className="min-h-screen bg-bg-secondary flex items-center justify-center pb-20 md:pb-4">
-        <p className="text-text-primary">Loading...</p>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-text-secondary text-sm">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-bg-secondary pb-20 md:pb-4">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="font-heading text-3xl font-bold text-text-primary mb-8">Staff Dashboard</h1>
+    <div className="min-h-screen bg-white py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <FiShoppingCart className="text-primary text-3xl" />
+          </div>
+          <div>
+            <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">Staff Dashboard</h1>
+            <p className="mt-1 text-sm md:text-base text-text-secondary">Track your redemption activity</p>
+          </div>
+        </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-white border border-border p-4 text-center">
-            <div className="text-2xl font-bold text-primary mb-1">{stats.todayRedeemed}</div>
-            <div className="text-xs text-text-secondary uppercase tracking-wider">Today</div>
+        <div className="grid gap-6 sm:grid-cols-3">
+          <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+                <FiCheckCircle className="text-green-600 text-lg" />
+              </div>
+              <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">Today</h3>
+            </div>
+            <p className="font-heading text-3xl font-bold text-green-600">{stats.todayRedeemed}</p>
+            <p className="text-xs text-text-secondary mt-1">Redemptions today</p>
           </div>
-          <div className="bg-white border border-border p-4 text-center">
-            <div className="text-2xl font-bold text-text-primary mb-1">{stats.weekRedeemed}</div>
-            <div className="text-xs text-text-secondary uppercase tracking-wider">This Week</div>
+
+          <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                <FiBarChart2 className="text-blue-600 text-lg" />
+              </div>
+              <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">This Week</h3>
+            </div>
+            <p className="font-heading text-3xl font-bold text-blue-600">{stats.weekRedeemed}</p>
+            <p className="text-xs text-text-secondary mt-1">Total this week</p>
           </div>
-          <div className="bg-white border border-border p-4 text-center">
-            <div className="text-2xl font-bold text-warning mb-1">{stats.pendingRedemptions}</div>
-            <div className="text-xs text-text-secondary uppercase tracking-wider">Pending</div>
+
+          <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
+                <FiClock className="text-amber-600 text-lg" />
+              </div>
+              <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">Pending</h3>
+            </div>
+            <p className="font-heading text-3xl font-bold text-amber-600">{stats.pendingRedemptions}</p>
+            <p className="text-xs text-text-secondary mt-1">Awaiting redemption</p>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white border border-border p-6 mb-6">
-          <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="bg-white border border-border rounded-lg p-6">
+          <div className="flex items-center gap-2 mb-6">
+            <FiShoppingCart className="text-primary text-lg" />
+            <h2 className="font-heading text-lg font-bold text-text-primary">Quick Actions</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
             <Link
               href="/staff/redeem"
-              className="flex items-center gap-3 p-4 border border-border hover:border-primary transition-colors"
+              className="flex items-center gap-4 p-5 border border-border hover:border-primary transition-all group bg-bg-secondary hover:bg-white rounded-lg"
             >
-              <FiShoppingCart className="text-xl text-primary" />
-              <span className="font-medium text-text-primary">Redeem Claim</span>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
+                <FiShoppingCart className="text-primary group-hover:text-white text-xl transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-text-primary group-hover:text-primary transition-colors">
+                  Redeem Claim
+                </h3>
+                <p className="text-sm text-text-secondary">Scan QR code or enter code</p>
+              </div>
+              <FiTrendingUp className="text-text-tertiary group-hover:text-primary transition-colors" />
             </Link>
+
             <Link
               href="/staff/history"
-              className="flex items-center gap-3 p-4 border border-border hover:border-primary transition-colors"
+              className="flex items-center gap-4 p-5 border border-border hover:border-primary transition-all group bg-bg-secondary hover:bg-white rounded-lg"
             >
-              <FiClock className="text-xl text-primary" />
-              <span className="font-medium text-text-primary">View History</span>
+              <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 transition-colors">
+                <FiClock className="text-blue-600 group-hover:text-white text-xl transition-colors" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-text-primary group-hover:text-primary transition-colors">
+                  View History
+                </h3>
+                <p className="text-sm text-text-secondary">View past redemptions</p>
+              </div>
+              <FiTrendingUp className="text-text-tertiary group-hover:text-primary transition-colors" />
             </Link>
+          </div>
+        </div>
+
+        {/* Helpful Tips */}
+        <div className="bg-gradient-to-r from-blue-50 to-blue-50/50 border border-blue-200 rounded-lg p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+              <FiCheckCircle className="text-blue-600 text-xl" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-blue-900 mb-2">Redemption Tips</h3>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Always verify the customer is present before redeeming</li>
+                <li>• Check the claim status and expiration date</li>
+                <li>• Use the QR scanner for faster processing</li>
+                <li>• Contact support if you encounter any issues</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

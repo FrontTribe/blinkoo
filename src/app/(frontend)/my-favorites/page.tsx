@@ -56,7 +56,7 @@ export default function MyFavoritesPage() {
 
         {favorites.length === 0 ? (
           <div className="bg-white border border-border rounded-2xl p-12 text-center shadow-sm">
-            <p className="text-text-secondary mb-4">You haven't favorited any offers yet</p>
+            <p className="text-text-secondary mb-4">You haven&apos;t favorited any offers yet</p>
             <Link
               href="/offers"
               className="inline-block bg-primary text-white px-6 py-3 rounded-full hover:bg-primary-hover transition-colors font-semibold shadow-md hover:shadow-lg"

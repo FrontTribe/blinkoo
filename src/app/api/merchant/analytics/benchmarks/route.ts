@@ -32,17 +32,6 @@ export async function GET(request: Request) {
 
     const merchantId = merchant.docs[0].id
 
-    // Get all offers for this merchant
-    const merchantOffers = await payload.find({
-      collection: 'offers',
-      where: {
-        venue: {
-          merchant: { equals: merchantId },
-        },
-      },
-      depth: 2,
-    })
-
     // Get all venues for this merchant
     const venues = await payload.find({
       collection: 'venues',
@@ -52,6 +41,22 @@ export async function GET(request: Request) {
     })
 
     const venueIds = venues.docs.map((v: any) => v.id)
+
+    if (venueIds.length === 0) {
+      return NextResponse.json({
+        benchmarks: {},
+        merchantPerformance: [],
+      })
+    }
+
+    // Get all offers for this merchant's venues
+    const merchantOffers = await payload.find({
+      collection: 'offers',
+      where: {
+        venue: { in: venueIds },
+      },
+      depth: 2,
+    })
 
     // Get all claims for merchant's offers
     const allClaims = await payload.find({

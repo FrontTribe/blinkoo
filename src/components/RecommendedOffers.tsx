@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { FiArrowRight, FiSparkles } from 'react-icons/fi'
+import { FiArrowRight } from 'react-icons/fi'
 import { LiveOfferPreview } from './LiveOfferPreview'
 
 type RecommendedOffer = {
@@ -15,10 +15,17 @@ type RecommendedOffer = {
   }
   offer: {
     id: string
+    slug: string
     title: string
     description: string
     type: string
     discountValue: number
+    venue: {
+      name: string
+      category?: {
+        icon: string
+      }
+    }
     photo?: any
   }
   venue?: {
@@ -101,7 +108,7 @@ export function RecommendedOffers({
   return (
     <div className="bg-white border border-border p-6">
       <div className="flex items-center gap-2 mb-4">
-        <FiSparkles className="text-primary text-lg" />
+        <span className="text-primary text-lg">✨</span>
         <h3 className="font-heading text-lg font-semibold text-text-primary">
           Recommended for You
         </h3>
