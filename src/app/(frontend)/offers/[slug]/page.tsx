@@ -7,6 +7,7 @@ import { Reviews } from './Reviews'
 import { OfferMap } from './OfferMap'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { OfferDetailsClient, OfferBookingCard } from './OfferDetailsClient'
+import { RecommendedOffers } from '@/components/RecommendedOffers'
 import { FiArrowLeft } from 'react-icons/fi'
 
 async function getOffer(idOrSlug: string) {
@@ -217,6 +218,18 @@ export default async function OfferDetailPage({
             <div id="reviews-section" className="bg-white border border-border p-8">
               <Reviews offerId={offer.id} autoOpenForm={shouldShowReview} />
             </div>
+
+            {/* Recommended Offers */}
+            {venue?.lat && venue?.lng && (
+              <div className="mt-6">
+                <RecommendedOffers
+                  currentOfferId={offer.id}
+                  userId={user?.id}
+                  lat={venue.lat}
+                  lng={venue.lng}
+                />
+              </div>
+            )}
           </div>
 
           {/* Right Column - Sticky Booking Card */}

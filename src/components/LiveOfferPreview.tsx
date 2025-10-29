@@ -28,6 +28,10 @@ type Slot = {
 type Props = {
   offer: Offer
   slot: Slot
+  venue?: {
+    name: string
+    distance?: number
+  }
 }
 
 function getOfferLabel(type: string, value: number): string {
@@ -59,7 +63,7 @@ function getTimeRemaining(endsAt: string): string {
   return `${minutes}m`
 }
 
-export function LiveOfferPreview({ offer, slot }: Props) {
+export function LiveOfferPreview({ offer, slot, venue }: Props) {
   return (
     <Link
       href={`/offers/${offer.id}`}
@@ -99,7 +103,9 @@ export function LiveOfferPreview({ offer, slot }: Props) {
             <h3 className="font-semibold text-text-primary text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors">
               {offer.title}
             </h3>
-            <p className="text-sm text-text-secondary">{offer.venue.name}</p>
+            <p className="text-sm text-text-secondary">
+              {venue?.name || (typeof offer.venue === 'object' && offer.venue?.name) || 'Venue'}
+            </p>
           </div>
           <span className="bg-primary/10 text-primary px-3 py-1 text-xs font-semibold border border-primary/20">
             {getOfferLabel(offer.type, offer.discountValue || 0)}

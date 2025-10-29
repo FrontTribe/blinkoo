@@ -56,6 +56,16 @@ export default async function HomePage() {
     limit: 4,
   })
 
+  // Fetch popular offers (those with most claims)
+  const popularOffers = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/web/offers?sortBy=popular&limit=4`,
+    {
+      cache: 'no-store',
+    },
+  )
+    .then((res) => res.json())
+    .catch(() => ({ results: [] }))
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -175,6 +185,42 @@ export default async function HomePage() {
                   </div>
                   <div className="text-sm font-semibold text-text-primary">{category.name}</div>
                 </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Popular Near You */}
+      {popularOffers.results && popularOffers.results.length > 0 && (
+        <section className="py-12 bg-white border-b border-[#EBEBEB]">
+          <div className="max-w-[1280px] mx-auto px-6">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-1">
+                  Popular Near You
+                </h2>
+                <p className="text-sm md:text-base text-text-secondary">
+                  Most claimed offers in your area
+                </p>
+              </div>
+              <Link
+                href="/offers?sortBy=popular"
+                className="hidden md:inline-flex items-center gap-2 text-primary hover:text-primary-hover font-semibold"
+              >
+                View All
+                <MdArrowForward />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {popularOffers.results.slice(0, 4).map((item: any) => (
+                <LiveOfferPreview
+                  key={item.slot.id}
+                  offer={item.offer}
+                  slot={item.slot}
+                  venue={item.venue}
+                />
               ))}
             </div>
           </div>

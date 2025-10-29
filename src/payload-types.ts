@@ -353,6 +353,14 @@ export interface Offer {
    */
   geofenceKm?: number | null;
   status: 'active' | 'paused' | 'archived';
+  /**
+   * Calculated average from reviews
+   */
+  averageRating?: number | null;
+  /**
+   * Total number of reviews
+   */
+  totalReviews?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -837,6 +845,8 @@ export interface OffersSelect<T extends boolean = true> {
   cooldownMinutes?: T;
   geofenceKm?: T;
   status?: T;
+  averageRating?: T;
+  totalReviews?: T;
   updatedAt?: T;
   createdAt?: T;
 }

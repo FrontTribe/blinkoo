@@ -17,7 +17,7 @@ import configPromise from '@/payload.config'
  * - distance: max distance in km (alternative to radius)
  * - timeFilter: 'ending-soon' (< 1hr) | 'all-day'
  * - discountTypes: comma-separated string of discount types (percent,fixed,bogo,addon)
- * - sortBy: 'nearest' | 'ending-soon' | 'newest' | 'best-discount'
+ * - sortBy: 'nearest' | 'ending-soon' | 'newest' | 'best-discount' | 'popular'
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -30,8 +30,12 @@ export async function GET(request: Request) {
   const timeFilter = searchParams.get('timeFilter') as 'ending-soon' | 'all-day' | null
   const discountTypes = searchParams.get('discountTypes')?.split(',') || []
   const sortBy =
-    (searchParams.get('sortBy') as 'nearest' | 'ending-soon' | 'newest' | 'best-discount') ||
-    'nearest'
+    (searchParams.get('sortBy') as
+      | 'nearest'
+      | 'ending-soon'
+      | 'newest'
+      | 'best-discount'
+      | 'popular') || 'nearest'
 
   console.log('API filters received:', {
     lat,
@@ -267,11 +271,30 @@ export async function GET(request: Request) {
                     }
                   : undefined,
             },
+            _popularityScore: 0, // Will be calculated below
           }
         }
         return null
       })
       .filter((item) => item !== null) as any[]
+
+    // Calculate popularity scores
+    for (const result of results) {
+      const claimCount = await payload.count({
+        collection: 'claims',
+        where: {
+          offer: { equals: result.offer.id },
+          status: { in: ['REDEEMED', 'RESERVED'] },
+        },
+      })
+
+      // Popularity = claims per hour (normalized)
+      const hoursActive =
+        (new Date(result.slot.endsAt).getTime() - new Date(result.slot.startsAt).getTime()) /
+        (1000 * 60 * 60)
+      result._popularityScore =
+        hoursActive > 0 ? claimCount.totalDocs / Math.max(hoursActive, 1) : 0
+    }
 
     // Sort results
     results = results.sort((a, b) => {
@@ -288,14 +311,19 @@ export async function GET(request: Request) {
           const valueA = a.offer.type === 'percent' ? a.offer.discountValue : 0
           const valueB = b.offer.type === 'percent' ? b.offer.discountValue : 0
           return valueB - valueA
+        case 'popular':
+          return (b._popularityScore || 0) - (a._popularityScore || 0)
         default:
           return 0
       }
     })
 
+    // Remove temporary popularity score before returning
+    const cleanedResults = results.map(({ _popularityScore, ...rest }) => rest)
+
     return NextResponse.json({
-      results,
-      total: results.length,
+      results: cleanedResults,
+      total: cleanedResults.length,
     })
   } catch (error) {
     console.error('Error fetching offers:', error)

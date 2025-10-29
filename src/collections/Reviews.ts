@@ -11,6 +11,7 @@ export const Reviews: CollectionConfig = {
         if (operation === 'create') {
           const review = doc as any
           const userId = typeof review.user === 'object' ? review.user.id : review.user
+          const offerId = typeof review.offer === 'object' ? review.offer.id : review.offer
 
           if (!userId) return doc
 
@@ -41,6 +42,32 @@ export const Reviews: CollectionConfig = {
               id: stats.id,
               data: {
                 totalReviews: (stats.totalReviews || 0) + 1,
+              },
+            })
+          }
+
+          // Recalculate offer ratings
+          if (offerId) {
+            const offerReviews = await req.payload.find({
+              collection: 'reviews',
+              where: {
+                offer: { equals: offerId },
+              },
+              limit: 1000,
+            })
+
+            const avgRating =
+              offerReviews.docs.length > 0
+                ? offerReviews.docs.reduce((sum, r) => sum + (r.rating || 0), 0) /
+                  offerReviews.docs.length
+                : 0
+
+            await req.payload.update({
+              collection: 'offers',
+              id: offerId,
+              data: {
+                averageRating: Math.round(avgRating * 10) / 10,
+                totalReviews: offerReviews.docs.length,
               },
             })
           }

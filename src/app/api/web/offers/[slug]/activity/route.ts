@@ -20,12 +20,30 @@ export async function GET(request: Request, { params }: { params: { slug: string
       collection: 'claims',
       where: {
         offer: { equals: offerId },
+        status: { in: ['RESERVED', 'REDEEMED'] },
+        createdAt: { greater_than: oneHourAgo },
+      },
+      limit: 100,
+      sort: '-createdAt',
+    })
+
+    // Get recent redemptions (last hour)
+    const recentRedemptions = await payload.find({
+      collection: 'claims',
+      where: {
+        offer: { equals: offerId },
         status: { equals: 'REDEEMED' },
         redeemedAt: { greater_than: oneHourAgo },
       },
-      limit: 10,
+      limit: 100,
       sort: '-redeemedAt',
     })
+
+    // Calculate velocity (claims per hour)
+    const claimsPerHour = recentClaims.docs.length
+
+    // Check if trending (high velocity: 5+ claims in last hour)
+    const isTrending = claimsPerHour >= 5
 
     // Get total claim count for this offer
     const allClaims = await payload.find({
@@ -38,10 +56,14 @@ export async function GET(request: Request, { params }: { params: { slug: string
     })
 
     return NextResponse.json({
-      recentCount: recentClaims.docs.length,
-      totalCount: allClaims.totalDocs,
+      recentClaims: recentClaims.docs.length,
+      recentRedemptions: recentRedemptions.docs.length,
+      totalRedemptions: allClaims.totalDocs,
+      claimsPerHour,
+      isTrending,
       recentActivity: recentClaims.docs.map((claim: any) => ({
-        redeemedAt: claim.redeemedAt,
+        createdAt: claim.createdAt,
+        status: claim.status,
       })),
     })
   } catch (error) {

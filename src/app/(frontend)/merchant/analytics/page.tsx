@@ -11,6 +11,8 @@ import {
   FiPercent,
   FiDownload,
 } from 'react-icons/fi'
+import { TimingHeatmap } from '@/components/merchant/TimingHeatmap'
+import { SuggestedTimeslots } from '@/components/merchant/SuggestedTimeslots'
 
 type AnalyticsData = {
   totalOffers: number
@@ -46,6 +48,8 @@ type AnalyticsData = {
 export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [comparison, setComparison] = useState<any>(null)
+  const [timingInsights, setTimingInsights] = useState<any>(null)
+  const [benchmarks, setBenchmarks] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -54,7 +58,37 @@ export default function AnalyticsPage() {
   useEffect(() => {
     fetchAnalytics()
     fetchComparison()
+    fetchTimingInsights()
+    fetchBenchmarks()
   }, [startDate, endDate])
+
+  async function fetchTimingInsights() {
+    try {
+      const response = await fetch('/api/merchant/analytics/timing-insights', {
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setTimingInsights(data)
+      }
+    } catch (error) {
+      console.error('Error fetching timing insights:', error)
+    }
+  }
+
+  async function fetchBenchmarks() {
+    try {
+      const response = await fetch('/api/merchant/analytics/benchmarks', {
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setBenchmarks(data)
+      }
+    } catch (error) {
+      console.error('Error fetching benchmarks:', error)
+    }
+  }
 
   async function fetchComparison() {
     try {
@@ -481,6 +515,109 @@ export default function AnalyticsPage() {
                 </div>
               </div>
             </div>
+
+            {/* Timing Insights Section */}
+            {timingInsights && (
+              <div className="mt-6 grid gap-6 lg:grid-cols-2">
+                <div className="bg-white border border-border p-6">
+                  <TimingHeatmap
+                    hourlyData={timingInsights.hourlyData}
+                    dailyData={timingInsights.dailyData}
+                    coldHours={timingInsights.coldHours}
+                  />
+                </div>
+                <div className="bg-white border border-border p-6">
+                  <SuggestedTimeslots slots={timingInsights.suggestedSlots} />
+                </div>
+              </div>
+            )}
+
+            {/* Performance Benchmarking Section */}
+            {benchmarks &&
+              benchmarks.merchantPerformance &&
+              benchmarks.merchantPerformance.length > 0 && (
+                <div className="mt-6 bg-white border border-border p-6">
+                  <h2 className="font-heading text-xl font-bold text-text-primary mb-4">
+                    Performance vs Industry Benchmarks
+                  </h2>
+                  <div className="space-y-4">
+                    {benchmarks.merchantPerformance.map((perf: any, index: number) => (
+                      <div
+                        key={index}
+                        className="border border-border p-4 hover:border-primary transition-colors"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold text-text-primary">{perf.categoryName}</h3>
+                            {perf.badges && perf.badges.length > 0 && (
+                              <div className="flex gap-2">
+                                {perf.badges.map((badge: string, idx: number) => (
+                                  <span
+                                    key={idx}
+                                    className={`px-2 py-0.5 text-xs font-medium rounded ${
+                                      badge === 'Top Performer'
+                                        ? 'bg-green-100 text-green-700'
+                                        : badge === 'High Conversion'
+                                          ? 'bg-blue-100 text-blue-700'
+                                          : 'bg-orange-100 text-orange-700'
+                                    }`}
+                                  >
+                                    {badge}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <span
+                              className={`text-sm font-semibold ${
+                                perf.difference >= 0 ? 'text-green-600' : 'text-red-600'
+                              }`}
+                            >
+                              {perf.difference >= 0 ? '+' : ''}
+                              {perf.difference.toFixed(1)}%
+                            </span>
+                            <div className="text-xs text-text-secondary">vs industry avg</div>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mt-3">
+                          <div>
+                            <div className="text-xs text-text-secondary mb-1">Your Fill Rate</div>
+                            <div className="text-lg font-bold text-text-primary">
+                              {perf.merchantRate.toFixed(1)}%
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-text-secondary mb-1">Industry Average</div>
+                            <div className="text-lg font-bold text-text-primary">
+                              {perf.benchmarkRate.toFixed(1)}%
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-3">
+                          <span
+                            className={`text-xs font-medium ${
+                              perf.percentile === 'Top 10%'
+                                ? 'text-green-600'
+                                : perf.percentile === 'Top 25%'
+                                  ? 'text-blue-600'
+                                  : 'text-text-secondary'
+                            }`}
+                          >
+                            Percentile: {perf.percentile}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4 bg-blue-50 border border-blue-200 p-4">
+                    <p className="text-xs text-blue-800">
+                      <strong>Note:</strong> Benchmarks are calculated from offers in the same
+                      category across all merchants. Your percentile ranking shows how you compare.
+                    </p>
+                  </div>
+                </div>
+              )}
           </>
         )}
       </div>
