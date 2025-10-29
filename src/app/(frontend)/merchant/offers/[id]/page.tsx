@@ -176,14 +176,30 @@ export default function OfferDetailPage() {
           <div className="border-t border-[#EBEBEB] pt-6 mt-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
               <h2 className="font-heading text-lg font-semibold text-text-primary">Offer Slots</h2>
-              <button
-                onClick={() => setShowSlotForm(!showSlotForm)}
-                className="px-4 py-2 bg-primary text-white hover:bg-primary-hover transition-colors inline-flex items-center gap-2 font-semibold"
-                style={{ color: 'white' }}
-              >
-                <MdAdd style={{ color: 'white' }} />
-                Add Slot
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowSlotForm(!showSlotForm)}
+                  className="px-4 py-2 bg-white text-text-primary border border-border hover:border-primary transition-colors inline-flex items-center gap-2 font-semibold"
+                >
+                  <MdAdd />
+                  Single Slot
+                </button>
+                <Link
+                  href={`/merchant/offers/${offerId}/bulk-slots`}
+                  className="px-4 py-2 bg-white text-text-primary border border-border hover:border-primary transition-colors inline-flex items-center gap-2 font-semibold"
+                >
+                  <MdAdd />
+                  Bulk Slots
+                </Link>
+                <Link
+                  href={`/merchant/offers/${offerId}/calendar`}
+                  className="px-4 py-2 bg-primary text-white hover:bg-primary-hover transition-colors inline-flex items-center gap-2 font-semibold"
+                  style={{ color: 'white' }}
+                >
+                  <MdAdd style={{ color: 'white' }} />
+                  Calendar View
+                </Link>
+              </div>
             </div>
 
             {showSlotForm && (

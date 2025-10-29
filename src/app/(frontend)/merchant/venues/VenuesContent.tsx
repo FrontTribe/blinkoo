@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { MdAdd, MdLocationOn, MdMap, MdCheckCircle, MdEdit, MdDelete } from 'react-icons/md'
+import {
+  MdAdd,
+  MdLocationOn,
+  MdMap,
+  MdCheckCircle,
+  MdEdit,
+  MdDelete,
+  MdAnalytics,
+} from 'react-icons/md'
 
 export default function VenuesContent() {
   const [venues, setVenues] = useState<any[]>([])
@@ -153,6 +161,13 @@ export default function VenuesContent() {
                     </span>
 
                     <div className="flex items-center gap-1">
+                      <Link
+                        href={`/merchant/venues/${venue.id}/analytics`}
+                        className="p-2 bg-bg-secondary text-text-secondary hover:text-green-600 hover:bg-[#F7F7F7] transition-colors"
+                        title="View analytics"
+                      >
+                        <MdAnalytics className="text-lg" />
+                      </Link>
                       <Link
                         href={`/merchant/venues/${venue.id}/edit`}
                         className="p-2 bg-bg-secondary text-text-secondary hover:text-primary hover:bg-[#F7F7F7] transition-colors"

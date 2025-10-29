@@ -74,12 +74,14 @@ export interface Config {
     categories: Category;
     offers: Offer;
     'offer-slots': OfferSlot;
+    'offer-templates': OfferTemplate;
     claims: Claim;
     reviews: Review;
     favorites: Favorite;
     'saved-offers': SavedOffer;
     achievements: Achievement;
     'user-stats': UserStat;
+    waitlists: Waitlist;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -93,12 +95,14 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     offers: OffersSelect<false> | OffersSelect<true>;
     'offer-slots': OfferSlotsSelect<false> | OfferSlotsSelect<true>;
+    'offer-templates': OfferTemplatesSelect<false> | OfferTemplatesSelect<true>;
     claims: ClaimsSelect<false> | ClaimsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     favorites: FavoritesSelect<false> | FavoritesSelect<true>;
     'saved-offers': SavedOffersSelect<false> | SavedOffersSelect<true>;
     achievements: AchievementsSelect<false> | AchievementsSelect<true>;
     'user-stats': UserStatsSelect<false> | UserStatsSelect<true>;
+    waitlists: WaitlistsSelect<false> | WaitlistsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -159,6 +163,10 @@ export interface User {
     email?: boolean | null;
     push?: boolean | null;
   };
+  /**
+   * OneSignal player ID for push notifications
+   */
+  oneSignalPlayerId?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -377,6 +385,53 @@ export interface OfferSlot {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer-templates".
+ */
+export interface OfferTemplate {
+  id: number;
+  merchant: number | Merchant;
+  /**
+   * e.g., "Weekday Lunch Special"
+   */
+  name: string;
+  description?: string | null;
+  recurrence: 'daily' | 'weekly' | 'monthly';
+  daysOfWeek?:
+    | {
+        day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g., "14:00" (24-hour format)
+   */
+  startTime: string;
+  /**
+   * e.g., "17:00" (24-hour format)
+   */
+  endTime: string;
+  /**
+   * Total units per slot
+   */
+  qtyTotal: number;
+  mode: 'flash' | 'drip';
+  /**
+   * For drip mode only
+   */
+  dripEveryMinutes?: number | null;
+  /**
+   * For drip mode only
+   */
+  dripQty?: number | null;
+  /**
+   * Only active templates can be used
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "claims".
  */
 export interface Claim {
@@ -518,6 +573,21 @@ export interface UserStat {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "waitlists".
+ */
+export interface Waitlist {
+  id: number;
+  user: number | User;
+  offer: number | Offer;
+  position?: number | null;
+  autoClaim?: boolean | null;
+  notified?: boolean | null;
+  status?: ('waiting' | 'available' | 'claimed' | 'cancelled') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -552,6 +622,10 @@ export interface PayloadLockedDocument {
         value: number | OfferSlot;
       } | null)
     | ({
+        relationTo: 'offer-templates';
+        value: number | OfferTemplate;
+      } | null)
+    | ({
         relationTo: 'claims';
         value: number | Claim;
       } | null)
@@ -574,6 +648,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'user-stats';
         value: number | UserStat;
+      } | null)
+    | ({
+        relationTo: 'waitlists';
+        value: number | Waitlist;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -642,6 +720,7 @@ export interface UsersSelect<T extends boolean = true> {
         email?: T;
         push?: T;
       };
+  oneSignalPlayerId?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -780,6 +859,31 @@ export interface OfferSlotsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer-templates_select".
+ */
+export interface OfferTemplatesSelect<T extends boolean = true> {
+  merchant?: T;
+  name?: T;
+  description?: T;
+  recurrence?: T;
+  daysOfWeek?:
+    | T
+    | {
+        day?: T;
+        id?: T;
+      };
+  startTime?: T;
+  endTime?: T;
+  qtyTotal?: T;
+  mode?: T;
+  dripEveryMinutes?: T;
+  dripQty?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "claims_select".
  */
 export interface ClaimsSelect<T extends boolean = true> {
@@ -881,6 +985,20 @@ export interface UserStatsSelect<T extends boolean = true> {
         unlockedAt?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "waitlists_select".
+ */
+export interface WaitlistsSelect<T extends boolean = true> {
+  user?: T;
+  offer?: T;
+  position?: T;
+  autoClaim?: T;
+  notified?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

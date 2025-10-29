@@ -99,7 +99,11 @@ export async function GET(request: Request) {
             let offerCategoryId: string | number | undefined
             if (typeof offerCategory === 'string' || typeof offerCategory === 'number') {
               offerCategoryId = offerCategory
-            } else if (offerCategory && typeof offerCategory === 'object' && 'id' in offerCategory) {
+            } else if (
+              offerCategory &&
+              typeof offerCategory === 'object' &&
+              'id' in offerCategory
+            ) {
               offerCategoryId = offerCategory.id
             }
             return offerCategoryId === categoryId

@@ -1,0 +1,42 @@
+{
+  "name": "Off-Peak - Exclusive Time-Limited Offers",
+  "short_name": "Off-Peak",
+  "description": "Discover exclusive time-boxed offers at local venues. Save up to 50% during off-peak hours.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff385c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "lifestyle", "shopping"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Browse Offers",
+      "short_name": "Offers",
+      "description": "View all available offers",
+      "url": "/offers",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Claims",
+      "short_name": "Claims",
+      "description": "View your claimed offers",
+      "url": "/my-claims",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

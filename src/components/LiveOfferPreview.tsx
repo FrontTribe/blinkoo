@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { MdArrowForward, MdAccessTime, MdLocalOffer } from 'react-icons/md'
 
 type Offer = {
@@ -65,18 +66,24 @@ export function LiveOfferPreview({ offer, slot }: Props) {
       className="bg-white border border-[#EBEBEB] hover:border-primary transition-colors group block"
     >
       {offer.photo && (
-        <div className="aspect-video overflow-hidden bg-gray-200">
+        <div className="aspect-video overflow-hidden bg-gray-200 relative">
           {typeof offer.photo === 'object' && offer.photo.url ? (
-            <img
+            <Image
               src={offer.photo.url}
               alt={offer.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              loading="lazy"
             />
           ) : typeof offer.photo === 'string' ? (
-            <img
+            <Image
               src={offer.photo}
               alt={offer.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              loading="lazy"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-400">

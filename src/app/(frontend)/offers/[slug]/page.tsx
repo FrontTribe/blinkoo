@@ -2,6 +2,7 @@ import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@/payload.config'
+import Image from 'next/image'
 import { Reviews } from './Reviews'
 import { OfferMap } from './OfferMap'
 import { CountdownTimer } from '@/components/CountdownTimer'
@@ -138,15 +139,25 @@ export default async function OfferDetailPage({
 
             {/* Photo */}
             {offer.photo && (
-              <div className="aspect-[16/9] overflow-hidden bg-white border border-border">
+              <div className="aspect-[16/9] overflow-hidden bg-white border border-border relative">
                 {typeof offer.photo === 'object' && offer.photo.url ? (
-                  <img
+                  <Image
                     src={offer.photo.url}
                     alt={offer.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 66vw"
+                    priority
                   />
                 ) : typeof offer.photo === 'string' ? (
-                  <img src={offer.photo} alt={offer.title} className="w-full h-full object-cover" />
+                  <Image
+                    src={offer.photo}
+                    alt={offer.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 66vw"
+                    priority
+                  />
                 ) : null}
               </div>
             )}
@@ -215,6 +226,8 @@ export default async function OfferDetailPage({
               offerId={offer.id}
               venue={venue}
               geofenceKm={offer.geofenceKm}
+              slot={slot}
+              offer={offer}
             />
           </div>
         </div>

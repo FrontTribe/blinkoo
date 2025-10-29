@@ -17,6 +17,7 @@ import {
   FiMapPin,
   FiBarChart2,
   FiShoppingCart,
+  FiClock,
 } from 'react-icons/fi'
 
 export default function NavigationClient() {
@@ -152,22 +153,20 @@ export default function NavigationClient() {
               Blinkoo
             </Link>
 
-            {/* Main Navigation Links - Only for logged in users */}
-            {user && user.role === 'customer' && (
-              <div className="hidden md:flex items-center gap-1">
-                <Link
-                  href="/offers"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
-                    isActive('/offers')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
-                  }`}
-                >
-                  <FiShoppingBag
-                    className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`}
-                  />
-                  Offers
-                </Link>
+            {/* Main Navigation Links - For all users (offers), and logged-in customers */}
+            <div className="hidden md:flex items-center gap-1">
+              <Link
+                href="/offers"
+                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                  isActive('/offers')
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                }`}
+              >
+                <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
+                Offers
+              </Link>
+              {user && user.role === 'customer' && (
                 <Link
                   href="/my-claims"
                   className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
@@ -180,6 +179,51 @@ export default function NavigationClient() {
                     className={`w-4 h-4 ${isActive('/my-claims') ? 'text-primary' : ''}`}
                   />
                   Claims
+                </Link>
+              )}
+            </div>
+
+            {/* Staff Navigation */}
+            {user && user.role === 'staff' && (
+              <div className="hidden md:flex items-center gap-1">
+                <Link
+                  href="/staff/dashboard"
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                    pathname === '/staff/dashboard'
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <MdDashboard
+                    className={`w-4 h-4 ${pathname === '/staff/dashboard' ? 'text-primary' : ''}`}
+                  />
+                  Dashboard
+                </Link>
+                <Link
+                  href="/staff/redeem"
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                    pathname?.startsWith('/staff/redeem')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <FiShoppingCart
+                    className={`w-4 h-4 ${pathname?.startsWith('/staff/redeem') ? 'text-primary' : ''}`}
+                  />
+                  Redeem
+                </Link>
+                <Link
+                  href="/staff/history"
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                    pathname?.startsWith('/staff/history')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <FiClock
+                    className={`w-4 h-4 ${pathname?.startsWith('/staff/history') ? 'text-primary' : ''}`}
+                  />
+                  History
                 </Link>
               </div>
             )}
@@ -315,6 +359,34 @@ export default function NavigationClient() {
                             </Link>
                           </>
                         )}
+                        {user.role === 'staff' && (
+                          <>
+                            <Link
+                              href="/staff/dashboard"
+                              onClick={() => setShowUserMenu(false)}
+                              className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
+                            >
+                              <FiHome className="w-4 h-4" />
+                              Staff Dashboard
+                            </Link>
+                            <Link
+                              href="/staff/redeem"
+                              onClick={() => setShowUserMenu(false)}
+                              className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
+                            >
+                              <FiShoppingCart className="w-4 h-4" />
+                              Redeem Claims
+                            </Link>
+                            <Link
+                              href="/staff/history"
+                              onClick={() => setShowUserMenu(false)}
+                              className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
+                            >
+                              <FiClock className="w-4 h-4" />
+                              Redemption History
+                            </Link>
+                          </>
+                        )}
                         {(user.role === 'merchant_owner' || user.role === 'admin') && (
                           <>
                             <Link
@@ -365,17 +437,13 @@ export default function NavigationClient() {
                   )}
                 </div>
 
-                {/* Mobile Menu Button - For customers and merchants */}
-                {(user.role === 'customer' ||
-                  user.role === 'merchant_owner' ||
-                  user.role === 'admin') && (
-                  <button
-                    onClick={() => setShowMobileMenu(!showMobileMenu)}
-                    className="md:hidden p-2 text-text-secondary hover:text-text-primary"
-                  >
-                    {showMobileMenu ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
-                  </button>
-                )}
+                {/* Mobile Menu Button - Show for everyone (logged in or out) */}
+                <button
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                  className="md:hidden p-2 text-text-secondary hover:text-text-primary"
+                >
+                  {showMobileMenu ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
+                </button>
               </>
             ) : (
               <>
@@ -392,30 +460,38 @@ export default function NavigationClient() {
                 >
                   Sign Up
                 </Link>
+                {/* Mobile Menu Button - Show for logged-out users too */}
+                <button
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                  className="md:hidden p-2 text-text-secondary hover:text-text-primary"
+                >
+                  {showMobileMenu ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
+                </button>
               </>
             )}
           </div>
         </div>
 
         {/* Mobile Menu */}
-        {showMobileMenu && user && (
+        {showMobileMenu && (
           <div className="md:hidden border-t border-border py-2 space-y-1">
-            {user.role === 'customer' && (
+            {/* Offers link - visible to everyone */}
+            <Link
+              href="/offers"
+              onClick={() => setShowMobileMenu(false)}
+              className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
+                isActive('/offers')
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-text-secondary hover:bg-bg-secondary'
+              }`}
+            >
+              <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
+              Browse Offers
+            </Link>
+
+            {/* Customer-specific links */}
+            {user && user.role === 'customer' && (
               <>
-                <Link
-                  href="/offers"
-                  onClick={() => setShowMobileMenu(false)}
-                  className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
-                    isActive('/offers')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-secondary hover:bg-bg-secondary'
-                  }`}
-                >
-                  <FiShoppingBag
-                    className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`}
-                  />
-                  Browse Offers
-                </Link>
                 <Link
                   href="/my-claims"
                   onClick={() => setShowMobileMenu(false)}
@@ -432,7 +508,53 @@ export default function NavigationClient() {
                 </Link>
               </>
             )}
-            {(user.role === 'merchant_owner' || user.role === 'admin') && (
+            {user && user.role === 'staff' && (
+              <>
+                <Link
+                  href="/staff/dashboard"
+                  onClick={() => setShowMobileMenu(false)}
+                  className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
+                    pathname === '/staff/dashboard'
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <MdDashboard
+                    className={`w-4 h-4 ${pathname === '/staff/dashboard' ? 'text-primary' : ''}`}
+                  />
+                  Dashboard
+                </Link>
+                <Link
+                  href="/staff/redeem"
+                  onClick={() => setShowMobileMenu(false)}
+                  className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
+                    pathname?.startsWith('/staff/redeem')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <FiShoppingCart
+                    className={`w-4 h-4 ${pathname?.startsWith('/staff/redeem') ? 'text-primary' : ''}`}
+                  />
+                  Redeem
+                </Link>
+                <Link
+                  href="/staff/history"
+                  onClick={() => setShowMobileMenu(false)}
+                  className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
+                    pathname?.startsWith('/staff/history')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <FiClock
+                    className={`w-4 h-4 ${pathname?.startsWith('/staff/history') ? 'text-primary' : ''}`}
+                  />
+                  History
+                </Link>
+              </>
+            )}
+            {user && (user.role === 'merchant_owner' || user.role === 'admin') && (
               <>
                 <Link
                   href="/merchant/dashboard"

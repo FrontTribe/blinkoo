@@ -1,6 +1,8 @@
 import React from 'react'
 import { Bricolage_Grotesque } from 'next/font/google'
 import { ConditionalNavigation } from '@/components/ConditionalNavigation'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { ServiceWorkerRegister } from './service-worker-register'
 import { Toaster } from 'react-hot-toast'
 import './styles.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -87,17 +89,28 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <link rel="canonical" href="https://off-peak.com" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#ff385c" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Off-Peak" />
+        {process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID && (
+          <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer />
+        )}
       </head>
       <body>
-        <ConditionalNavigation />
-        <main>{children}</main>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            className: 'bg-black border border-gray-800 text-white',
-            duration: 3000,
-          }}
-        />
+        <ErrorBoundary>
+          <ServiceWorkerRegister />
+          <ConditionalNavigation />
+          <main className="pb-16 md:pb-0">{children}</main>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              className: 'bg-black border border-gray-800 text-white',
+              duration: 3000,
+            }}
+          />
+        </ErrorBoundary>
       </body>
     </html>
   )

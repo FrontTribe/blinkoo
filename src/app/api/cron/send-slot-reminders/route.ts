@@ -124,13 +124,46 @@ export async function POST(request: Request) {
       }
     }
 
-    // TODO: Actually send notifications (email, push, in-app)
-    // For now, just log them
-    console.log('Slot reminders to send:', JSON.stringify(notifications, null, 2))
+    // Send push notifications
+    let sentCount = 0
+    for (const notification of notifications) {
+      try {
+        const { sendPushNotificationToUser } = await import('@/utilities/sendPushNotification')
+        const offer = await payload.findByID({
+          collection: 'offers',
+          id: notification.offerId,
+        })
+
+        const offerData = offer as any
+        const slot = await payload.findByID({
+          collection: 'offer-slots',
+          id: notification.slotId,
+        })
+
+        const slotData = slot as any
+
+        const success = await sendPushNotificationToUser(notification.userId, {
+          title: offerData.title,
+          body:
+            notification.type === 'slot_30min_before'
+              ? `Starts in 30 minutes! ${slotData.qtyRemaining || 0} spots available.`
+              : `${offerData.title} is now live! ${slotData.qtyRemaining || 0} spots available.`,
+          url: `/offers/${offerData.slug || offerData.id}`,
+          tag: notification.type,
+        })
+
+        if (success) {
+          sentCount++
+        }
+      } catch (error) {
+        console.error(`Error sending notification to user ${notification.userId}:`, error)
+      }
+    }
 
     return NextResponse.json({
       success: true,
       notificationsCount: notifications.length,
+      sentCount,
       notifications,
     })
   } catch (error) {

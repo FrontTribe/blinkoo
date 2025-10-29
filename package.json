@@ -32,6 +32,7 @@
     "drizzle-orm": "^0.44.7",
     "framer-motion": "^12.23.24",
     "graphql": "^16.8.1",
+    "html5-qrcode": "^2.3.8",
     "mapbox-gl": "^3.16.0",
     "next": "15.4.4",
     "payload": "3.61.1",
@@ -42,8 +43,13 @@
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
     "react-map-gl": "^8.1.0",
+    "react-onesignal": "^3.4.0",
+    "react-qr-code": "^2.0.18",
+    "recharts": "^3.3.0",
     "sharp": "0.34.2",
-    "twilio": "^5.10.3"
+    "swr": "^2.3.6",
+    "twilio": "^5.10.3",
+    "use-debounce": "^10.0.6"
   },
   "devDependencies": {
     "@playwright/test": "1.54.1",

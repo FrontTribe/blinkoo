@@ -9,6 +9,7 @@ import {
   FiUsers,
   FiDollarSign,
   FiPercent,
+  FiDownload,
 } from 'react-icons/fi'
 
 type AnalyticsData = {
@@ -44,13 +45,30 @@ type AnalyticsData = {
 
 export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
+  const [comparison, setComparison] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [showComparison, setShowComparison] = useState(false)
 
   useEffect(() => {
     fetchAnalytics()
+    fetchComparison()
   }, [startDate, endDate])
+
+  async function fetchComparison() {
+    try {
+      const response = await fetch('/api/merchant/analytics/comparison?period=week', {
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setComparison(data)
+      }
+    } catch (error) {
+      console.error('Error fetching comparison:', error)
+    }
+  }
 
   async function fetchAnalytics() {
     setLoading(true)
@@ -90,13 +108,34 @@ export default function AnalyticsPage() {
             <h1 className="font-heading text-3xl font-bold text-text-primary mb-1">Analytics</h1>
             <p className="text-sm text-text-secondary">Performance metrics and insights</p>
           </div>
-          <Link
-            href="/merchant/dashboard"
-            className="inline-flex items-center gap-2 text-sm font-medium text-text-primary border border-border px-4 py-2 hover:bg-bg-secondary transition-colors"
-          >
-            <FiArrowLeft />
-            Back to Dashboard
-          </Link>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowComparison(!showComparison)}
+              className="inline-flex items-center gap-2 text-sm font-medium text-text-primary border border-border px-4 py-2 hover:bg-bg-secondary transition-colors"
+            >
+              <FiTrendingUp />
+              {showComparison ? 'Hide' : 'Show'} Comparison
+            </button>
+            <button
+              onClick={() => {
+                const params = new URLSearchParams()
+                if (startDate) params.set('startDate', startDate)
+                if (endDate) params.set('endDate', endDate)
+                window.open(`/api/merchant/analytics/export?${params.toString()}`, '_blank')
+              }}
+              className="inline-flex items-center gap-2 text-sm font-medium text-text-primary border border-border px-4 py-2 hover:bg-bg-secondary transition-colors"
+            >
+              <FiDownload />
+              Export CSV
+            </button>
+            <Link
+              href="/merchant/dashboard"
+              className="inline-flex items-center gap-2 text-sm font-medium text-text-primary border border-border px-4 py-2 hover:bg-bg-secondary transition-colors"
+            >
+              <FiArrowLeft />
+              Back to Dashboard
+            </Link>
+          </div>
         </div>
 
         {/* Date Range Filter */}
@@ -124,6 +163,81 @@ export default function AnalyticsPage() {
             </div>
           </div>
         </div>
+
+        {/* Comparison View */}
+        {showComparison && comparison && (
+          <div className="bg-white border border-primary p-6 mb-6">
+            <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
+              Week Comparison
+            </h2>
+            <div className="grid gap-4 md:grid-cols-4">
+              <div>
+                <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">
+                  Total Claims
+                </h3>
+                <p className="text-2xl font-bold text-text-primary">
+                  {comparison.currentPeriod.stats.totalClaims}
+                </p>
+                <p
+                  className={`text-sm font-medium ${
+                    parseFloat(comparison.changes.totalClaims) >= 0
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                  }`}
+                >
+                  {parseFloat(comparison.changes.totalClaims) >= 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(parseFloat(comparison.changes.totalClaims))}%
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Redeemed</h3>
+                <p className="text-2xl font-bold text-primary">
+                  {comparison.currentPeriod.stats.redeemed}
+                </p>
+                <p
+                  className={`text-sm font-medium ${
+                    parseFloat(comparison.changes.redeemed) >= 0 ? 'text-green-600' : 'text-red-600'
+                  }`}
+                >
+                  {parseFloat(comparison.changes.redeemed) >= 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(parseFloat(comparison.changes.redeemed))}%
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Expired</h3>
+                <p className="text-2xl font-bold text-error">
+                  {comparison.currentPeriod.stats.expired}
+                </p>
+                <p
+                  className={`text-sm font-medium ${
+                    parseFloat(comparison.changes.expired) >= 0 ? 'text-red-600' : 'text-green-600'
+                  }`}
+                >
+                  {parseFloat(comparison.changes.expired) >= 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(parseFloat(comparison.changes.expired))}%
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Reserved</h3>
+                <p className="text-2xl font-bold text-text-primary">
+                  {comparison.currentPeriod.stats.reserved}
+                </p>
+                <p
+                  className={`text-sm font-medium ${
+                    parseFloat(comparison.changes.reserved) >= 0 ? 'text-green-600' : 'text-red-600'
+                  }`}
+                >
+                  {parseFloat(comparison.changes.reserved) >= 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(parseFloat(comparison.changes.reserved))}%
+                </p>
+              </div>
+            </div>
+            <p className="text-xs text-text-tertiary mt-4">
+              Comparing {comparison.currentPeriod.start} to {comparison.currentPeriod.end} vs{' '}
+              {comparison.previousPeriod.start} to {comparison.previousPeriod.end}
+            </p>
+          </div>
+        )}
 
         {analytics && (
           <>

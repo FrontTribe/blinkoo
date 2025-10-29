@@ -215,3 +215,18 @@ svg {
     }
   }
 }
+
+/* Safe area support for iOS devices */
+@supports (padding: max(0px)) {
+  .safe-area-pb {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-pt {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+
+  .h-safe-area-inset-bottom {
+    height: env(safe-area-inset-bottom);
+  }
+}

@@ -125,5 +125,14 @@ export const Users: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'oneSignalPlayerId',
+      type: 'text',
+      label: 'OneSignal Player ID',
+      admin: {
+        readOnly: true,
+        description: 'OneSignal player ID for push notifications',
+      },
+    },
   ],
 }

@@ -11,6 +11,11 @@ import { SavedButton } from '@/components/SavedButton'
 import { FilterPanel } from '@/components/FilterPanel'
 import { OnboardingModal } from '@/components/OnboardingModal'
 import { useOnboarding } from '@/hooks/useOnboarding'
+import { useOfferUpdates } from '@/hooks/useOfferUpdates'
+import { OfferCardSkeleton, SkeletonLoader } from '@/components/SkeletonLoader'
+import { EmptyState } from '@/components/EmptyState'
+import { SearchBar } from '@/components/SearchBar'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 
 // Dynamically import MapView to avoid SSR issues with mapbox-gl
 const MapView = dynamic(() => import('./MapView'), {
@@ -120,8 +125,10 @@ export default function OffersContent({
   const pathname = usePathname()
 
   const [offers, setOffers] = useState<Offer[]>(initialOffers)
+  const [filteredOffers, setFilteredOffers] = useState<Offer[]>(initialOffers)
   const [categories, setCategories] = useState<Category[]>(defaultCategories)
   const [loading, setLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   // Onboarding
   const { showOnboarding, setShowOnboarding, completeOnboarding, skipOnboarding } = useOnboarding()
@@ -147,6 +154,31 @@ export default function OffersContent({
 
   // Get view mode from localStorage for client-side only
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
+
+  // Real-time updates
+  const { updates } = useOfferUpdates({
+    enabled: viewMode === 'list',
+    interval: 30000,
+    onUpdate: (updates) => {
+      // Update offers with real-time data
+      setOffers((prev) => {
+        return prev.map((offer) => {
+          const update = updates.find((u: any) => u.slotId === offer.slot.id)
+          if (update) {
+            return {
+              ...offer,
+              slot: {
+                ...offer.slot,
+                qtyRemaining: update.qtyRemaining,
+                state: update.state,
+              },
+            }
+          }
+          return offer
+        })
+      })
+    },
+  })
 
   // Load view preference from localStorage
   useEffect(() => {
@@ -184,8 +216,27 @@ export default function OffersContent({
   // Update offers when initialOffers changes (when filters change)
   useEffect(() => {
     setOffers(initialOffers)
+    setFilteredOffers(initialOffers)
     console.log('Client: Offers updated from server:', initialOffers.length)
   }, [initialOffers])
+
+  // Filter offers based on search query
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredOffers(offers)
+      return
+    }
+
+    const query = searchQuery.toLowerCase()
+    const filtered = offers.filter((item) => {
+      const title = item.offer.title?.toLowerCase() || ''
+      const description = item.offer.description?.toLowerCase() || ''
+      const venueName = item.venue.name?.toLowerCase() || ''
+
+      return title.includes(query) || description.includes(query) || venueName.includes(query)
+    })
+    setFilteredOffers(filtered)
+  }, [searchQuery, offers])
 
   // Fetch categories on mount
   useEffect(() => {
@@ -204,10 +255,54 @@ export default function OffersContent({
     fetchCategories()
   }, [])
 
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    {
+      key: 'f',
+      ctrl: true,
+      action: () => setShowFilters(true),
+      description: 'Open filters',
+    },
+    {
+      key: '/',
+      action: () => {
+        const searchInput = document.querySelector(
+          'input[placeholder*="Search"]',
+        ) as HTMLInputElement
+        if (searchInput) {
+          searchInput.focus()
+        }
+      },
+      description: 'Focus search',
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        if (showFilters) setShowFilters(false)
+      },
+      description: 'Close filters',
+    },
+  ])
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-primary">Loading offers...</p>
+      <div className="h-screen bg-white flex flex-col overflow-hidden">
+        {/* Categories Skeleton */}
+        <div className="overflow-x-auto border-b border-border shrink-0">
+          <div className="flex gap-2 px-4 py-2.5">
+            {[1, 2, 3, 4].map((i) => (
+              <SkeletonLoader key={i} className="w-20 h-8" />
+            ))}
+          </div>
+        </div>
+        {/* Offers Grid Skeleton */}
+        <div className="flex-1 overflow-y-auto px-4 py-4">
+          <div className="grid grid-cols-2 gap-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <OfferCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
@@ -217,8 +312,15 @@ export default function OffersContent({
       {/* Left Column - 40% */}
       <div className="w-2/5 border-r border-border flex flex-col overflow-hidden">
         {/* Header Row */}
-        <div className="flex items-center justify-between h-14 px-4 shrink-0">
-          <h4 className="text-base font-semibold text-text-primary">{offers.length} offers</h4>
+        <div className="flex items-center justify-between h-14 px-4 shrink-0 border-b border-border">
+          <h4 className="text-base font-semibold text-text-primary">
+            {filteredOffers.length} {filteredOffers.length === 1 ? 'offer' : 'offers'}
+            {searchQuery && offers.length !== filteredOffers.length && (
+              <span className="text-text-tertiary text-sm ml-1">
+                (filtered from {offers.length})
+              </span>
+            )}
+          </h4>
           <button
             onClick={() => setShowFilters(true)}
             className={`relative h-8 px-3 text-sm font-medium border border-border transition-colors ${
@@ -237,6 +339,15 @@ export default function OffersContent({
               )}
             </div>
           </button>
+        </div>
+
+        {/* Search Bar */}
+        <div className="px-4 py-3 border-b border-border shrink-0">
+          <SearchBar
+            placeholder="Search offers by title, venue, or description..."
+            onSearch={setSearchQuery}
+            className="w-full"
+          />
         </div>
 
         {/* Categories Row */}
@@ -284,23 +395,54 @@ export default function OffersContent({
         {/* Offers List - Scrollable */}
         <div className="flex-1 overflow-y-auto">
           <div className="px-4 py-4">
-            {offers.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-text-secondary mb-4">No offers match your filters</p>
-                <button
-                  onClick={() => router.push(pathname)}
-                  className="text-primary font-medium hover:underline"
-                >
-                  Clear all filters
-                </button>
-              </div>
+            {filteredOffers.length === 0 ? (
+              <EmptyState
+                title={searchQuery ? 'No offers match your search' : 'No offers found'}
+                description={
+                  searchQuery
+                    ? `Try a different search term or clear the search to see all offers`
+                    : 'Try adjusting your filters or check back later for new offers'
+                }
+                action={
+                  searchQuery
+                    ? {
+                        label: 'Clear Search',
+                        href: '#',
+                        onClick: () => setSearchQuery(''),
+                      }
+                    : {
+                        label: 'Clear Filters',
+                        href: pathname || '/offers',
+                      }
+                }
+                illustration={
+                  searchQuery ? (
+                    <div className="w-24 h-24 rounded-full bg-bg-secondary flex items-center justify-center">
+                      <svg
+                        className="w-12 h-12 text-text-tertiary"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </div>
+                  ) : undefined
+                }
+              />
             ) : (
               <div className="grid grid-cols-2 gap-3">
-                {offers.map((item) => (
+                {filteredOffers.map((item) => (
                   <Link
                     key={item.slot.id}
                     href={`/offers/${item.offer.id}`}
                     className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white"
+                    aria-label={`View offer: ${item.offer.title} at ${item.venue.name}`}
                   >
                     {/* Action Buttons */}
                     <div
@@ -314,10 +456,17 @@ export default function OffersContent({
                     {/* Image */}
                     <div className="aspect-square bg-bg-secondary relative overflow-hidden">
                       {item.offer.photo ? (
-                        <img
-                          src={item.offer.photo}
+                        <Image
+                          src={
+                            typeof item.offer.photo === 'object' && item.offer.photo.url
+                              ? item.offer.photo.url
+                              : item.offer.photo
+                          }
                           alt={item.offer.title}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 50vw, 33vw"
+                          loading="lazy"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-bg-secondary text-text-tertiary text-sm">
@@ -388,7 +537,7 @@ export default function OffersContent({
 
       {/* Right Column - Map 60% */}
       <div className="w-3/5 relative bg-bg-secondary">
-        <MapView offers={offers} />
+        <MapView offers={filteredOffers} />
       </div>
 
       {/* Filter Panel */}

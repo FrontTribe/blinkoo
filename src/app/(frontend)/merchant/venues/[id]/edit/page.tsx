@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { MdArrowBack, MdLocationOn, MdPhone, MdEmail } from 'react-icons/md'
 import { LocationMap } from '@/components/LocationMap'
+import { VenueHoursEditor } from '@/components/VenueHoursEditor'
 import mapboxgl from 'mapbox-gl'
 
 export default function EditVenuePage() {
@@ -58,7 +59,7 @@ export default function EditVenuePage() {
           lng: venue.lng?.toString() || '',
           phone: venue.phone || '',
           email: venue.email || '',
-          openHours: venue.openHours ? JSON.stringify(venue.openHours) : '{}',
+          openHours: venue.openHours || {},
           status: venue.status || 'active',
         })
       } catch (err) {
@@ -385,6 +386,13 @@ export default function EditVenuePage() {
                   />
                 </div>
               </div>
+            </div>
+
+            <div>
+              <VenueHoursEditor
+                initialHours={formData.openHours}
+                onChange={(hours) => setFormData({ ...formData, openHours: hours })}
+              />
             </div>
 
             <div>

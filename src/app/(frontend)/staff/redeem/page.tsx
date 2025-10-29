@@ -1,15 +1,49 @@
 'use client'
 
-import { useState } from 'react'
-import { FiShoppingCart, FiCheckCircle, FiAlertCircle } from 'react-icons/fi'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { FiShoppingCart, FiCheckCircle, FiAlertCircle, FiCamera, FiMic } from 'react-icons/fi'
+import { QRScanner } from '@/components/QRScanner'
+import { VoiceInputButton } from './VoiceInputButton'
 
 export default function StaffRedeemPage() {
+  const router = useRouter()
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
+  const [authenticated, setAuthenticated] = useState(false)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [showScanner, setShowScanner] = useState(false)
+  const [showVoiceInput, setShowVoiceInput] = useState(false)
   const [result, setResult] = useState<{
     type: 'success' | 'error'
     message: string
   } | null>(null)
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const response = await fetch('/api/users/me', { credentials: 'include' })
+        if (response.ok) {
+          const user = await response.json()
+          // Check if user is staff, merchant_owner, or admin
+          if (user.role === 'staff' || user.role === 'merchant_owner' || user.role === 'admin') {
+            setAuthenticated(true)
+          } else {
+            router.push('/auth/login?redirect=/staff/redeem')
+          }
+        } else {
+          router.push('/auth/login?redirect=/staff/redeem')
+        }
+      } catch (error) {
+        console.error('Error checking auth:', error)
+        router.push('/auth/login?redirect=/staff/redeem')
+      } finally {
+        setAuthLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [router])
 
   async function handleRedeem() {
     if (!code) return
@@ -50,8 +84,16 @@ export default function StaffRedeemPage() {
     }
   }
 
+  if (authLoading || !authenticated) {
+    return (
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center pb-20 md:pb-4">
+        <p className="text-text-primary">Loading...</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-bg-secondary flex items-center justify-center p-4">
+    <div className="min-h-screen bg-bg-secondary flex items-center justify-center p-4 pb-20 md:pb-4">
       <div className="max-w-lg w-full">
         <div className="bg-white border-2 border-border">
           {/* Header */}
@@ -86,13 +128,31 @@ export default function StaffRedeemPage() {
               </div>
             )}
 
+            {/* QR Scanner and Voice Input Buttons */}
+            <div className="mb-4 grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setShowScanner(true)}
+                className="bg-primary/10 border-2 border-primary text-primary py-4 px-4 hover:bg-primary/20 transition-colors font-semibold flex items-center justify-center gap-2 text-sm"
+              >
+                <FiCamera className="w-5 h-5" />
+                Scan QR
+              </button>
+              <button
+                onClick={() => setShowVoiceInput(true)}
+                className="bg-primary/10 border-2 border-primary text-primary py-4 px-4 hover:bg-primary/20 transition-colors font-semibold flex items-center justify-center gap-2 text-sm"
+              >
+                <FiMic className="w-5 h-5" />
+                Voice
+              </button>
+            </div>
+
             {/* Input Field */}
             <div className="mb-8">
               <label
                 htmlFor="code"
                 className="block text-base font-bold text-text-primary mb-3 uppercase tracking-wider"
               >
-                Enter 6-Digit Code or QR Token
+                Or Enter Code Manually
               </label>
               <div className="border-2 border-primary">
                 <input
@@ -107,11 +167,13 @@ export default function StaffRedeemPage() {
                     if (result) setResult(null)
                   }}
                   onKeyPress={handleKeyPress}
-                  className="w-full px-6 py-5 bg-white border-2 border-primary focus:border-primary focus:outline-none text-3xl font-mono tracking-widest text-text-primary text-center uppercase transition-colors"
+                  className="w-full px-6 py-6 md:py-5 bg-white border-2 border-primary focus:border-primary focus:outline-none text-2xl md:text-3xl font-mono tracking-widest text-text-primary text-center uppercase transition-colors"
                   placeholder="123456"
                   maxLength={64}
                   disabled={loading}
-                  autoFocus
+                  autoFocus={!showScanner}
+                  autoComplete="off"
+                  inputMode="numeric"
                 />
               </div>
               <p className="mt-3 text-sm text-text-secondary text-center font-medium">
@@ -172,6 +234,33 @@ export default function StaffRedeemPage() {
           </div>
         </div>
       </div>
+
+      {/* QR Scanner Modal */}
+      {showScanner && (
+        <QRScanner
+          onScan={(scannedCode) => {
+            setCode(scannedCode)
+            setShowScanner(false)
+            handleRedeem()
+          }}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
+
+      {/* Voice Input */}
+      {showVoiceInput && (
+        <VoiceInputButton
+          onResult={(result) => {
+            setCode(result)
+            setShowVoiceInput(false)
+            // Auto-redeem if code looks valid
+            if (result.length >= 6) {
+              setTimeout(() => handleRedeem(), 500)
+            }
+          }}
+          onCancel={() => setShowVoiceInput(false)}
+        />
+      )}
     </div>
   )
 }

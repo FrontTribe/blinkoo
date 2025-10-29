@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { FiArrowLeft, FiClock, FiUsers, FiMapPin, FiBookmark } from 'react-icons/fi'
 import { DynamicIcon } from '@/components/DynamicIcon'
 import { SavedButton } from '@/components/SavedButton'
+import { EmptyState } from '@/components/EmptyState'
 
 type SavedOffer = {
   id: string
@@ -101,24 +103,14 @@ export default function SavedOffersPage() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {savedOffers.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="inline-block p-4 bg-white border border-border rounded-full mb-4">
-              <FiBookmark className="w-8 h-8 text-gray-400" />
-            </div>
-            <h2 className="font-heading text-xl font-semibold text-text-primary mb-2">
-              No saved offers yet
-            </h2>
-            <p className="text-text-secondary mb-6">
-              Start saving offers you're interested in and we'll notify you when slots become
-              available
-            </p>
-            <Link
-              href="/offers"
-              className="inline-block bg-text-primary text-white px-6 py-3 font-semibold hover:bg-text-secondary transition-colors"
-            >
-              Browse Offers
-            </Link>
-          </div>
+          <EmptyState
+            title="No saved offers yet"
+            description="Start saving offers you're interested in and we'll notify you when slots become available"
+            action={{
+              label: 'Browse Offers',
+              href: '/offers',
+            }}
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {savedOffers.map((saved) => (
@@ -135,10 +127,17 @@ export default function SavedOffersPage() {
                 {/* Image */}
                 <div className="aspect-[4/3] bg-bg-secondary relative overflow-hidden">
                   {saved.offer.photo ? (
-                    <img
-                      src={saved.offer.photo}
+                    <Image
+                      src={
+                        typeof saved.offer.photo === 'object' && saved.offer.photo.url
+                          ? saved.offer.photo.url
+                          : saved.offer.photo
+                      }
                       alt={saved.offer.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-bg-secondary text-text-tertiary text-xs">

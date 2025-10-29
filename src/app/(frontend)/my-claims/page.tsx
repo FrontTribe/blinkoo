@@ -6,30 +6,18 @@ import { QRCodeSVG } from 'qrcode.react'
 import { FiMessageSquare, FiCheckCircle } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 import { OfferSuggestions } from '@/components/OfferSuggestions'
+import { useOfferUpdates } from '@/hooks/useOfferUpdates'
+import { ClaimsListSkeleton } from '@/components/SkeletonLoader'
+import { EmptyState } from '@/components/EmptyState'
+import { useClaims } from '@/hooks/useClaims'
 
 export default function MyClaimsPage() {
-  const [claims, setClaims] = useState<any[]>([])
+  const { claims, loading, mutate } = useClaims()
   const [timeRemaining, setTimeRemaining] = useState<Record<string, number>>({})
 
   useEffect(() => {
-    async function fetchClaims() {
-      try {
-        const response = await fetch('/api/web/my-claims', {
-          credentials: 'include',
-        })
-        if (response.ok) {
-          const data = await response.json()
-          setClaims(data.claims || [])
-        }
-      } catch (error) {
-        console.error('Error fetching claims:', error)
-      }
-    }
+    if (!claims || claims.length === 0) return
 
-    fetchClaims()
-  }, [])
-
-  useEffect(() => {
     const timer = setInterval(() => {
       const now = Date.now()
       const newTimeRemaining: Record<string, number> = {}
@@ -89,8 +77,22 @@ export default function MyClaimsPage() {
     window.location.href = `/offers/${offer.id}?review=true`
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg-secondary pb-20 md:pb-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <div className="h-10 bg-gray-200 rounded w-48 mb-2 animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded w-64 animate-pulse" />
+          </div>
+          <ClaimsListSkeleton />
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-bg-secondary">
+    <div className="min-h-screen bg-bg-secondary pb-20 md:pb-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Section */}
         <div className="mb-8">
@@ -99,24 +101,14 @@ export default function MyClaimsPage() {
         </div>
 
         {claims.length === 0 ? (
-          <div className="bg-white border border-border p-16 text-center">
-            <div className="max-w-md mx-auto">
-              <div className="text-6xl mb-6">🎟️</div>
-              <h2 className="font-heading text-2xl font-bold text-text-primary mb-3">
-                No Claims Yet
-              </h2>
-              <p className="text-text-secondary mb-6 text-sm">
-                Start claiming offers and enjoying great deals!
-              </p>
-              <Link
-                href="/offers"
-                className="inline-block bg-primary text-white px-8 py-4 hover:bg-primary-hover transition-colors font-semibold text-sm"
-                style={{ color: 'white' }}
-              >
-                Browse Offers
-              </Link>
-            </div>
-          </div>
+          <EmptyState
+            title="No Claims Yet"
+            description="Start claiming offers and enjoying great deals!"
+            action={{
+              label: 'Browse Offers',
+              href: '/offers',
+            }}
+          />
         ) : (
           <div className="space-y-4">
             {claims.map((claim) => {

@@ -7,7 +7,8 @@ import configPromise from '@/payload.config'
  * GET /api/web/claims/[id]/can-review
  * Check if user can review this claim
  */
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const config = await configPromise
   const payload = await getPayload({ config })
   const { user } = await payload.auth({ headers: await getHeaders() })
@@ -19,7 +20,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
   try {
     const claim = await payload.findByID({
       collection: 'claims',
-      id: params.id,
+      id,
       depth: 2,
     })
 

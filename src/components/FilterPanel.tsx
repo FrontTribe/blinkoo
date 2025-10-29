@@ -135,7 +135,11 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-border">
               <h2 className="text-lg font-semibold text-text-primary">Filters</h2>
-              <button onClick={onClose} className="p-2 hover:bg-bg-secondary transition-colors">
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-bg-secondary transition-colors"
+                aria-label="Close filters"
+              >
                 <FiX className="text-lg text-text-secondary" />
               </button>
             </div>
@@ -275,6 +279,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                 <button
                   onClick={handleClear}
                   className="flex-1 py-3 text-text-secondary font-medium hover:text-text-primary transition-colors text-sm border border-border"
+                  aria-label="Clear all filters"
                 >
                   Clear all
                 </button>
@@ -282,6 +287,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                   onClick={handleApply}
                   className="flex-1 py-3 bg-text-primary text-white font-semibold hover:bg-text-secondary transition-colors text-sm"
                   style={{ color: 'white' }}
+                  aria-label={`Apply filters${countActiveFilters() > 0 ? ` (${countActiveFilters()} active)` : ''}`}
                 >
                   Show results {countActiveFilters() > 0 && `(${countActiveFilters()})`}
                 </button>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { MdArrowBack, MdLocationOn, MdPhone, MdEmail } from 'react-icons/md'
 import { LocationMap } from '@/components/LocationMap'
+import { VenueHoursEditor } from '@/components/VenueHoursEditor'
 import mapboxgl from 'mapbox-gl'
 
 export default function CreateVenuePage() {
@@ -28,7 +29,7 @@ export default function CreateVenuePage() {
     phone: '',
     email: '',
     category: '',
-    openHours: '{}',
+    openHours: {},
   })
 
   const [categories, setCategories] = useState<any[]>([])
@@ -376,6 +377,13 @@ export default function CreateVenuePage() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div>
+              <VenueHoursEditor
+                initialHours={formData.openHours}
+                onChange={(hours) => setFormData({ ...formData, openHours: hours })}
+              />
             </div>
 
             <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-[#EBEBEB]">

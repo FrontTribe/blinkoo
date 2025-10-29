@@ -13,6 +13,8 @@ import { Venues } from './collections/Venues'
 import { Categories } from './collections/Categories'
 import { Offers } from './collections/Offers'
 import { OfferSlots } from './collections/OfferSlots'
+import { OfferTemplates } from './collections/OfferTemplates'
+import { Waitlists } from './collections/Waitlists'
 import { Claims } from './collections/Claims'
 import { Reviews } from './collections/Reviews'
 import { Favorites } from './collections/Favorites'
@@ -38,12 +40,14 @@ export default buildConfig({
     Categories,
     Offers,
     OfferSlots,
+    OfferTemplates,
     Claims,
     Reviews,
     Favorites,
     SavedOffers,
     Achievements,
     UserStats,
+    Waitlists,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

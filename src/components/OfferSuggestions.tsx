@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { FiClock, FiMapPin, FiTag } from 'react-icons/fi'
 
@@ -122,15 +123,18 @@ export function OfferSuggestions({ offerId, userId, lat, lng, limit = 4 }: Offer
             <div className="flex gap-3">
               {/* Photo */}
               {suggestion.offer.photo && typeof suggestion.offer.photo === 'object' && (
-                <div className="w-20 h-20 bg-gray-100 flex-shrink-0">
-                  <img
+                <div className="w-20 h-20 bg-gray-100 flex-shrink-0 relative overflow-hidden">
+                  <Image
                     src={
                       suggestion.offer.photo.url ||
                       suggestion.offer.photo.filename ||
                       '/placeholder.jpg'
                     }
                     alt={suggestion.offer.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                    loading="lazy"
                   />
                 </div>
               )}

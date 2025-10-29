@@ -82,8 +82,8 @@ export default function DashboardContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-white py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
         <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
@@ -93,13 +93,21 @@ export default function DashboardContent() {
               Manage your offers and venues
             </p>
           </div>
-          <Link
-            href="/merchant/offers/create"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
-            style={{ color: 'white' }}
-          >
-            <span style={{ color: 'white' }}>+ Create Offer</span>
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              href="/merchant/notifications"
+              className="inline-flex items-center gap-2 bg-white border border-border text-text-primary px-6 py-3 hover:border-primary font-semibold transition-colors"
+            >
+              📢 Send Notification
+            </Link>
+            <Link
+              href="/merchant/offers/create"
+              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+              style={{ color: 'white' }}
+            >
+              <span style={{ color: 'white' }}>+ Create Offer</span>
+            </Link>
+          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -239,7 +247,7 @@ export default function DashboardContent() {
           <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
             Quick Actions
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
             <Link
               href="/merchant/venues/create"
               className="bg-white border border-border text-text-primary px-4 py-3 hover:border-primary transition-colors font-medium text-center"
@@ -260,10 +268,22 @@ export default function DashboardContent() {
             </Link>
             <Link
               href="/merchant/analytics"
+              className="bg-white border border-border text-text-primary px-4 py-3 hover:border-primary transition-colors font-medium text-center"
+            >
+              View Analytics →
+            </Link>
+            <Link
+              href="/merchant/claims"
+              className="bg-white border border-border text-text-primary px-4 py-3 hover:border-primary transition-colors font-medium text-center"
+            >
+              Manage Claims →
+            </Link>
+            <Link
+              href="/merchant/customers"
               className="bg-white border border-primary text-primary px-4 py-3 hover:bg-primary hover:text-white transition-colors font-medium text-center"
               style={{ color: 'inherit' }}
             >
-              View Analytics →
+              Customer Insights →
             </Link>
           </div>
         </div>

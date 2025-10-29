@@ -6,6 +6,8 @@ import { useGeolocation } from '@/hooks/useGeolocation'
 import { FiMapPin, FiClock, FiUsers, FiAlertCircle } from 'react-icons/fi'
 import { SavedButton } from '@/components/SavedButton'
 import { CountdownTimer } from '@/components/CountdownTimer'
+import { ShareOfferButton } from '@/components/sharing/ShareOfferButton'
+import { WaitlistButton } from '@/components/WaitlistButton'
 
 type OfferDetailsClientProps = {
   slug: string
@@ -92,6 +94,21 @@ export function OfferDetailsClient({
               )}
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            <SavedButton offerId={offer.id} />
+            <ShareOfferButton
+              offerTitle={offer.title}
+              offerId={offer.id}
+              venueName={venue.name}
+              discount={
+                offer.type === 'percent'
+                  ? `${offer.discountValue}% off`
+                  : offer.type === 'fixed'
+                    ? `€${offer.discountValue} off`
+                    : undefined
+              }
+            />
+          </div>
         </div>
 
         {/* Geofence Warning */}
@@ -166,11 +183,15 @@ export function OfferBookingCard({
   offerId,
   venue,
   geofenceKm = 0,
+  slot,
+  offer,
 }: {
   slug: string
   offerId: string
   venue: any
   geofenceKm?: number
+  slot?: any
+  offer?: any
 }) {
   const { lat, lng } = useGeolocation()
   const [distance, setDistance] = useState<number | null>(null)
@@ -218,25 +239,33 @@ export function OfferBookingCard({
           </div>
         )}
 
-        {/* Claim Button */}
-        <Link
-          href={`/offers/${slug}/claim`}
-          className={`block w-full text-center py-4 px-6 font-bold text-base transition-colors ${
-            hasGeofence && isOutsideGeofence
-              ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 hover:bg-amber-200'
-              : 'bg-primary text-white hover:bg-primary-hover transform hover:-translate-y-0.5'
-          }`}
-          style={hasGeofence && isOutsideGeofence ? {} : { color: 'white' }}
-        >
-          {hasGeofence && isOutsideGeofence
-            ? '⚠️ Claim Offer (Outside Geofence)'
-            : '🎉 Claim This Offer'}
-        </Link>
-
-        {hasGeofence && isOutsideGeofence && (
-          <p className="text-xs text-center text-amber-700">
-            Warning: You may be too far from the venue to claim
-          </p>
+        {/* Waitlist or Claim Button */}
+        <WaitlistButton
+          offerId={offerId}
+          offerSlug={offer.slug}
+          isSoldOut={slot?.qtyRemaining === 0}
+        />
+        {slot?.qtyRemaining > 0 && (
+          <>
+            <Link
+              href={`/offers/${slug}/claim`}
+              className={`block w-full text-center py-4 px-6 font-bold text-base transition-colors ${
+                hasGeofence && isOutsideGeofence
+                  ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 hover:bg-amber-200'
+                  : 'bg-primary text-white hover:bg-primary-hover transform hover:-translate-y-0.5'
+              }`}
+              style={hasGeofence && isOutsideGeofence ? {} : { color: 'white' }}
+            >
+              {hasGeofence && isOutsideGeofence
+                ? '⚠️ Claim Offer (Outside Geofence)'
+                : '🎉 Claim This Offer'}
+            </Link>
+            {hasGeofence && isOutsideGeofence && (
+              <p className="text-xs text-center text-amber-700">
+                Warning: You may be too far from the venue to claim
+              </p>
+            )}
+          </>
         )}
 
         {/* Info Note */}
