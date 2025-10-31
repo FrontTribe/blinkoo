@@ -83,6 +83,7 @@ export interface Config {
     achievements: Achievement;
     'user-stats': UserStat;
     waitlists: Waitlist;
+    notifications: Notification;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -105,6 +106,7 @@ export interface Config {
     achievements: AchievementsSelect<false> | AchievementsSelect<true>;
     'user-stats': UserStatsSelect<false> | UserStatsSelect<true>;
     waitlists: WaitlistsSelect<false> | WaitlistsSelect<true>;
+    notifications: NotificationsSelect<false> | NotificationsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -200,6 +202,18 @@ export interface Merchant {
   stripeAccountId?: string | null;
   kycStatus: 'pending' | 'approved' | 'rejected';
   approvedAt?: string | null;
+  /**
+   * Reason for rejection (visible to merchant)
+   */
+  rejectionReason?: string | null;
+  /**
+   * Date when account was rejected
+   */
+  rejectionDate?: string | null;
+  /**
+   * Notes from merchant when resubmitting for approval
+   */
+  resubmissionNotes?: string | null;
   categories?:
     | {
         category:
@@ -626,6 +640,24 @@ export interface Waitlist {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications".
+ */
+export interface Notification {
+  id: number;
+  user: number | User;
+  type: 'kyc_approved' | 'kyc_rejected' | 'offer_claimed' | 'offer_expiring' | 'low_stock' | 'system' | 'info';
+  title: string;
+  message: string;
+  read?: boolean | null;
+  /**
+   * Optional link to navigate to when clicked
+   */
+  link?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -694,6 +726,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'waitlists';
         value: number | Waitlist;
+      } | null)
+    | ({
+        relationTo: 'notifications';
+        value: number | Notification;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -810,6 +846,9 @@ export interface MerchantsSelect<T extends boolean = true> {
   stripeAccountId?: T;
   kycStatus?: T;
   approvedAt?: T;
+  rejectionReason?: T;
+  rejectionDate?: T;
+  resubmissionNotes?: T;
   categories?:
     | T
     | {
@@ -1059,6 +1098,20 @@ export interface WaitlistsSelect<T extends boolean = true> {
   autoClaim?: T;
   notified?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications_select".
+ */
+export interface NotificationsSelect<T extends boolean = true> {
+  user?: T;
+  type?: T;
+  title?: T;
+  message?: T;
+  read?: T;
+  link?: T;
   updatedAt?: T;
   createdAt?: T;
 }

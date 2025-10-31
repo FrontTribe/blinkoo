@@ -1,252 +1,279 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
-import { FiSend, FiUsers, FiTag, FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft, FiFilter, FiCheck } from 'react-icons/fi'
 
-export default function MerchantNotificationsPage() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [target, setTarget] = useState<'offer' | 'custom'>('offer')
-  const [offerId, setOfferId] = useState('')
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([])
-  const [message, setMessage] = useState({
-    title: '',
-    body: '',
-    url: '',
-  })
+type Notification = {
+  id: string
+  type: string
+  title: string
+  message: string
+  read: boolean
+  link?: string
+  createdAt: string
+}
 
-  // For demo - in production, fetch from API
-  const [availableOffers, setAvailableOffers] = useState<any[]>([])
-
-  async function fetchOffers() {
-    try {
-      const res = await fetch('/api/merchant/offers', { credentials: 'include' })
-      if (res.ok) {
-        const data = await res.json()
-        setAvailableOffers(data.offers || [])
-      }
-    } catch (error) {
-      console.error('Error fetching offers:', error)
-    }
-  }
+export default function NotificationsPage() {
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState<'all' | 'unread'>('all')
 
   useEffect(() => {
-    fetchOffers()
-  }, [])
+    fetchNotifications()
+  }, [filter])
 
-  async function handleSend() {
-    if (!message.title || !message.body) {
-      toast.error('Please fill in title and message')
-      return
-    }
-
-    if (target === 'offer' && !offerId) {
-      toast.error('Please select an offer')
-      return
-    }
-
-    if (target === 'custom' && selectedUsers.length === 0) {
-      toast.error('Please select at least one user')
-      return
-    }
-
+  async function fetchNotifications() {
     setLoading(true)
-
     try {
-      const response = await fetch('/api/web/notifications/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          offerId: target === 'offer' ? offerId : undefined,
-          userIds: target === 'custom' ? selectedUsers : undefined,
-          message,
-        }),
+      const url =
+        filter === 'unread'
+          ? '/api/merchant/notifications?unreadOnly=true&limit=100'
+          : '/api/merchant/notifications?limit=100'
+      
+      const response = await fetch(url, {
         credentials: 'include',
       })
-
-      const data = await response.json()
-
+      
       if (response.ok) {
-        toast.success(`Notification sent to ${data.sent} users`)
-        setMessage({ title: '', body: '', url: '' })
-        setOfferId('')
-        setSelectedUsers([])
-      } else {
-        toast.error(data.error || 'Failed to send notification')
+        const data = await response.json()
+        setNotifications(data.notifications || [])
       }
     } catch (error) {
-      console.error('Error sending notification:', error)
-      toast.error('Failed to send notification')
+      console.error('Error fetching notifications:', error)
     } finally {
       setLoading(false)
     }
   }
 
+  async function markAsRead(notificationId: string) {
+    try {
+      const response = await fetch('/api/merchant/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          notificationIds: [notificationId],
+          read: true,
+        }),
+      })
+
+      if (response.ok) {
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n)),
+        )
+        toast.success('Marked as read')
+      }
+    } catch (error) {
+      console.error('Error marking notification as read:', error)
+      toast.error('Failed to mark as read')
+    }
+  }
+
+  async function markAllAsRead() {
+    const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id)
+    if (unreadIds.length === 0) return
+
+    try {
+      const response = await fetch('/api/merchant/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          notificationIds: unreadIds,
+          read: true,
+        }),
+      })
+
+      if (response.ok) {
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+        toast.success('All notifications marked as read')
+      }
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error)
+      toast.error('Failed to mark all as read')
+    }
+  }
+
+  function getNotificationIcon(type: string) {
+    switch (type) {
+      case 'kyc_approved':
+        return '✅'
+      case 'kyc_rejected':
+        return '⚠️'
+      case 'offer_claimed':
+        return '🎫'
+      case 'offer_expiring':
+        return '⏰'
+      default:
+        return '🔔'
+    }
+  }
+
+  function getNotificationColor(type: string) {
+    switch (type) {
+      case 'kyc_approved':
+        return 'bg-green-50 border-green-200'
+      case 'kyc_rejected':
+        return 'bg-red-50 border-red-200'
+      case 'offer_claimed':
+        return 'bg-blue-50 border-blue-200'
+      case 'offer_expiring':
+        return 'bg-amber-50 border-amber-200'
+      default:
+        return 'bg-bg-secondary border-border'
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-white py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
         {/* Header */}
-        <div className="mb-8">
-          <Link
-            href="/merchant/dashboard"
-            className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary mb-4"
-          >
-            <FiArrowLeft />
-            Back to Dashboard
-          </Link>
-          <h1 className="font-heading text-3xl font-bold text-text-primary mb-2">
-            Send Push Notifications
-          </h1>
-          <p className="text-text-secondary">
-            Notify customers about new offers, updates, or announcements
-          </p>
-        </div>
-
-        {/* Target Selection */}
-        <div className="bg-white border border-border p-6 mb-6">
-          <h2 className="font-semibold text-text-primary mb-4">Target Audience</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              onClick={() => setTarget('offer')}
-              className={`p-4 border-2 rounded transition-colors ${
-                target === 'offer'
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-primary/50'
-              }`}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <Link
+              href="/merchant/dashboard"
+              className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary mb-4"
             >
-              <FiTag className="text-2xl mb-2" />
-              <div className="font-medium text-text-primary">Saved Offer Users</div>
-              <div className="text-sm text-text-secondary mt-1">
-                Send to all users who saved a specific offer
-              </div>
-            </button>
-            <button
-              onClick={() => setTarget('custom')}
-              className={`p-4 border-2 rounded transition-colors ${
-                target === 'custom'
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-primary/50'
-              }`}
-            >
-              <FiUsers className="text-2xl mb-2" />
-              <div className="font-medium text-text-primary">Custom Selection</div>
-              <div className="text-sm text-text-secondary mt-1">
-                Select specific customers to notify
-              </div>
-            </button>
+              <FiArrowLeft />
+              Back to Dashboard
+            </Link>
+            <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
+              Notifications
+            </h1>
+            <p className="mt-2 text-sm md:text-base text-text-secondary">
+              View and manage your account notifications
+            </p>
           </div>
         </div>
 
-        {/* Target Configuration */}
-        {target === 'offer' && (
-          <div className="bg-white border border-border p-6 mb-6">
-            <label className="block font-medium text-text-primary mb-2">Select Offer</label>
-            <select
-              value={offerId}
-              onChange={(e) => setOfferId(e.target.value)}
-              className="w-full px-4 py-2 border border-border focus:border-primary focus:outline-none"
+        {/* Filters */}
+        <div className="bg-white border border-border rounded-lg p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <FiFilter className="text-primary text-lg" />
+            <h2 className="font-heading text-lg font-bold text-text-primary">Filters</h2>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setFilter('all')}
+              className={`px-4 py-2 text-sm font-semibold border transition-colors ${
+                filter === 'all'
+                  ? 'bg-primary text-white border-primary'
+                  : 'bg-white text-text-secondary border-border hover:border-primary'
+              }`}
             >
-              <option value="">Choose an offer...</option>
-              {availableOffers.map((offer) => (
-                <option key={offer.id} value={offer.id}>
-                  {offer.title}
-                </option>
-              ))}
-            </select>
-            <p className="text-sm text-text-secondary mt-2">
-              All users who saved this offer will receive the notification
-            </p>
-          </div>
-        )}
-
-        {target === 'custom' && (
-          <div className="bg-white border border-border p-6 mb-6">
-            <label className="block font-medium text-text-primary mb-2">Select Customers</label>
-            <p className="text-sm text-text-secondary mb-4">
-              Customer selection UI would go here (could integrate with customers page)
-            </p>
-            <button className="px-4 py-2 border border-primary text-primary hover:bg-primary/5">
-              Select from Customer List
+              All
             </button>
+            <button
+              onClick={() => setFilter('unread')}
+              className={`px-4 py-2 text-sm font-semibold border transition-colors ${
+                filter === 'unread'
+                  ? 'bg-primary text-white border-primary'
+                  : 'bg-white text-text-secondary border-border hover:border-primary'
+              }`}
+            >
+              Unread Only
+            </button>
+            {notifications.filter((n) => !n.read).length > 0 && (
+              <button
+                onClick={markAllAsRead}
+                className="ml-auto px-4 py-2 text-sm font-semibold bg-white text-text-secondary border border-border hover:border-primary transition-colors flex items-center gap-2"
+              >
+                <FiCheck />
+                Mark All Read
+              </button>
+            )}
           </div>
-        )}
+        </div>
 
-        {/* Message Composition */}
-        <div className="bg-white border border-border p-6 mb-6">
-          <h2 className="font-semibold text-text-primary mb-4">Notification Message</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block font-medium text-text-primary mb-2">Title</label>
-              <input
-                type="text"
-                value={message.title}
-                onChange={(e) => setMessage({ ...message, title: e.target.value })}
-                placeholder="e.g., New Offer Available!"
-                className="w-full px-4 py-2 border border-border focus:border-primary focus:outline-none"
-                maxLength={50}
-              />
-              <p className="text-xs text-text-secondary mt-1">{message.title.length}/50</p>
+        {/* Notifications List */}
+        <div className="bg-white border border-border rounded-lg overflow-hidden">
+          <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-primary/5 to-transparent">
+            <h2 className="font-heading text-lg font-bold text-text-primary">
+              Your Notifications ({notifications.length})
+            </h2>
+          </div>
+
+          {loading ? (
+            <div className="px-6 py-12 text-center">
+              <p className="text-text-secondary text-sm">Loading notifications...</p>
             </div>
-            <div>
-              <label className="block font-medium text-text-primary mb-2">Message</label>
-              <textarea
-                value={message.body}
-                onChange={(e) => setMessage({ ...message, body: e.target.value })}
-                placeholder="e.g., Check out our new special - 50% off on all items!"
-                rows={4}
-                className="w-full px-4 py-2 border border-border focus:border-primary focus:outline-none"
-                maxLength={200}
-              />
-              <p className="text-xs text-text-secondary mt-1">{message.body.length}/200</p>
-            </div>
-            <div>
-              <label className="block font-medium text-text-primary mb-2">
-                Link URL (Optional)
-              </label>
-              <input
-                type="url"
-                value={message.url}
-                onChange={(e) => setMessage({ ...message, url: e.target.value })}
-                placeholder="e.g., /offers/offer-slug"
-                className="w-full px-4 py-2 border border-border focus:border-primary focus:outline-none"
-              />
-              <p className="text-xs text-text-secondary mt-1">
-                Where users should be taken when they tap the notification
+          ) : notifications.length === 0 ? (
+            <div className="px-6 py-12 text-center">
+              <div className="w-16 h-16 mx-auto rounded-full bg-bg-secondary flex items-center justify-center mb-4">
+                <span className="text-3xl">🔔</span>
+              </div>
+              <p className="text-text-tertiary font-medium">No notifications</p>
+              <p className="text-text-tertiary text-sm mt-1">
+                {filter === 'unread' ? 'You have no unread notifications' : 'You\'re all caught up!'}
               </p>
             </div>
-          </div>
-        </div>
-
-        {/* Preview */}
-        {message.title && (
-          <div className="bg-bg-secondary border border-border p-6 mb-6">
-            <h3 className="font-semibold text-text-primary mb-3">Preview</h3>
-            <div className="bg-white p-4 border border-border">
-              <div className="font-semibold text-text-primary mb-1">{message.title}</div>
-              <div className="text-sm text-text-secondary">{message.body}</div>
+          ) : (
+            <div className="divide-y divide-border">
+              {notifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`p-6 hover:bg-bg-secondary transition-colors ${
+                    !notification.read ? 'bg-blue-50/50' : ''
+                  }`}
+                >
+                  <div className="flex items-start gap-4">
+                    <span className="text-3xl flex-shrink-0">
+                      {getNotificationIcon(notification.type)}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3
+                          className={`font-semibold text-lg ${
+                            !notification.read ? 'text-text-primary' : 'text-text-secondary'
+                          }`}
+                        >
+                          {notification.title}
+                        </h3>
+                        {!notification.read && (
+                          <span className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
+                        )}
+                      </div>
+                      <p className="text-text-secondary text-sm mb-3 whitespace-pre-line">
+                        {notification.message}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-text-tertiary">
+                          {new Date(notification.createdAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </span>
+                        <div className="flex items-center gap-3">
+                          {!notification.read && (
+                            <button
+                              onClick={() => markAsRead(notification.id)}
+                              className="text-xs font-semibold text-primary hover:text-primary-hover flex items-center gap-1"
+                            >
+                              <FiCheck className="w-4 h-4" />
+                              Mark read
+                            </button>
+                          )}
+                          {notification.link && (
+                            <Link
+                              href={notification.link}
+                              className="text-xs font-semibold text-primary hover:text-primary-hover"
+                            >
+                              View →
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        )}
-
-        {/* Send Button */}
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-text-secondary">
-            {target === 'offer'
-              ? `Will send to all users who saved the selected offer`
-              : `Will send to ${selectedUsers.length} selected users`}
-          </p>
-          <button
-            onClick={handleSend}
-            disabled={loading}
-            className="bg-primary text-white px-6 py-3 hover:bg-primary-hover transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            style={{ color: 'white' }}
-          >
-            <FiSend />
-            {loading ? 'Sending...' : 'Send Notification'}
-          </button>
+          )}
         </div>
       </div>
     </div>

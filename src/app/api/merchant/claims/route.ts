@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import { headers as getHeaders } from 'next/headers'
 import configPromise from '@/payload.config'
+import { getMerchantWithKYC } from '@/utilities/checkMerchantKYC'
 
 /**
  * GET /api/merchant/claims
@@ -16,6 +17,12 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Check KYC approval
+  const merchant = await getMerchantWithKYC(payload, user.id)
+  if (!merchant || merchant.kycStatus !== 'approved') {
+    return NextResponse.json({ error: 'Account not approved' }, { status: 403 })
+  }
+
   try {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
@@ -23,19 +30,6 @@ export async function GET(request: Request) {
     const startDate = searchParams.get('startDate')
     const endDate = searchParams.get('endDate')
     const offerId = searchParams.get('offerId')
-
-    // Get merchant for this user
-    const merchants = await payload.find({
-      collection: 'merchants',
-      where: { owner: { equals: user.id } },
-      limit: 1,
-    })
-
-    if (merchants.docs.length === 0) {
-      return NextResponse.json({ error: 'Merchant account not found' }, { status: 404 })
-    }
-
-    const merchant = merchants.docs[0]
 
     // Get merchant's venues
     const venues = await payload.find({
@@ -136,6 +130,12 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Check KYC approval
+  const merchant = await getMerchantWithKYC(payload, user.id)
+  if (!merchant || merchant.kycStatus !== 'approved') {
+    return NextResponse.json({ error: 'Account not approved' }, { status: 403 })
+  }
+
   try {
     const body = await request.json()
     const { claimId, status } = body
@@ -146,17 +146,6 @@ export async function PATCH(request: Request) {
       id: parseInt(claimId),
       depth: 3,
     })
-
-    // Get merchant
-    const merchants = await payload.find({
-      collection: 'merchants',
-      where: { owner: { equals: user.id } },
-      limit: 1,
-    })
-
-    if (merchants.docs.length === 0) {
-      return NextResponse.json({ error: 'Merchant not found' }, { status: 404 })
-    }
 
     const offer =
       typeof claim.offer === 'object'
@@ -176,8 +165,6 @@ export async function PATCH(request: Request) {
                 ? (offer as any).venue
                 : parseInt((offer as any).venue as string),
           })
-
-    const merchant = merchants.docs[0]
 
     if ((venue as any).merchant !== merchant.id) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 })

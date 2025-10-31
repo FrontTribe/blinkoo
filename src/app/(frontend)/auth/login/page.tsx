@@ -48,8 +48,9 @@ export default function LoginPage() {
       // Login successful, get user data
       const data = await response.json()
 
-      // Check if phone verification is needed
-      if (!data.user?.phoneVerified) {
+      // Check if phone verification is needed (only for customers)
+      // Staff and merchants don't require phone verification
+      if (!data.user?.phoneVerified && data.user?.role === 'customer') {
         router.push('/auth/verify-phone')
       } else {
         // Redirect based on user role

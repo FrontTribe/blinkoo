@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import { headers as getHeaders } from 'next/headers'
 import configPromise from '@/payload.config'
+import { getMerchantWithKYC } from '@/utilities/checkMerchantKYC'
 
 export async function GET() {
   const config = await configPromise
@@ -13,21 +14,13 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Check KYC approval
+  const merchant = await getMerchantWithKYC(payload, user.id)
+  if (!merchant || merchant.kycStatus !== 'approved') {
+    return NextResponse.json({ error: 'Account not approved' }, { status: 403 })
+  }
+
   try {
-    // Get merchant for this user
-    const merchants = await payload.find({
-      collection: 'merchants',
-      where: {
-        owner: { equals: user.id },
-      },
-      limit: 1,
-    })
-
-    if (merchants.docs.length === 0) {
-      return NextResponse.json({ offers: [] })
-    }
-
-    const merchant = merchants.docs[0]
 
     // Get venues for this merchant
     const venues = await payload.find({
@@ -64,6 +57,12 @@ export async function POST(request: Request) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // Check KYC approval
+  const merchant = await getMerchantWithKYC(payload, user.id)
+  if (!merchant || merchant.kycStatus !== 'approved') {
+    return NextResponse.json({ error: 'Account not approved' }, { status: 403 })
   }
 
   try {

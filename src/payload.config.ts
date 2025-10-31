@@ -22,6 +22,7 @@ import { Favorites } from './collections/Favorites'
 import { SavedOffers } from './collections/SavedOffers'
 import { Achievements } from './collections/Achievements'
 import { UserStats } from './collections/UserStats'
+import { Notifications } from './collections/Notifications'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -50,6 +51,7 @@ export default buildConfig({
     Achievements,
     UserStats,
     Waitlists,
+    Notifications,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -15,6 +15,8 @@ export function middleware(request: NextRequest) {
     path.startsWith('/admin')
 
   // Don't protect API routes, admin panel, or public routes
+  // NOTE: KYC enforcement is handled in API routes for merchant pages
+  // since most merchant pages are client components
   if (isPublicRoute || path.includes('/offers/[id]/') || !isProtectedRoute) {
     return NextResponse.next()
   }

@@ -18,7 +18,9 @@ import {
   FiBarChart2,
   FiShoppingCart,
   FiClock,
+  FiUsers,
 } from 'react-icons/fi'
+import { NotificationBell } from '@/components/NotificationBell'
 
 export default function NavigationClient() {
   const [user, setUser] = useState<any>(null)
@@ -273,6 +275,19 @@ export default function NavigationClient() {
                   Venues
                 </Link>
                 <Link
+                  href="/merchant/staff"
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                    pathname?.startsWith('/merchant/staff')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <FiUsers
+                    className={`w-4 h-4 ${pathname?.startsWith('/merchant/staff') ? 'text-primary' : ''}`}
+                  />
+                  Staff
+                </Link>
+                <Link
                   href="/merchant/analytics"
                   className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
                     pathname?.startsWith('/merchant/analytics')
@@ -285,6 +300,19 @@ export default function NavigationClient() {
                   />
                   Analytics
                 </Link>
+                <Link
+                  href="/merchant/settings"
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                    pathname?.startsWith('/merchant/settings')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <FiSettings
+                    className={`w-4 h-4 ${pathname?.startsWith('/merchant/settings') ? 'text-primary' : ''}`}
+                  />
+                  Settings
+                </Link>
               </div>
             )}
           </div>
@@ -293,6 +321,9 @@ export default function NavigationClient() {
           <div className="flex items-center gap-2">
             {user ? (
               <>
+                {/* Notification Bell - Show for merchants */}
+                {user.role === 'merchant_owner' && <NotificationBell />}
+                
                 {/* User Menu Dropdown */}
                 <div className="relative" ref={userMenuRef}>
                   <button

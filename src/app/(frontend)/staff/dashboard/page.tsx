@@ -41,13 +41,15 @@ export default function StaffDashboardPage() {
 
     async function fetchStats() {
       try {
-        // In a real app, fetch from API
-        // const res = await fetch('/api/staff/dashboard', { credentials: 'include' })
-        setStats({
-          todayRedeemed: 12,
-          weekRedeemed: 47,
-          pendingRedemptions: 3,
-        })
+        const res = await fetch('/api/staff/dashboard', { credentials: 'include' })
+        if (res.ok) {
+          const data = await res.json()
+          setStats({
+            todayRedeemed: data.todayRedeemed || 0,
+            weekRedeemed: data.weekRedeemed || 0,
+            pendingRedemptions: data.pendingRedemptions || 0,
+          })
+        }
       } catch (error) {
         console.error('Error fetching stats:', error)
       }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '@/payload.config'
+import { getMerchantWithKYC } from '@/utilities/checkMerchantKYC'
 
 export async function GET(request: Request) {
   const config = await configPromise
@@ -17,21 +18,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Check KYC approval
+  const merchant = await getMerchantWithKYC(payload, user.id)
+  if (!merchant || merchant.kycStatus !== 'approved') {
+    return NextResponse.json({ error: 'Account not approved' }, { status: 403 })
+  }
+
   try {
-    // Get merchant for this user
-    const merchants = await payload.find({
-      collection: 'merchants',
-      where: {
-        owner: { equals: user.id },
-      },
-      limit: 1,
-    })
-
-    if (merchants.docs.length === 0) {
-      return NextResponse.json({ venues: [] })
-    }
-
-    const merchant = merchants.docs[0]
 
     // Get merchant's venues with category data
     const venues = await payload.find({
@@ -65,23 +58,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Check KYC approval
+  const merchant = await getMerchantWithKYC(payload, user.id)
+  console.log('Venue POST - User ID:', user.id, 'Merchant found:', !!merchant)
+  if (!merchant) {
+    return NextResponse.json({ error: 'Merchant account not found' }, { status: 404 })
+  }
+  if (merchant.kycStatus !== 'approved') {
+    return NextResponse.json({ error: 'Account not approved' }, { status: 403 })
+  }
+
   try {
     const body = await request.json()
-
-    // Get merchant for this user
-    const merchants = await payload.find({
-      collection: 'merchants',
-      where: {
-        owner: { equals: user.id },
-      },
-      limit: 1,
-    })
-
-    if (merchants.docs.length === 0) {
-      return NextResponse.json({ error: 'Merchant account not found' }, { status: 404 })
-    }
-
-    const merchant = merchants.docs[0]
 
     // Validate category exists
     let categoryId = body.category

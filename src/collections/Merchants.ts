@@ -5,6 +5,80 @@ export const Merchants: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
   },
+  hooks: {
+    afterChange: [
+      async ({ doc, operation, previousDoc, req }) => {
+        // Only process if this is an update operation and KYC status changed
+        if (operation === 'update' && previousDoc && previousDoc.kycStatus !== doc.kycStatus) {
+          const owner = typeof doc.owner === 'object' ? doc.owner : null
+          if (!owner) return
+
+          // Create notification
+          try {
+            await req.payload.create({
+              collection: 'notifications',
+              data: {
+                user: typeof owner.id === 'number' ? owner.id : owner.id,
+                type:
+                  doc.kycStatus === 'approved'
+                    ? 'kyc_approved'
+                    : doc.kycStatus === 'rejected'
+                      ? 'kyc_rejected'
+                      : 'system',
+                title:
+                  doc.kycStatus === 'approved'
+                    ? 'Account Approved! 🎉'
+                    : doc.kycStatus === 'rejected'
+                      ? 'Account Rejected'
+                      : 'Account Status Updated',
+                message:
+                  doc.kycStatus === 'approved'
+                    ? 'Your merchant account has been approved! You can now start creating offers and managing your venues.'
+                    : doc.kycStatus === 'rejected'
+                      ? doc.rejectionReason
+                        ? `Your merchant account was rejected: ${doc.rejectionReason}`
+                        : 'Your merchant account was rejected. Please contact support for details.'
+                      : 'Your merchant account status has been updated.',
+                read: false,
+                link:
+                  doc.kycStatus === 'approved'
+                    ? '/merchant/dashboard'
+                    : doc.kycStatus === 'rejected'
+                      ? '/merchant/rejected'
+                      : '/merchant/pending-approval',
+              },
+            })
+
+            // Send email notification
+            if (owner.email && (doc.kycStatus === 'approved' || doc.kycStatus === 'rejected')) {
+              const { sendEmail, getKYCApprovedEmail, getKYCRejectedEmail } = await import(
+                '@/utilities/sendEmail'
+              )
+              const userName = typeof owner.name === 'string' ? owner.name : 'Merchant'
+
+              if (doc.kycStatus === 'approved') {
+                await sendEmail({
+                  to: owner.email,
+                  subject: '🎉 Your Merchant Account Has Been Approved!',
+                  html: getKYCApprovedEmail(userName),
+                })
+              } else if (doc.kycStatus === 'rejected') {
+                await sendEmail({
+                  to: owner.email,
+                  subject: 'Account Rejected - Action Required',
+                  html: getKYCRejectedEmail(userName, doc.rejectionReason || 'No reason provided'),
+                })
+              }
+            }
+          } catch (error) {
+            console.error('Error creating notification:', error)
+          }
+        }
+
+        return doc
+      },
+    ],
+  },
   access: {
     read: () => true,
     create: ({ data, req }) => {
@@ -78,6 +152,33 @@ export const Merchants: CollectionConfig = {
         date: {
           pickerAppearance: 'dayAndTime',
         },
+      },
+    },
+    {
+      name: 'rejectionReason',
+      type: 'textarea',
+      label: 'Rejection Reason',
+      admin: {
+        description: 'Reason for rejection (visible to merchant)',
+      },
+    },
+    {
+      name: 'rejectionDate',
+      type: 'date',
+      label: 'Rejected At',
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+        description: 'Date when account was rejected',
+      },
+    },
+    {
+      name: 'resubmissionNotes',
+      type: 'textarea',
+      label: 'Resubmission Notes',
+      admin: {
+        description: 'Notes from merchant when resubmitting for approval',
       },
     },
     {
