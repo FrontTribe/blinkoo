@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { FiUser, FiTrendingUp, FiCalendar, FiEuro } from 'react-icons/fi'
+import { FiUser, FiTrendingUp, FiCalendar, FiDollarSign } from 'react-icons/fi'
 import { BarChart } from '@/components/charts/BarChart'
 
 export default function CustomerProfilePage() {
@@ -119,7 +119,7 @@ export default function CustomerProfilePage() {
           </div>
           <div className="bg-white border border-border p-6">
             <div className="flex items-center gap-2 mb-2">
-              <FiEuro className="text-yellow-600" />
+              <FiDollarSign className="text-yellow-600" />
               <h3 className="text-xs font-medium text-text-secondary uppercase">Lifetime Value</h3>
             </div>
             <p className="font-heading text-3xl font-bold text-yellow-600">

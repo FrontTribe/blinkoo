@@ -75,7 +75,13 @@ export async function POST(request: Request) {
     // Clean up OTP
     OTP_STORAGE.delete(user.phone || '')
 
-    return NextResponse.json({ success: true })
+    // Return user data for redirect
+    return NextResponse.json({ 
+      success: true,
+      user: {
+        role: user.role,
+      }
+    })
   } catch (error) {
     console.error('Error verifying phone:', error)
     return NextResponse.json({ error: 'Failed to verify phone' }, { status: 500 })

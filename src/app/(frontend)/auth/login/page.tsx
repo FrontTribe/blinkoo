@@ -5,6 +5,19 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { FiLock, FiMail, FiArrowRight, FiShoppingBag, FiAlertCircle } from 'react-icons/fi'
 
+function getRedirectPathForRole(role: string | undefined): string {
+  switch (role) {
+    case 'merchant_owner':
+      return '/merchant/dashboard'
+    case 'staff':
+      return '/staff/dashboard'
+    case 'admin':
+      return '/admin'
+    default:
+      return '/offers'
+  }
+}
+
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -39,8 +52,10 @@ export default function LoginPage() {
       if (!data.user?.phoneVerified) {
         router.push('/auth/verify-phone')
       } else {
+        // Redirect based on user role
+        const redirectPath = getRedirectPathForRole(data.user?.role)
         // Force a hard refresh to reload the session
-        window.location.href = '/offers'
+        window.location.href = redirectPath
       }
     } catch (err: any) {
       setError(err.message)

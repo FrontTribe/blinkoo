@@ -4,6 +4,19 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { MdSecurity, MdPhoneAndroid, MdTimer } from 'react-icons/md'
 
+function getRedirectPathForRole(role: string | undefined): string {
+  switch (role) {
+    case 'merchant_owner':
+      return '/merchant/dashboard'
+    case 'staff':
+      return '/staff/dashboard'
+    case 'admin':
+      return '/admin'
+    default:
+      return '/offers'
+  }
+}
+
 export default function VerifyPhonePage() {
   const router = useRouter()
   const [code, setCode] = useState('')
@@ -66,12 +79,15 @@ export default function VerifyPhonePage() {
         credentials: 'include',
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        const data = await response.json()
         throw new Error(data.error || 'Invalid code')
       }
 
-      router.push('/offers')
+      // Redirect based on user role
+      const redirectPath = getRedirectPathForRole(data.user?.role)
+      router.push(redirectPath)
     } catch (err: any) {
       setError(err.message)
     } finally {

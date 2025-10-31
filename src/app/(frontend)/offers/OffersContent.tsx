@@ -338,9 +338,10 @@ export default function OffersContent({
   }
 
   return (
-    <div className="h-screen bg-white flex">
-      {/* Left Column - 40% */}
-      <div className="w-2/5 border-r border-border flex flex-col overflow-hidden">
+    <div className={`h-screen bg-white flex`}>
+      {/* Left Column - Only show when in list view */}
+      {viewMode === 'list' && (
+        <div className="block md:w-2/5 border-r border-border flex flex-col overflow-hidden">
         {/* Header Row */}
         <div className="flex items-center justify-between h-14 px-4 shrink-0 border-b border-border">
           <h4 className="text-base font-semibold text-text-primary">
@@ -565,12 +566,62 @@ export default function OffersContent({
             )}
           </div>
         </div>
-      </div>
+        </div>
+      )}
 
-      {/* Right Column - Map 60% */}
-      <div className="w-3/5 relative bg-bg-secondary">
-        <MapView offers={filteredOffers} />
-      </div>
+      {/* Map Column */}
+      {/* When in map view: full width. When in list view: show 60% alongside list on desktop */}
+      {viewMode === 'map' ? (
+        <div className="block w-full relative bg-bg-secondary">
+          {/* Full screen map with toggle button */}
+          <div className="absolute top-4 left-4 z-10">
+            <button
+              onClick={() => setViewMode('list')}
+              className="bg-white border border-border px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-sm font-semibold hover:bg-bg-secondary transition-colors"
+            >
+              <FiList className="w-4 h-4" />
+              List View
+            </button>
+          </div>
+          <MapView offers={filteredOffers} />
+        </div>
+      ) : (
+        <div className="hidden md:block md:w-3/5 relative bg-bg-secondary">
+          <MapView offers={filteredOffers} />
+        </div>
+      )}
+
+      {/* Mobile: View Toggle Buttons - Only show on mobile */}
+      {isMobile && (
+        <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          <button
+            onClick={() => setViewMode('list')}
+            className={`px-6 py-3 rounded-full shadow-lg transition-colors ${
+              viewMode === 'list'
+                ? 'bg-text-primary text-white'
+                : 'bg-white text-text-secondary border border-border hover:bg-bg-secondary'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <FiList className="w-5 h-5" />
+              <span className="font-semibold">List</span>
+            </div>
+          </button>
+          <button
+            onClick={() => setViewMode('map')}
+            className={`px-6 py-3 rounded-full shadow-lg transition-colors ${
+              viewMode === 'map'
+                ? 'bg-text-primary text-white'
+                : 'bg-white text-text-secondary border border-border hover:bg-bg-secondary'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <FiMap className="w-5 h-5" />
+              <span className="font-semibold">Map</span>
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Filter Panel */}
       <FilterPanel
