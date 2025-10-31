@@ -167,22 +167,6 @@ export const Offers: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, data, operation }) => {
-        console.log('BeforeChange hook called - operation:', operation)
-        console.log('BeforeChange hook - data.venue:', data.venue)
-
-        // Skip venue fetch on update if venue is already set and we're only updating category
-        if (operation === 'update' && data.category && data.venue) {
-          // Only fetch venue if it's being changed (not just an ID)
-          if (typeof data.venue === 'string') {
-            // Venue is being passed as an ID, likely unchanged, skip fetching
-            return data
-          }
-          if (typeof data.venue === 'object' && data.venue !== null && 'id' in data.venue) {
-            // Venue is nested object, but if we're just passing ID, skip fetching
-            return data
-          }
-        }
-
         if (operation === 'create' && data.venue) {
           // Fetch the venue to get its category
           // data.venue can be a number, string, or object with id property
@@ -223,36 +207,6 @@ export const Offers: CollectionConfig = {
         }
 
         return data
-      },
-    ],
-    afterChange: [
-      async ({ doc, req, operation }) => {
-        if (operation === 'create' || operation === 'update') {
-          // Recalculate ratings after creating or updating
-          const reviews = await req.payload.find({
-            collection: 'reviews',
-            where: {
-              offer: { equals: doc.id },
-            },
-            limit: 1000,
-          })
-
-          const avgRating =
-            reviews.docs.length > 0
-              ? reviews.docs.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.docs.length
-              : 0
-
-          // Update the offer with calculated fields
-          await req.payload.update({
-            collection: 'offers',
-            id: doc.id,
-            data: {
-              averageRating: Math.round(avgRating * 10) / 10, // Round to 1 decimal
-              totalReviews: reviews.docs.length,
-            },
-          })
-        }
-        return doc
       },
     ],
   },
