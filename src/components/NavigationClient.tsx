@@ -171,19 +171,32 @@ export default function NavigationClient() {
                 </Link>
               )}
               {user && user.role === 'customer' && (
-                <Link
-                  href="/my-claims"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
-                    isActive('/my-claims')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
-                  }`}
-                >
-                  <FiShoppingBag
-                    className={`w-4 h-4 ${isActive('/my-claims') ? 'text-primary' : ''}`}
-                  />
-                  Claims
-                </Link>
+                <>
+                  <Link
+                    href="/feed"
+                    className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                      isActive('/feed')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                    }`}
+                  >
+                    <FiUsers className={`w-4 h-4 ${isActive('/feed') ? 'text-primary' : ''}`} />
+                    Feed
+                  </Link>
+                  <Link
+                    href="/my-claims"
+                    className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                      isActive('/my-claims')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
+                    }`}
+                  >
+                    <FiShoppingBag
+                      className={`w-4 h-4 ${isActive('/my-claims') ? 'text-primary' : ''}`}
+                    />
+                    Claims
+                  </Link>
+                </>
               )}
             </div>
 

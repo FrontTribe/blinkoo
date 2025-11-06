@@ -12,10 +12,31 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
 
   try {
     const { slug } = await params
+    const body = await request.json().catch(() => ({}))
 
-    // Track share event (optional - store in a Shares collection or analytics)
-    // For now, we just log it
-    console.log('Share tracked:', { offerId: slug, userId: user?.id })
+    // Track share event in Shares collection
+    if (user) {
+      try {
+        // Convert slug to number (slug is actually the offer ID)
+        const offerId = parseInt(slug, 10)
+        
+        await payload.create({
+          collection: 'shares',
+          data: {
+            user: user.id,
+            shareType: 'offer',
+            offer: offerId,
+            platform: body.platform || 'other',
+            data: {
+              offerId: slug,
+              timestamp: new Date().toISOString(),
+            },
+          },
+        })
+      } catch (error) {
+        console.error('Error creating share record:', error)
+      }
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -84,6 +84,8 @@ export interface Config {
     'user-stats': UserStat;
     waitlists: Waitlist;
     notifications: Notification;
+    shares: Share;
+    'social-feed': SocialFeed;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -107,6 +109,8 @@ export interface Config {
     'user-stats': UserStatsSelect<false> | UserStatsSelect<true>;
     waitlists: WaitlistsSelect<false> | WaitlistsSelect<true>;
     notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+    shares: SharesSelect<false> | SharesSelect<true>;
+    'social-feed': SocialFeedSelect<false> | SocialFeedSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -166,6 +170,19 @@ export interface User {
     inApp?: boolean | null;
     email?: boolean | null;
     push?: boolean | null;
+    /**
+     * Hour to stop sending notifications (0-23)
+     */
+    quietHoursStart?: number | null;
+    /**
+     * Hour to resume sending notifications (0-23)
+     */
+    quietHoursEnd?: number | null;
+    /**
+     * Personalized notifications based on your preferences and behavior
+     */
+    smartNotifications?: boolean | null;
+    notificationFrequency?: ('all' | 'important' | 'occasional') | null;
   };
   /**
    * OneSignal player ID for push notifications
@@ -645,7 +662,15 @@ export interface Waitlist {
 export interface Notification {
   id: number;
   user: number | User;
-  type: 'kyc_approved' | 'kyc_rejected' | 'offer_claimed' | 'offer_expiring' | 'low_stock' | 'system' | 'info';
+  type:
+    | 'kyc_approved'
+    | 'kyc_rejected'
+    | 'offer_claimed'
+    | 'offer_available'
+    | 'offer_expiring'
+    | 'low_stock'
+    | 'system'
+    | 'info';
   title: string;
   message: string;
   read?: boolean | null;
@@ -653,6 +678,75 @@ export interface Notification {
    * Optional link to navigate to when clicked
    */
   link?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shares".
+ */
+export interface Share {
+  id: number;
+  user: number | User;
+  shareType: 'offer' | 'achievement' | 'milestone' | 'streak' | 'general';
+  offer?: (number | null) | Offer;
+  achievement?: (number | null) | Achievement;
+  platform?: ('native' | 'whatsapp' | 'facebook' | 'twitter' | 'clipboard' | 'other') | null;
+  /**
+   * Store additional context like message text, discounts, etc.
+   */
+  data?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-feed".
+ */
+export interface SocialFeed {
+  id: number;
+  user: number | User;
+  type: 'offer_claim' | 'achievement' | 'milestone' | 'streak' | 'tip' | 'photo';
+  title: string;
+  content?: string | null;
+  photo?: (number | null) | Media;
+  offer?: (number | null) | Offer;
+  achievement?: (number | null) | Achievement;
+  /**
+   * Additional data like savings amount, streak days, etc.
+   */
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  likes?:
+    | {
+        user?: (number | null) | User;
+        likedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  comments?:
+    | {
+        user?: (number | null) | User;
+        comment?: string | null;
+        commentedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -730,6 +824,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notifications';
         value: number | Notification;
+      } | null)
+    | ({
+        relationTo: 'shares';
+        value: number | Share;
+      } | null)
+    | ({
+        relationTo: 'social-feed';
+        value: number | SocialFeed;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -797,6 +899,10 @@ export interface UsersSelect<T extends boolean = true> {
         inApp?: T;
         email?: T;
         push?: T;
+        quietHoursStart?: T;
+        quietHoursEnd?: T;
+        smartNotifications?: T;
+        notificationFrequency?: T;
       };
   oneSignalPlayerId?: T;
   updatedAt?: T;
@@ -1112,6 +1218,51 @@ export interface NotificationsSelect<T extends boolean = true> {
   message?: T;
   read?: T;
   link?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shares_select".
+ */
+export interface SharesSelect<T extends boolean = true> {
+  user?: T;
+  shareType?: T;
+  offer?: T;
+  achievement?: T;
+  platform?: T;
+  data?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-feed_select".
+ */
+export interface SocialFeedSelect<T extends boolean = true> {
+  user?: T;
+  type?: T;
+  title?: T;
+  content?: T;
+  photo?: T;
+  offer?: T;
+  achievement?: T;
+  metadata?: T;
+  likes?:
+    | T
+    | {
+        user?: T;
+        likedAt?: T;
+        id?: T;
+      };
+  comments?:
+    | T
+    | {
+        user?: T;
+        comment?: T;
+        commentedAt?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

@@ -123,6 +123,44 @@ export const Users: CollectionConfig = {
           label: 'Push Notifications',
           defaultValue: false,
         },
+        {
+          name: 'quietHoursStart',
+          type: 'number',
+          label: 'Quiet Hours Start',
+          admin: {
+            description: 'Hour to stop sending notifications (0-23)',
+          },
+          defaultValue: 22,
+        },
+        {
+          name: 'quietHoursEnd',
+          type: 'number',
+          label: 'Quiet Hours End',
+          admin: {
+            description: 'Hour to resume sending notifications (0-23)',
+          },
+          defaultValue: 8,
+        },
+        {
+          name: 'smartNotifications',
+          type: 'checkbox',
+          label: 'Enable Smart Notifications',
+          admin: {
+            description: 'Personalized notifications based on your preferences and behavior',
+          },
+          defaultValue: true,
+        },
+        {
+          name: 'notificationFrequency',
+          type: 'select',
+          label: 'Notification Frequency',
+          options: [
+            { label: 'All updates', value: 'all' },
+            { label: 'Important only', value: 'important' },
+            { label: 'Occasional', value: 'occasional' },
+          ],
+          defaultValue: 'important',
+        },
       ],
     },
     {

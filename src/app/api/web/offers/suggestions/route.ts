@@ -93,7 +93,8 @@ export async function GET(request: Request) {
     const suggestions = slots.docs
       .map((slot) => {
         const offer = slot.offer as any
-        if (!offer || offer.id === offerId) return null
+        // Filter out the current offer by comparing IDs as strings
+        if (!offer || String(offer.id) === String(offerId)) return null
 
         const offerCategory =
           typeof offer.category === 'object' ? offer.category?.id : offer.category

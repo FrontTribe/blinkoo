@@ -12,23 +12,23 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     quote:
-      'Off-Peak helped us fill our 2-4pm slot with 30+ customers daily. Revenue increased by 35% in our slow hours.',
+      'Blinkoo nam je pomogao ispuniti naš termin od 14-16h s više od 30 kupaca dnevno. Prihod se povećao za 35% u našim praznim satima.',
     author: 'Sarah Chen',
-    role: 'Owner, Brew & Bites Cafe',
+    role: 'Vlasnica, Brew & Bites Cafe',
     rating: 5,
   },
   {
     quote:
-      'Saved over $200 this month on dining out. The offers are real and redemption is super easy with the QR code.',
+      'Uštedio sam više od 200$ ovaj mjesec na izlascima. Ponude su stvarne i iskorištenje je super jednostavno s QR kodom.',
     author: 'Marcus Rodriguez',
-    role: 'Foodie & Local Explorer',
+    role: 'Gurman i Lokalni Istraživač',
     rating: 5,
   },
   {
     quote:
-      "As a gym owner, our 10am-2pm was dead. Now it's our second busiest time. Off-Peak transformed our business.",
+      'Kao vlasnik teretane, naš termin od 10-14h bio je mrtav. Sada je to naše drugo najprometnije vrijeme. Blinkoo je transformirao naše poslovanje.',
     author: 'Jennifer Park',
-    role: 'Owner, FitZone Studio',
+    role: 'Vlasnica, FitZone Studio',
     rating: 5,
   },
 ]
@@ -49,11 +49,13 @@ export function Testimonials() {
       <div className="max-w-[1280px] mx-auto px-6">
         <div className="text-center mb-10">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
-            What People Are Saying
+            Što Ljudi Kažu
           </h2>
-          <p className="text-base md:text-lg text-text-secondary max-w-2xl mx-auto text-center">
-            Join thousands of happy customers and merchants using Off-Peak
-          </p>
+          <div className="flex justify-center">
+            <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
+              Pridružite se tisućama zadovoljnih kupaca i trgovaca koji koriste Blinkoo
+            </p>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">

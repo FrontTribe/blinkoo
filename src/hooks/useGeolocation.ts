@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 type GeolocationState = {
   lat: number | null
@@ -59,23 +59,13 @@ export function useGeolocation() {
     error: null,
   })
 
-  useEffect(() => {
+  const requestLocation = useCallback(() => {
     if (!navigator.geolocation) {
-    setState({ lat: null, lng: null, loading: false, error: 'Geolocation not supported' })
-    return
-  }
-
-    // Check for cached location first
-    const cached = getCachedLocation()
-    if (cached) {
-      setState({
-        lat: cached.lat,
-        lng: cached.lng,
-        loading: false,
-        error: null,
-      })
+      setState({ lat: null, lng: null, loading: false, error: 'Geolocation not supported' })
       return
     }
+
+    setState((prev) => ({ ...prev, loading: true }))
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -110,5 +100,26 @@ export function useGeolocation() {
     )
   }, [])
 
-  return state
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setState({ lat: null, lng: null, loading: false, error: 'Geolocation not supported' })
+      return
+    }
+
+    // Check for cached location first
+    const cached = getCachedLocation()
+    if (cached) {
+      setState({
+        lat: cached.lat,
+        lng: cached.lng,
+        loading: false,
+        error: null,
+      })
+      return
+    }
+
+    requestLocation()
+  }, [requestLocation])
+
+  return { ...state, requestLocation }
 }

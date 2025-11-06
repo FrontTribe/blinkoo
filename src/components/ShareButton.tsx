@@ -31,7 +31,9 @@ export function ShareButton({ offerId, slug, title, className = '' }: ShareButto
         try {
           await fetch(`/api/web/offers/${slug}/share`, {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
+            body: JSON.stringify({ platform: 'native' }),
           })
         } catch (error) {
           console.error('Failed to track share:', error)
@@ -54,7 +56,9 @@ export function ShareButton({ offerId, slug, title, className = '' }: ShareButto
       try {
         await fetch(`/api/web/offers/${slug}/share`, {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
+          body: JSON.stringify({ platform: 'clipboard' }),
         })
       } catch (error) {
         console.error('Failed to track share:', error)

@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import { FiClock, FiMapPin, FiShare2, FiCheck } from 'react-icons/fi'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 type ClaimSuccessProps = {
   claim: {
@@ -28,10 +30,48 @@ type ClaimSuccessProps = {
 }
 
 export function ClaimSuccess({ claim, offer, venue, timeRemaining, onClose }: ClaimSuccessProps) {
+  const [sharingToFeed, setSharingToFeed] = useState(false)
+
   function formatTime(seconds: number): string {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
+  }
+
+  async function handleShareToFeed() {
+    if (!offer || !venue) return
+
+    setSharingToFeed(true)
+    try {
+      const response = await fetch('/api/web/social-feed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          type: 'offer_claim',
+          title: `Just claimed ${offer.title}! 🎉`,
+          content: `Check out this great offer at ${venue.name}!`,
+          offer: offer.id,
+          metadata: {
+            offerTitle: offer.title,
+            venueName: venue.name,
+            claimedAt: new Date().toISOString(),
+          },
+        }),
+      })
+
+      if (response.ok) {
+        toast.success('Shared to feed!')
+      } else {
+        const error = await response.json()
+        toast.error(error.error || 'Failed to share')
+      }
+    } catch (error) {
+      console.error('Error sharing to feed:', error)
+      toast.error('Failed to share to feed')
+    } finally {
+      setSharingToFeed(false)
+    }
   }
 
   function handleShare() {
@@ -44,7 +84,7 @@ export function ClaimSuccess({ claim, offer, venue, timeRemaining, onClose }: Cl
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href)
-      alert('Link copied to clipboard!')
+      toast.success('Link copied to clipboard!')
     }
   }
 
@@ -184,11 +224,13 @@ export function ClaimSuccess({ claim, offer, venue, timeRemaining, onClose }: Cl
         {/* Actions */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <button
-            onClick={handleShare}
-            className="bg-white border border-border text-text-primary py-3 px-4 hover:bg-bg-secondary transition-colors font-medium flex items-center justify-center gap-2"
+            onClick={handleShareToFeed}
+            disabled={sharingToFeed}
+            className="bg-primary text-white py-3 px-4 hover:bg-primary/90 transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ color: 'white' }}
           >
             <FiShare2 />
-            Share
+            {sharingToFeed ? 'Sharing...' : 'Share to Feed'}
           </button>
           <Link
             href="/offers"

@@ -22,7 +22,7 @@ export function ShareOfferButton({
   async function handleShare() {
     setSharing(true)
 
-    const shareText = `${offerTitle}${venueName ? ` at ${venueName}` : ''}${discount ? ` - ${discount}` : ''}\n\nCheck out this exclusive offer on Off-Peak!`
+    const shareText = `${offerTitle}${venueName ? ` at ${venueName}` : ''}${discount ? ` - ${discount}` : ''}\n\nCheck out this exclusive offer on Blinkoo!`
     const shareUrl = `${window.location.origin}/offers/${offerId}`
 
     // Try native Web Share API first
@@ -60,14 +60,32 @@ export function ShareOfferButton({
   }
 
   function handleWhatsAppShare() {
-    const shareText = `${offerTitle}${venueName ? ` at ${venueName}` : ''}${discount ? ` - ${discount}` : ''}\n\nCheck out this exclusive offer on Off-Peak!`
+    const shareText = `${offerTitle}${venueName ? ` at ${venueName}` : ''}${discount ? ` - ${discount}` : ''}\n\nCheck out this exclusive offer on Blinkoo!`
     const shareUrl = `${window.location.origin}/offers/${offerId}`
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`
+    
+    // Track share
+    fetch(`/api/web/offers/${offerId}/share`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ platform: 'whatsapp' }),
+    }).catch(() => {})
+    
     window.open(whatsappUrl, '_blank')
   }
 
   function handleFacebookShare() {
     const shareUrl = `${window.location.origin}/offers/${offerId}`
+    
+    // Track share
+    fetch(`/api/web/offers/${offerId}/share`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ platform: 'facebook' }),
+    }).catch(() => {})
+    
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
       '_blank',
@@ -77,6 +95,15 @@ export function ShareOfferButton({
   function handleTwitterShare() {
     const shareText = `${offerTitle}${venueName ? ` at ${venueName}` : ''} - Check out this exclusive offer!`
     const shareUrl = `${window.location.origin}/offers/${offerId}`
+    
+    // Track share
+    fetch(`/api/web/offers/${offerId}/share`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ platform: 'twitter' }),
+    }).catch(() => {})
+    
     window.open(
       `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
       '_blank',

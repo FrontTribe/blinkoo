@@ -9,9 +9,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1">
-            <h3 className="font-heading text-xl font-bold mb-3">Off-Peak</h3>
+            <h3 className="font-heading text-xl font-bold mb-3">Blinkoo</h3>
             <p className="text-sm text-gray-400 mb-4">
-              Turn cold hours into foot traffic. Exclusive time-boxed offers at local venues.
+              Pretvorite prazne sate u posjetitelje. Ekskluzivne vremenski ograničene ponude u lokalnim mjestima.
             </p>
             <div className="flex gap-3">
               <div className="w-8 h-8 bg-[#333] flex items-center justify-center">
@@ -28,26 +28,26 @@ export function Footer() {
 
           {/* For Users */}
           <div>
-            <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider">For Users</h4>
+            <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider">Za Korisnike</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
                 <Link href="/offers" className="hover:text-white transition-colors">
-                  Browse Offers
+                  Pregledaj Ponude
                 </Link>
               </li>
               <li>
                 <Link href="/#how-it-works" className="hover:text-white transition-colors">
-                  How It Works
+                  Kako Funkcionira
                 </Link>
               </li>
               <li>
                 <Link href="/#faq" className="hover:text-white transition-colors">
-                  FAQ
+                  Često Postavljana Pitanja
                 </Link>
               </li>
               <li>
                 <Link href="/my-claims" className="hover:text-white transition-colors">
-                  My Claims
+                  Moje Rezervacije
                 </Link>
               </li>
             </ul>
@@ -55,11 +55,11 @@ export function Footer() {
 
           {/* For Merchants */}
           <div>
-            <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider">For Merchants</h4>
+            <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider">Za Trgovce</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
                 <Link href="/merchant/dashboard" className="hover:text-white transition-colors">
-                  Merchant Dashboard
+                  Trgovački Nadzorni Panel
                 </Link>
               </li>
               <li>
@@ -67,12 +67,12 @@ export function Footer() {
                   href="/auth/signup?role=merchant"
                   className="hover:text-white transition-colors"
                 >
-                  Become a Merchant
+                  Postanite Trgovac
                 </Link>
               </li>
               <li>
                 <Link href="/#merchant-benefits" className="hover:text-white transition-colors">
-                  Benefits
+                  Prednosti
                 </Link>
               </li>
             </ul>
@@ -80,21 +80,21 @@ export function Footer() {
 
           {/* Legal & Support */}
           <div>
-            <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider">Legal</h4>
+            <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider">Pravno</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
                 <Link href="/terms" className="hover:text-white transition-colors">
-                  Terms of Service
+                  Uvjeti Korištenja
                 </Link>
               </li>
               <li>
                 <Link href="/privacy" className="hover:text-white transition-colors">
-                  Privacy Policy
+                  Politika Privatnosti
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
-                  Contact Us
+                  Kontaktirajte Nas
                 </Link>
               </li>
             </ul>
@@ -103,8 +103,8 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-[#333] pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-          <div>© 2024 Off-Peak. All rights reserved.</div>
-          <div className="mt-4 md:mt-0">Made with ❤️ for local businesses</div>
+          <div>© 2024 Blinkoo. Sva prava pridržana.</div>
+          <div className="mt-4 md:mt-0">Napravljeno s ❤️ za lokalna poslovanja</div>
         </div>
       </div>
     </footer>

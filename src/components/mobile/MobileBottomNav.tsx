@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FiHome, FiShoppingBag, FiMapPin, FiTag, FiUser } from 'react-icons/fi'
+import { FiHome, FiShoppingBag, FiMapPin, FiTag, FiUser, FiUsers } from 'react-icons/fi'
 import { useEffect, useState } from 'react'
 
 export function MobileBottomNav() {
@@ -51,9 +51,9 @@ export function MobileBottomNav() {
       exact: false,
     },
     {
-      path: '/offers/map',
-      label: 'Map',
-      icon: FiMapPin,
+      path: '/feed',
+      label: 'Feed',
+      icon: FiUsers,
       exact: false,
     },
     {

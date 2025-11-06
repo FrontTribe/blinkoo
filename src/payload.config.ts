@@ -23,6 +23,8 @@ import { SavedOffers } from './collections/SavedOffers'
 import { Achievements } from './collections/Achievements'
 import { UserStats } from './collections/UserStats'
 import { Notifications } from './collections/Notifications'
+import { Shares } from './collections/Shares'
+import { SocialFeed } from './collections/SocialFeed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -52,6 +54,8 @@ export default buildConfig({
     UserStats,
     Waitlists,
     Notifications,
+    Shares,
+    SocialFeed,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

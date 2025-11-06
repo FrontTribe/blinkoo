@@ -10,44 +10,44 @@ type FAQItem = {
 
 const faqs: FAQItem[] = [
   {
-    question: 'How do I claim an offer?',
+    question: 'Kako mogu rezervirati ponudu?',
     answer:
-      'Simply browse available offers, tap "Claim" to reserve your spot, and receive a unique QR code or 6-digit redemption code. No fees, instant confirmation.',
+      'Jednostavno pregledajte dostupne ponude, kliknite "Rezerviraj" da rezervirate svoje mjesto i primite jedinstveni QR kod ili 6-znamenkasti kod za iskorištenje. Bez naknada, trenutna potvrda.',
   },
   {
-    question: 'Is there a fee to use Blinkoo?',
+    question: 'Postoji li naknada za korištenje Blinkoo?',
     answer:
-      'Blinkoo is completely free for customers. Merchants only pay a small commission when offers are successfully redeemed. No upfront costs or subscriptions.',
+      'Blinkoo je potpuno besplatan za kupce. Trgovci plaćaju samo malu proviziju kada se ponude uspješno iskoriste. Bez prethodnih troškova ili pretplata.',
   },
   {
-    question: "What if I can't make it in time?",
+    question: 'Što ako ne mogu stići na vrijeme?',
     answer:
-      "Offers are time-limited by design. If you can't make it, your claim will expire and the offer becomes available for others. Always check the expiration time before claiming.",
+      'Ponude su vremenski ograničene po dizajnu. Ako ne možete stići, vaša rezervacija će isteći i ponuda postaje dostupna drugima. Uvijek provjerite vrijeme isteka prije rezervacije.',
   },
   {
-    question: 'How do merchants benefit?',
+    question: 'Kako trgovci imaju koristi?',
     answer:
-      'Merchants fill slow hours with targeted customers. They control inventory, pricing, and timing. Average merchants see 35-40% increase in off-peak traffic with no upfront costs.',
+      'Trgovci ispunjavaju prazne sate ciljanim kupcima. Kontroliraju zalihe, cijene i vrijeme. Prosječni trgovci vide povećanje prometa od 35-40% u praznim satima bez prethodnih troškova.',
   },
   {
-    question: 'Are offers really limited?',
+    question: 'Jesu li ponude stvarno ograničene?',
     answer:
-      "Yes! Each offer has a limited quantity to create urgency and exclusivity. Once an offer slot is claimed, it's gone. This ensures deals are real and impactful.",
+      'Da! Svaka ponuda ima ograničenu količinu kako bi stvorila hitnost i ekskluzivnost. Jednom kada je ponuda rezervirana, nestaje. To osigurava da su ponude stvarne i utjecajne.',
   },
   {
-    question: 'How do I redeem my claim?',
+    question: 'Kako mogu iskoristiti svoju rezervaciju?',
     answer:
-      "Visit the venue during the offer's active window, show your 6-digit code or QR code to staff, and enjoy your discount. Redemption is instant and seamless.",
+      'Posjetite mjesto tijekom aktivnog vremena ponude, pokažite svoj 6-znamenkasti kod ili QR kod osoblju i uživajte u popustu. Iskorištenje je trenutno i jednostavno.',
   },
   {
-    question: 'Can I claim multiple offers?',
+    question: 'Mogu li rezervirati više ponuda?',
     answer:
-      'Yes, you can claim multiple offers from different merchants. Each offer has its own time limit and redemption process. Check your "My Claims" section to manage them all.',
+      'Da, možete rezervirati više ponuda od različitih trgovaca. Svaka ponuda ima svoje vremensko ograničenje i proces iskorištenja. Provjerite svoj odjeljak "Moje Rezervacije" da upravljate svima.',
   },
   {
-    question: 'What types of businesses use Blinkoo?',
+    question: 'Koje vrste poslovanja koriste Blinkoo?',
     answer:
-      'Restaurants, cafes, gyms, spas, entertainment venues, and more. Any local business looking to drive traffic during slow hours.',
+      'Restorani, kafići, teretane, wellness centri, zabavni prostori i više. Bilo koje lokalno poslovanje koje želi privući promet tijekom praznih sati.',
   },
 ]
 
@@ -63,10 +63,10 @@ export function FAQ() {
       <div className="max-w-[1280px] mx-auto px-6">
         <div className="text-center mb-10">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
-            Frequently Asked Questions
+            Često Postavljana Pitanja
           </h2>
           <p className="text-base md:text-lg text-text-secondary max-w-2xl mx-auto text-center">
-            Everything you need to know about using Off-Peak
+            Sve što trebate znati o korištenju Blinkoo
           </p>
         </div>
 

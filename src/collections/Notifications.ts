@@ -52,6 +52,7 @@ export const Notifications: CollectionConfig = {
         { label: 'KYC Approved', value: 'kyc_approved' },
         { label: 'KYC Rejected', value: 'kyc_rejected' },
         { label: 'Offer Claimed', value: 'offer_claimed' },
+        { label: 'Offer Available', value: 'offer_available' },
         { label: 'Offer Expiring', value: 'offer_expiring' },
         { label: 'Low Stock', value: 'low_stock' },
         { label: 'System', value: 'system' },

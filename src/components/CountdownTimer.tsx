@@ -8,6 +8,7 @@ type CountdownTimerProps = {
 
 export function CountdownTimer({ endDate }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<{
+    days: number
     hours: number
     minutes: number
     seconds: number
@@ -20,15 +21,16 @@ export function CountdownTimer({ endDate }: CountdownTimerProps) {
       const diff = end.getTime() - now.getTime()
 
       if (diff <= 0) {
-        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 })
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
         return
       }
 
-      const hours = Math.floor(diff / 1000 / 60 / 60)
+      const days = Math.floor(diff / 1000 / 60 / 60 / 24)
+      const hours = Math.floor((diff / 1000 / 60 / 60) % 24)
       const minutes = Math.floor((diff / 1000 / 60) % 60)
       const seconds = Math.floor((diff / 1000) % 60)
 
-      setTimeLeft({ hours, minutes, seconds })
+      setTimeLeft({ days, hours, minutes, seconds })
     }
 
     calculateTimeLeft()
@@ -47,13 +49,21 @@ export function CountdownTimer({ endDate }: CountdownTimerProps) {
     )
   }
 
-  if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0) {
+  if (
+    timeLeft.days === 0 &&
+    timeLeft.hours === 0 &&
+    timeLeft.minutes === 0 &&
+    timeLeft.seconds === 0
+  ) {
     return (
       <div className="inline-flex items-center gap-2 bg-error/10 border border-error px-3 py-1.5">
         <span className="text-sm font-bold text-error uppercase tracking-wide">Ended</span>
       </div>
     )
   }
+
+  // Show days if more than 0
+  const showDays = timeLeft.days > 0
 
   return (
     <div className="inline-flex items-center gap-3">
@@ -63,6 +73,23 @@ export function CountdownTimer({ endDate }: CountdownTimerProps) {
         </span>
       </div>
       <div className="flex items-center gap-2">
+        {/* Days */}
+        {showDays && (
+          <>
+            <div className="flex flex-col items-center bg-primary/10 border-2 border-primary px-3 py-2">
+              <span className="text-2xl font-bold text-primary tabular-nums leading-none">
+                {String(timeLeft.days).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] text-primary font-semibold uppercase tracking-wider mt-1">
+                {timeLeft.days === 1 ? 'day' : 'days'}
+              </span>
+            </div>
+
+            {/* Separator */}
+            <span className="text-2xl font-bold text-primary">:</span>
+          </>
+        )}
+
         {/* Hours */}
         <div className="flex flex-col items-center bg-primary/10 border-2 border-primary px-3 py-2">
           <span className="text-2xl font-bold text-primary tabular-nums leading-none">

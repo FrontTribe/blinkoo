@@ -27,15 +27,15 @@ export function NewsletterSignup() {
               <MdEmail className="text-xl text-primary" />
             </div>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
-              Get Notified of New Offers
+              Budite Obaviješteni o Novim Ponudama
             </h2>
             <p className="text-base text-text-secondary mb-6">
-              Join 2,450+ users receiving exclusive offers in your area
+              Pridružite se više od 2.450 korisnika koji primaju ekskluzivne ponude u vašoj okolini
             </p>
 
             {subscribed ? (
               <div className="bg-success/10 border border-success/20 p-4 text-success font-medium">
-                ✓ Thank you! Check your email for confirmation.
+                ✓ Hvala vam! Provjerite svoju e-poštu za potvrdu.
               </div>
             ) : (
               <form
@@ -44,7 +44,7 @@ export function NewsletterSignup() {
               >
                 <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Unesite svoju e-poštu"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -55,7 +55,7 @@ export function NewsletterSignup() {
                   className="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 font-semibold hover:bg-primary-hover transition-colors"
                   style={{ color: 'white' }}
                 >
-                  Subscribe
+                  Pretplatite Se
                   <MdArrowForward className="text-lg" style={{ color: 'white' }} />
                 </button>
               </form>

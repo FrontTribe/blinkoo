@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { FiHelpCircle } from 'react-icons/fi'
+import { FiHelpCircle, FiX } from 'react-icons/fi'
 
 type Position = 'top' | 'bottom' | 'left' | 'right'
 
@@ -57,10 +57,20 @@ export function HelpTooltip({
 
       {isVisible && (
         <div
-          className={`absolute z-50 bg-white border border-border p-3 max-w-xs text-sm text-text-primary ${positionClasses[position]} pointer-events-auto`}
+          className={`absolute z-50 bg-white border border-border rounded-lg shadow-lg p-4 max-w-xs text-sm text-text-primary ${positionClasses[position]} pointer-events-auto`}
           role="tooltip"
         >
-          <div className="mb-1 font-semibold">{content}</div>
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <h4 className="font-semibold text-text-primary">Help</h4>
+            <button
+              onClick={() => setIsVisible(false)}
+              className="text-text-tertiary hover:text-text-primary transition-colors"
+              aria-label="Close tooltip"
+            >
+              <FiX className="w-4 h-4" />
+            </button>
+          </div>
+          <p className="text-text-secondary leading-relaxed">{content}</p>
           {/* Arrow */}
           <div
             className={`absolute w-0 h-0 ${position === 'top' ? 'top-full border-t-border' : position === 'bottom' ? 'bottom-full border-b-border' : position === 'left' ? 'left-full border-l-border' : 'right-full border-r-border'}`}
@@ -68,28 +78,28 @@ export function HelpTooltip({
               ...(position === 'top' && {
                 borderTopColor: '#DDDDDD',
                 borderBottomColor: 'transparent',
-                borderWidth: '6px',
+                borderWidth: '8px',
                 left: '50%',
                 transform: 'translateX(-50%)',
               }),
               ...(position === 'bottom' && {
                 borderBottomColor: '#DDDDDD',
                 borderTopColor: 'transparent',
-                borderWidth: '6px',
+                borderWidth: '8px',
                 left: '50%',
                 transform: 'translateX(-50%)',
               }),
               ...(position === 'left' && {
                 borderLeftColor: '#DDDDDD',
                 borderRightColor: 'transparent',
-                borderWidth: '6px',
+                borderWidth: '8px',
                 top: '50%',
                 transform: 'translateY(-50%)',
               }),
               ...(position === 'right' && {
                 borderRightColor: '#DDDDDD',
                 borderLeftColor: 'transparent',
-                borderWidth: '6px',
+                borderWidth: '8px',
                 top: '50%',
                 transform: 'translateY(-50%)',
               }),

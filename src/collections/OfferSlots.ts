@@ -117,5 +117,58 @@ export const OfferSlots: CollectionConfig = {
         return data
       },
     ],
+    afterChange: [
+      async ({ doc, operation, previousDoc, req }) => {
+        // Send smart notifications when a slot becomes live
+        if (operation === 'update' && previousDoc && previousDoc.state !== 'live' && doc.state === 'live') {
+          try {
+            const slot = doc as any
+            const offerId = typeof slot.offer === 'object' ? slot.offer.id : slot.offer
+
+            if (offerId) {
+              // Import dynamically to avoid circular dependencies
+              const { sendSmartNotification, findSmartNotificationTargets } = await import('@/utilities/smartNotifications')
+
+              // Fetch the full offer data
+              const offer = await req.payload.findByID({
+                collection: 'offers',
+                id: offerId,
+                depth: 1,
+              })
+
+              // Find users who should receive notifications
+              const targets = await findSmartNotificationTargets(
+                req.payload,
+                offer as any,
+                slot,
+                undefined // TODO: Add location when available
+              )
+
+              // Send notifications to all targets
+              for (const target of targets) {
+                await sendSmartNotification(req.payload, {
+                  user: target.user,
+                  offer: offer as any,
+                  slot,
+                  userHistory: {
+                    favoriteVenues: [],
+                    savedOffers: [],
+                    claimedOffers: [],
+                    preferredCategories: [],
+                  },
+                })
+              }
+
+              console.log(`Smart notifications sent to ${targets.length} users for offer ${offerId}`)
+            }
+          } catch (error) {
+            console.error('Error sending smart notifications for live slot:', error)
+            // Don't fail the update if notifications fail
+          }
+        }
+
+        return doc
+      },
+    ],
   },
 }

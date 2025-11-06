@@ -13,6 +13,8 @@ import {
   FiEdit,
   FiCheck,
   FiX,
+  FiMoon,
+  FiAlertCircle,
 } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 import { usePushNotifications } from '@/hooks/usePushNotifications'
@@ -26,6 +28,10 @@ export default function ProfilePage() {
     inApp: true,
     email: false,
     push: false,
+    smartNotifications: true,
+    quietHoursStart: 22,
+    quietHoursEnd: 8,
+    notificationFrequency: 'important' as 'all' | 'important' | 'occasional',
   })
 
   // Use push notifications hook
@@ -265,7 +271,134 @@ export default function ProfilePage() {
                 <span className="text-text-tertiary text-sm">N/A</span>
               )}
             </label>
+            <label className="flex items-center justify-between p-3 border border-border hover:border-primary transition-colors cursor-pointer">
+              <div>
+                <span className="text-text-primary font-medium">Smart Notifications</span>
+                <p className="text-xs text-text-tertiary mt-1">
+                  Personalized alerts based on your activity
+                </p>
+              </div>
+              <button
+                onClick={() =>
+                  updateNotificationPrefs({
+                    ...notificationPrefs,
+                    smartNotifications: !notificationPrefs.smartNotifications,
+                  })
+                }
+                className={`w-12 h-6 rounded-full transition-colors ${
+                  notificationPrefs.smartNotifications ? 'bg-primary' : 'bg-gray-300'
+                }`}
+                style={notificationPrefs.smartNotifications ? { backgroundColor: '#ff385c' } : undefined}
+              >
+                <div
+                  className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
+                    notificationPrefs.smartNotifications ? 'translate-x-6' : 'translate-x-0.5'
+                  }`}
+                />
+              </button>
+            </label>
           </div>
+
+          {/* Quiet Hours */}
+          {notificationPrefs.smartNotifications && (
+            <div className="mt-4 pt-4 border-t border-border">
+              <div className="flex items-center gap-2 mb-3">
+                <FiMoon className="text-primary" />
+                <h3 className="text-sm font-semibold text-text-primary">Quiet Hours</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-text-secondary mb-1">Start (Hour)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="23"
+                    value={notificationPrefs.quietHoursStart}
+                    onChange={(e) =>
+                      updateNotificationPrefs({
+                        ...notificationPrefs,
+                        quietHoursStart: parseInt(e.target.value, 10),
+                      })
+                    }
+                    className="w-full border border-border px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-text-secondary mb-1">End (Hour)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="23"
+                    value={notificationPrefs.quietHoursEnd}
+                    onChange={(e) =>
+                      updateNotificationPrefs({
+                        ...notificationPrefs,
+                        quietHoursEnd: parseInt(e.target.value, 10),
+                      })
+                    }
+                    className="w-full border border-border px-3 py-2"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Frequency */}
+          {notificationPrefs.smartNotifications && (
+            <div className="mt-4 pt-4 border-t border-border">
+              <div className="flex items-center gap-2 mb-3">
+                <FiAlertCircle className="text-primary" />
+                <h3 className="text-sm font-semibold text-text-primary">Notification Frequency</h3>
+              </div>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="frequency"
+                    value="all"
+                    checked={notificationPrefs.notificationFrequency === 'all'}
+                    onChange={() =>
+                      updateNotificationPrefs({ ...notificationPrefs, notificationFrequency: 'all' })
+                    }
+                    className="accent-primary"
+                  />
+                  <span className="text-sm text-text-primary">All updates</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="frequency"
+                    value="important"
+                    checked={notificationPrefs.notificationFrequency === 'important'}
+                    onChange={() =>
+                      updateNotificationPrefs({
+                        ...notificationPrefs,
+                        notificationFrequency: 'important',
+                      })
+                    }
+                    className="accent-primary"
+                  />
+                  <span className="text-sm text-text-primary">Important only</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="frequency"
+                    value="occasional"
+                    checked={notificationPrefs.notificationFrequency === 'occasional'}
+                    onChange={() =>
+                      updateNotificationPrefs({
+                        ...notificationPrefs,
+                        notificationFrequency: 'occasional',
+                      })
+                    }
+                    className="accent-primary"
+                  />
+                  <span className="text-sm text-text-primary">Occasional</span>
+                </label>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Account Settings */}

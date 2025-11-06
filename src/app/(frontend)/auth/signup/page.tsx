@@ -95,7 +95,7 @@ function SignupForm() {
             {isMerchant ? 'Become a Merchant' : 'Create Account'}
           </h1>
           <p className="text-sm text-text-secondary">
-            Join Off-Peak and start discovering great deals
+            Join Blinkoo and start discovering great deals
           </p>
         </div>
 

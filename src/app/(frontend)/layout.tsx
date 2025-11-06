@@ -29,19 +29,19 @@ export const metadata = {
     'exclusive offers',
     'local business discounts',
   ],
-  authors: [{ name: 'Off-Peak Team' }],
+  authors: [{ name: 'Blinkoo Team' }],
   openGraph: {
-    title: 'Off-Peak - Exclusive Time-Limited Offers at Local Venues',
+    title: 'Blinkoo - Exclusive Time-Limited Offers at Local Venues',
     description:
       'Turn cold hours into foot traffic. Discover exclusive time-boxed offers at local venues.',
-    url: 'https://off-peak.com',
-    siteName: 'Off-Peak',
+    url: 'https://blinkoo.com',
+    siteName: 'Blinkoo',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Off-Peak - Exclusive Time-Limited Offers',
+    title: 'Blinkoo - Exclusive Time-Limited Offers',
     description:
       'Discover exclusive time-boxed offers at local venues. Save up to 50% during off-peak hours.',
   },
@@ -64,7 +64,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Off-Peak',
+    name: 'Blinkoo',
     description:
       'Platform connecting local businesses with customers through time-limited exclusive offers',
     url: 'https://off-peak.com',
@@ -93,7 +93,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <meta name="theme-color" content="#ff385c" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Off-Peak" />
+        <meta name="apple-mobile-web-app-title" content="Blinkoo" />
         {process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID && (
           <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer />
         )}

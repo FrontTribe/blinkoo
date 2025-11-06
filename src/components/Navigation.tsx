@@ -30,7 +30,7 @@ export async function Navigation() {
               href="/"
               className="font-heading text-3xl font-bold text-orange-primary hover:text-orange-light transition-colors duration-300"
             >
-              Off-Peak
+              Blinkoo
             </Link>
             <div className="hidden md:ml-12 md:flex md:space-x-6">
               <Link
