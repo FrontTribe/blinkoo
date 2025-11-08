@@ -37,7 +37,7 @@ export async function Navigation() {
                 href="/offers"
                 className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
               >
-                Explore Offers
+                Pregledaj Ponude
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
               </Link>
               {user && (
@@ -48,14 +48,14 @@ export async function Navigation() {
                         href="/my-claims"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        My Claims
+                        Moje Rezervacije
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                       <Link
                         href="/saved-offers"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        Saved
+                        Spremljeno
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                     </>
@@ -66,42 +66,42 @@ export async function Navigation() {
                         href="/merchant/dashboard"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        Dashboard
+                        Nadzorni Panel
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                       <Link
                         href="/merchant/offers"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        Offers
+                        Ponude
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                       <Link
                         href="/merchant/venues"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        Venues
+                        Lokacije
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                       <Link
                         href="/merchant/staff"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        Staff
+                        Osoblje
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                       <Link
                         href="/merchant/analytics"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        Analytics
+                        Analitika
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                       <Link
                         href="/merchant/settings"
                         className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 relative group"
                       >
-                        Settings
+                        Postavke
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-primary group-hover:w-full transition-all duration-300" />
                       </Link>
                     </>
@@ -123,7 +123,7 @@ export async function Navigation() {
                   className="group flex items-center gap-2 bg-gray-900 text-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-800 transition-all duration-300 border-2 border-transparent hover:border-gray-700"
                 >
                   <MdLogout className="transform group-hover:translate-x-1 transition-transform" />
-                  Logout
+                  Odjava
                 </Link>
               </div>
             ) : (
@@ -132,13 +132,13 @@ export async function Navigation() {
                   href="/auth/login"
                   className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300"
                 >
-                  Sign In
+                  Prijava
                 </Link>
                 <Link
                   href="/auth/signup"
                   className="group bg-orange-primary text-white px-6 py-2.5 text-sm font-medium border-2 border-orange-primary hover:bg-orange-light hover:border-orange-light transition-all duration-300 inline-flex items-center gap-2"
                 >
-                  Sign Up
+                  Registracija
                   <span className="transform group-hover:translate-x-0.5 transition-transform">
                     →
                   </span>

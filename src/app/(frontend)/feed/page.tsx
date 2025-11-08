@@ -9,15 +9,15 @@ export default function FeedPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-text-primary mb-2">Community Feed</h1>
-            <p className="text-text-secondary">See what others are discovering and sharing</p>
+            <h1 className="text-3xl font-bold text-text-primary mb-2">Feed Zajednice</h1>
+            <p className="text-text-secondary">Pogledajte što drugi otkrivaju i dijele</p>
           </div>
           <Link
             href="/offers"
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
             style={{ color: 'white' }}
           >
-            Browse Offers
+            Pregledaj ponude
           </Link>
         </div>
         <SocialFeed />

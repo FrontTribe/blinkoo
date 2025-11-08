@@ -56,6 +56,12 @@ export default function AnalyticsPage() {
   const [endDate, setEndDate] = useState('')
   const [showComparison, setShowComparison] = useState(false)
 
+  const badgeTranslations: Record<string, string> = {
+    'Top Performer': 'Najbolji rezultat',
+    'High Conversion': 'Visoka konverzija',
+    'Needs Improvement': 'Potrebno poboljšanje',
+  }
+
   useEffect(() => {
     fetchAnalytics()
     fetchComparison()
@@ -129,7 +135,7 @@ export default function AnalyticsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-secondary text-sm">Loading analytics...</p>
+        <p className="text-text-secondary text-sm">Učitavanje analitike...</p>
       </div>
     )
   }
@@ -141,10 +147,10 @@ export default function AnalyticsPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-              Analytics & Insights
+              Analitika i uvidi
             </h1>
             <p className="mt-2 text-sm md:text-base text-text-secondary">
-              Track performance metrics and optimize your offers
+              Pratite metrike uspješnosti i optimizirajte svoje ponude
             </p>
           </div>
           <div className="flex gap-3">
@@ -157,7 +163,7 @@ export default function AnalyticsPage() {
               }`}
             >
               <FiTrendingUp className="w-4 h-4" />
-              {showComparison ? 'Hide' : 'Show'} Comparison
+              {showComparison ? 'Sakrij usporedbu' : 'Prikaži usporedbu'}
             </button>
             <button
               onClick={() => {
@@ -169,24 +175,24 @@ export default function AnalyticsPage() {
               className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-text-secondary border border-border px-4 py-2 hover:border-primary transition-colors"
             >
               <FiDownload className="w-4 h-4" />
-              Export CSV
+              Izvezi CSV
             </button>
             <Link
               href="/merchant/dashboard"
               className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-text-secondary border border-border px-4 py-2 hover:border-primary transition-colors"
             >
               <FiArrowLeft className="w-4 h-4" />
-              ← Dashboard
+              ← Nadzorna ploča
             </Link>
           </div>
         </div>
 
         {/* Date Range Filter */}
         <div className="bg-white border border-border rounded-lg p-6">
-          <h3 className="text-sm font-semibold text-text-primary mb-4">Filter by Date Range</h3>
+          <h3 className="text-sm font-semibold text-text-primary mb-4">Filtriraj po rasponu datuma</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-text-secondary mb-2">Start Date</label>
+              <label className="block text-xs font-medium text-text-secondary mb-2">Početni datum</label>
               <input
                 type="date"
                 value={startDate}
@@ -195,7 +201,7 @@ export default function AnalyticsPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-text-secondary mb-2">End Date</label>
+              <label className="block text-xs font-medium text-text-secondary mb-2">Završni datum</label>
               <input
                 type="date"
                 value={endDate}
@@ -216,13 +222,13 @@ export default function AnalyticsPage() {
                     <FiPercent className="text-green-600 text-lg" />
                   </div>
                   <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                    Fill Rate
+                    Stopa popunjenosti
                   </h3>
                 </div>
                 <p className="font-heading text-3xl font-bold text-green-600 mb-1">
                   {analytics.fillRate}
                 </p>
-                <p className="text-xs text-text-secondary">Capacity utilization</p>
+                <p className="text-xs text-text-secondary">Iskorištenost kapaciteta</p>
               </div>
 
               <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
@@ -231,13 +237,13 @@ export default function AnalyticsPage() {
                     <FiTarget className="text-blue-600 text-lg" />
                   </div>
                   <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                    Redemption Rate
+                    Stopa iskorištenja
                   </h3>
                 </div>
                 <p className="font-heading text-3xl font-bold text-blue-600 mb-1">
                   {analytics.redemptionRate}
                 </p>
-                <p className="text-xs text-text-secondary">Claims converted</p>
+                <p className="text-xs text-text-secondary">Iskorištene rezervacije</p>
               </div>
 
               <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
@@ -246,13 +252,13 @@ export default function AnalyticsPage() {
                     <FiUsers className="text-purple-600 text-lg" />
                   </div>
                   <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                    Repeat Rate
+                    Stopa ponovnih dolazaka
                   </h3>
                 </div>
                 <p className="font-heading text-3xl font-bold text-purple-600 mb-1">
                   {analytics.repeatCustomerRate}
                 </p>
-                <p className="text-xs text-text-secondary">Customer loyalty</p>
+                <p className="text-xs text-text-secondary">Vjernost kupaca</p>
               </div>
 
               <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
@@ -261,13 +267,13 @@ export default function AnalyticsPage() {
                     <FiZap className="text-amber-600 text-lg" />
                   </div>
                   <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                    Uplift
+                    Rast prometa
                   </h3>
                 </div>
                 <p className="font-heading text-3xl font-bold text-amber-600 mb-1">
                   {analytics.uplift}
                 </p>
-                <p className="text-xs text-text-secondary">Foot traffic increase</p>
+                <p className="text-xs text-text-secondary">Povećanje posjećenosti</p>
               </div>
             </div>
 
@@ -275,35 +281,35 @@ export default function AnalyticsPage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
               <div className="bg-white border border-border p-5 rounded-lg">
                 <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-                  Total Offers
+                  Ukupno ponuda
                 </h3>
                 <p className="text-2xl font-bold text-text-primary">{analytics.totalOffers}</p>
               </div>
 
               <div className="bg-white border border-border p-5 rounded-lg">
                 <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-                  Total Claims
+                  Ukupno rezervacija
                 </h3>
                 <p className="text-2xl font-bold text-text-primary">{analytics.totalClaims}</p>
               </div>
 
               <div className="bg-white border border-border p-5 rounded-lg">
                 <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-                  Redeemed
+                  Iskorišteno
                 </h3>
                 <p className="text-2xl font-bold text-primary">{analytics.redeemedClaims}</p>
               </div>
 
               <div className="bg-white border border-border p-5 rounded-lg">
                 <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-                  Expired
+                  Isteklo
                 </h3>
                 <p className="text-2xl font-bold text-error">{analytics.expiredClaims}</p>
               </div>
 
               <div className="bg-white border border-border p-5 rounded-lg">
                 <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-                  Active
+                  Rezervirano
                 </h3>
                 <p className="text-2xl font-bold text-text-primary">{analytics.reservedClaims}</p>
               </div>
@@ -315,12 +321,12 @@ export default function AnalyticsPage() {
               <div className="bg-white border border-border rounded-lg overflow-hidden">
                 <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-primary/5 to-transparent">
                   <h2 className="font-heading text-lg font-bold text-text-primary">
-                    Top Performing Offers
+                    Najuspješnije ponude
                   </h2>
                 </div>
                 <div className="p-6">
                   {analytics.topOffers.length === 0 ? (
-                    <p className="text-text-tertiary text-sm text-center py-6">No data available</p>
+                    <p className="text-text-tertiary text-sm text-center py-6">Nema dostupnih podataka</p>
                   ) : (
                     <div className="space-y-3">
                       {analytics.topOffers.map((offer, index) => (
@@ -359,12 +365,12 @@ export default function AnalyticsPage() {
               <div className="bg-white border border-border rounded-lg overflow-hidden">
                 <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-blue-50 to-transparent">
                   <h2 className="font-heading text-lg font-bold text-text-primary">
-                    Popular Time Slots
+                    Popularni termini
                   </h2>
                 </div>
                 <div className="p-6">
                   {analytics.popularSlots.length === 0 ? (
-                    <p className="text-text-tertiary text-sm text-center py-6">No data available</p>
+                    <p className="text-text-tertiary text-sm text-center py-6">Nema dostupnih podataka</p>
                   ) : (
                     <div className="space-y-3">
                       {analytics.popularSlots.map((slot, index) => (
@@ -379,7 +385,7 @@ export default function AnalyticsPage() {
                             </span>
                           </div>
                           <span className="bg-white border border-border px-3 py-1 text-xs font-semibold">
-                            {slot.count} claims
+                            {slot.count} rezervacija
                           </span>
                         </div>
                       ))}
@@ -414,9 +420,9 @@ export default function AnalyticsPage() {
                   </div>
                   <div>
                     <h2 className="font-heading text-xl font-bold text-text-primary">
-                      Performance Benchmarks
+                      Usporedba performansi
                     </h2>
-                    <p className="text-sm text-text-secondary">How you compare to industry averages</p>
+                    <p className="text-sm text-text-secondary">Kako stojite u odnosu na prosjek industrije</p>
                   </div>
                 </div>
 
@@ -442,7 +448,7 @@ export default function AnalyticsPage() {
                                         : 'bg-orange-100 text-orange-700'
                                   }`}
                                 >
-                                  {badge}
+                                  {badgeTranslations[badge] ?? badge}
                                 </span>
                               ))}
                             </div>
@@ -457,19 +463,19 @@ export default function AnalyticsPage() {
                             {perf.difference >= 0 ? '+' : ''}
                             {perf.difference.toFixed(1)}%
                           </span>
-                          <div className="text-xs text-text-secondary">vs industry avg</div>
+                          <div className="text-xs text-text-secondary">u odnosu na prosjek industrije</div>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="bg-bg-secondary p-3 rounded">
-                          <div className="text-xs font-medium text-text-secondary mb-1">Your Rate</div>
+                          <div className="text-xs font-medium text-text-secondary mb-1">Vaša stopa</div>
                           <div className="text-xl font-bold text-text-primary">
                             {perf.merchantRate.toFixed(1)}%
                           </div>
                         </div>
                         <div className="bg-bg-secondary p-3 rounded">
                           <div className="text-xs font-medium text-text-secondary mb-1">
-                            Industry Avg
+                            Prosjek industrije
                           </div>
                           <div className="text-xl font-bold text-text-primary">
                             {perf.benchmarkRate.toFixed(1)}%
@@ -477,7 +483,7 @@ export default function AnalyticsPage() {
                         </div>
                       </div>
                       <div className="mt-3 text-xs font-medium text-text-secondary">
-                        You&apos;re in the <span className="text-primary font-bold">{perf.percentile}</span>
+                        Nalazite se u <span className="text-primary font-bold">{perf.percentile}</span>
                       </div>
                     </div>
                   ))}
@@ -485,8 +491,8 @@ export default function AnalyticsPage() {
 
                 <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-xs text-blue-800">
-                    <strong>ℹ️ Note:</strong> Benchmarks are calculated from offers in the same category
-                    across all merchants. Your percentile ranking shows your competitive position.
+                    <strong>ℹ️ Napomena:</strong> Referentne vrijednosti izračunate su na temelju ponuda u istoj kategoriji
+                    svih trgovaca. Vaš percentil pokazuje vaš konkurentski položaj.
                   </p>
                 </div>
               </div>

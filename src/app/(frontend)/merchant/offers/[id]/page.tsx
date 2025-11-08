@@ -68,21 +68,21 @@ export default function OfferDetailPage() {
         throw new Error('Failed to delete offer')
       }
 
-      toast.success('Offer deleted successfully!')
+      toast.success('Ponuda je uspješno obrisana!')
 
       setTimeout(() => {
         router.push('/merchant/offers')
       }, 500)
     } catch (error) {
       console.error('Error deleting offer:', error)
-      toast.error('Failed to delete offer. Please try again.')
+      toast.error('Brisanje ponude nije uspjelo. Molimo pokušajte ponovno.')
     }
   }
 
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-primary">Loading offer...</p>
+        <p className="text-text-primary">Učitavanje ponude...</p>
       </div>
     )
   }
@@ -92,14 +92,14 @@ export default function OfferDetailPage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="bg-white border border-border p-10 max-w-md">
           <h2 className="font-heading text-2xl font-bold text-text-primary mb-4">
-            Offer Not Found
+            Ponuda Nije Pronađena
           </h2>
           <Link
             href="/merchant/offers"
             className="block text-center bg-primary text-white py-4 px-6 hover:bg-primary-hover transition-colors font-semibold"
             style={{ color: 'white' }}
           >
-            Back to Offers
+            Natrag na Ponude
           </Link>
         </div>
       </div>
@@ -117,7 +117,7 @@ export default function OfferDetailPage() {
           className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary mb-6 transition-colors"
         >
           <MdArrowBack />
-          Back to offers
+          Natrag na ponude
         </Link>
 
         <div className="bg-white border border-border p-8 md:p-10">
@@ -126,7 +126,7 @@ export default function OfferDetailPage() {
               <h1 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-2">
                 {offerData.title}
               </h1>
-              <p className="text-sm text-text-secondary">{venue?.name || 'Unknown Venue'}</p>
+              <p className="text-sm text-text-secondary">{venue?.name || 'Nepoznata Lokacija'}</p>
             </div>
             <span
               className={`inline-flex items-center px-3 py-1.5 text-sm font-medium ${
@@ -141,55 +141,55 @@ export default function OfferDetailPage() {
 
           {offerData.description && (
             <div className="mb-6">
-              <h2 className="text-sm font-medium text-text-secondary mb-2">Description</h2>
+              <h2 className="text-sm font-medium text-text-secondary mb-2">Opis</h2>
               <p className="text-text-primary">{offerData.description}</p>
             </div>
           )}
 
           {offerData.terms && (
             <div className="mb-6">
-              <h2 className="text-sm font-medium text-text-secondary mb-2">Terms & Conditions</h2>
+              <h2 className="text-sm font-medium text-text-secondary mb-2">Uvjeti i Odredbe</h2>
               <p className="text-text-primary">{offerData.terms}</p>
             </div>
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 pb-6 border-b border-[#EBEBEB]">
             <div>
-              <h2 className="text-sm font-medium text-text-secondary mb-2">Offer Type</h2>
+              <h2 className="text-sm font-medium text-text-secondary mb-2">Vrsta Ponude</h2>
               <p className="text-text-primary capitalize">{offerData.type}</p>
             </div>
             <div>
-              <h2 className="text-sm font-medium text-text-secondary mb-2">Discount Value</h2>
+              <h2 className="text-sm font-medium text-text-secondary mb-2">Vrijednost Popusta</h2>
               <p className="text-text-primary">{offerData.discountValue}</p>
             </div>
             <div>
-              <h2 className="text-sm font-medium text-text-secondary mb-2">Per User Limit</h2>
-              <p className="text-text-primary">{offerData.perUserLimit || 'Unlimited'}</p>
+              <h2 className="text-sm font-medium text-text-secondary mb-2">Limit po Korisniku</h2>
+              <p className="text-text-primary">{offerData.perUserLimit || 'Neograničeno'}</p>
             </div>
             <div>
               <h2 className="text-sm font-medium text-text-secondary mb-2">Cooldown</h2>
-              <p className="text-text-primary">{offerData.cooldownMinutes || 0} minutes</p>
+              <p className="text-text-primary">{offerData.cooldownMinutes || 0} minuta</p>
             </div>
           </div>
 
           {/* Slots Section */}
           <div className="border-t border-[#EBEBEB] pt-6 mt-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-              <h2 className="font-heading text-lg font-semibold text-text-primary">Offer Slots</h2>
+              <h2 className="font-heading text-lg font-semibold text-text-primary">Slotovi Ponude</h2>
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowSlotForm(!showSlotForm)}
                   className="px-4 py-2 bg-white text-text-primary border border-border hover:border-primary transition-colors inline-flex items-center gap-2 font-semibold"
                 >
                   <MdAdd />
-                  Single Slot
+                  Pojedinačni Slot
                 </button>
                 <Link
                   href={`/merchant/offers/${offerId}/bulk-slots`}
                   className="px-4 py-2 bg-white text-text-primary border border-border hover:border-primary transition-colors inline-flex items-center gap-2 font-semibold"
                 >
                   <MdAdd />
-                  Bulk Slots
+                  Masovni Slotovi
                 </Link>
                 <Link
                   href={`/merchant/offers/${offerId}/calendar`}
@@ -197,14 +197,14 @@ export default function OfferDetailPage() {
                   style={{ color: 'white' }}
                 >
                   <MdAdd style={{ color: 'white' }} />
-                  Calendar View
+                  Kalendarski Pregled
                 </Link>
               </div>
             </div>
 
             {showSlotForm && (
               <div className="mb-6 bg-white border border-border p-6">
-                <h3 className="font-semibold text-text-primary mb-4">Create New Slot</h3>
+                <h3 className="font-semibold text-text-primary mb-4">Kreiraj Novi Slot</h3>
                 <SlotForm
                   offerId={offerId}
                   onSlotCreated={() => {
@@ -221,7 +221,7 @@ export default function OfferDetailPage() {
               </div>
             )}
             {slots.length === 0 ? (
-              <p className="text-text-tertiary">No slots for this offer</p>
+              <p className="text-text-tertiary">Nema slotova za ovu ponudu</p>
             ) : (
               <div className="space-y-3">
                 {slots.map((slot: any) => (
@@ -236,7 +236,7 @@ export default function OfferDetailPage() {
                           {new Date(slot.endsAt).toLocaleString()}
                         </p>
                         <p className="text-xs text-text-secondary mt-1">
-                          Mode: {slot.mode} | State: {slot.state}
+                          Način: {slot.mode} | Status: {slot.state}
                         </p>
                       </div>
                       <span className="bg-primary/10 text-primary px-3 py-1.5 text-xs font-medium border border-primary/20 flex-shrink-0">
@@ -255,7 +255,7 @@ export default function OfferDetailPage() {
               className="px-6 py-3 bg-white text-red-600 border border-red-600 hover:bg-red-50 transition-colors inline-flex items-center gap-2 font-semibold"
             >
               <MdDelete />
-              Delete Offer
+              Obriši Ponudu
             </button>
             <Link
               href={`/merchant/offers/${offerId}/edit`}
@@ -263,13 +263,13 @@ export default function OfferDetailPage() {
               style={{ color: 'white' }}
             >
               <MdEdit style={{ color: 'white' }} />
-              Edit Offer
+              Uredi Ponudu
             </Link>
             <Link
               href="/merchant/offers"
               className="px-6 py-3 bg-white text-text-primary border border-border hover:border-primary transition-colors font-semibold text-center"
             >
-              Close
+              Zatvori
             </Link>
           </div>
         </div>
@@ -277,10 +277,10 @@ export default function OfferDetailPage() {
 
       <ConfirmModal
         isOpen={showDeleteModal}
-        title="Delete Offer"
-        message="Are you sure you want to delete this offer? This will also delete all associated slots and cannot be undone."
-        confirmText="Delete Offer"
-        cancelText="Cancel"
+        title="Obriši Ponudu"
+        message="Jeste li sigurni da želite obrisati ovu ponudu? Ovo će također obrisati sve povezane slotove i ne može se poništiti."
+        confirmText="Obriši Ponudu"
+        cancelText="Odustani"
         onConfirm={handleDelete}
         onCancel={() => setShowDeleteModal(false)}
       />

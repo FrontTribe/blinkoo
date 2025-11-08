@@ -80,27 +80,27 @@ export default function SlotsCalendarPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-primary">Loading calendar...</p>
+        <p className="text-text-primary">Učitavanje kalendara...</p>
       </div>
     )
   }
 
   const days = getDaysInMonth(currentMonth)
   const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'Siječanj',
+    'Veljača',
+    'Ožujak',
+    'Travanj',
+    'Svibanj',
+    'Lipanj',
+    'Srpanj',
+    'Kolovoz',
+    'Rujan',
+    'Listopad',
+    'Studeni',
+    'Prosinac',
   ]
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const dayNames = ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub']
 
   return (
     <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
@@ -110,29 +110,29 @@ export default function SlotsCalendarPage() {
           className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary mb-6 transition-colors"
         >
           <FiArrowLeft />
-          Back to offer
+          Natrag na ponudu
         </Link>
 
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="font-heading text-3xl font-bold text-text-primary">Offer Calendar</h1>
+          <h1 className="font-heading text-3xl font-bold text-text-primary">Kalendar Ponude</h1>
           <div className="flex gap-2">
             <button
               onClick={previousMonth}
               className="px-4 py-2 bg-white border border-border hover:border-primary transition-colors font-medium"
             >
-              ← Prev
+              ← Prethodno
             </button>
             <button
               onClick={today}
               className="px-4 py-2 bg-white border border-border hover:border-primary transition-colors font-medium"
             >
-              Today
+              Danas
             </button>
             <button
               onClick={nextMonth}
               className="px-4 py-2 bg-white border border-border hover:border-primary transition-colors font-medium"
             >
-              Next →
+              Sljedeće →
             </button>
           </div>
         </div>
@@ -175,10 +175,10 @@ export default function SlotsCalendarPage() {
                       </div>
                       <div className="space-y-1">
                         {daySlots.slice(0, 2).map((slot: any) => {
-                          const startTime = new Date(slot.startsAt).toLocaleTimeString('en-US', {
+                          const startTime = new Date(slot.startsAt).toLocaleTimeString('hr-HR', {
                             hour: 'numeric',
                             minute: '2-digit',
-                            hour12: true,
+                            hour12: false,
                           })
                           const fillPercent =
                             slot.qtyTotal > 0
@@ -197,7 +197,7 @@ export default function SlotsCalendarPage() {
                                       ? 'bg-gray-100 text-gray-600 border border-gray-300'
                                       : 'bg-yellow-100 text-yellow-800 border border-yellow-300'
                               }`}
-                              title={`${startTime} - ${fillPercent}% remaining`}
+                              title={`${startTime} - ${fillPercent}% preostalo`}
                             >
                               <div className="flex items-center gap-1">
                                 <FiClock className="text-[10px]" />
@@ -211,7 +211,7 @@ export default function SlotsCalendarPage() {
                         })}
                         {daySlots.length > 2 && (
                           <div className="text-xs text-text-tertiary px-1">
-                            +{daySlots.length - 2} more
+                            +{daySlots.length - 2} više
                           </div>
                         )}
                       </div>
@@ -225,23 +225,23 @@ export default function SlotsCalendarPage() {
 
         {/* Legend */}
         <div className="mt-8 bg-white border border-border p-6">
-          <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">Legend</h2>
+          <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">Legenda</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-green-100 border border-green-300 rounded"></div>
-              <span className="text-sm text-text-secondary">Live</span>
+              <span className="text-sm text-text-secondary">Aktivno</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-blue-100 border border-blue-300 rounded"></div>
-              <span className="text-sm text-text-secondary">Scheduled</span>
+              <span className="text-sm text-text-secondary">Zakazano</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-yellow-100 border border-yellow-300 rounded"></div>
-              <span className="text-sm text-text-secondary">Paused</span>
+              <span className="text-sm text-text-secondary">Pauzirano</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-gray-100 border border-gray-300 rounded"></div>
-              <span className="text-sm text-text-secondary">Ended</span>
+              <span className="text-sm text-text-secondary">Završeno</span>
             </div>
           </div>
         </div>
@@ -249,23 +249,23 @@ export default function SlotsCalendarPage() {
         {/* Quick Stats */}
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Total Slots</h3>
+            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Ukupno Slotova</h3>
             <p className="font-heading text-3xl font-bold text-text-primary">{slots.length}</p>
           </div>
           <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Live Now</h3>
+            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Aktivno Sada</h3>
             <p className="font-heading text-3xl font-bold text-green-600">
               {slots.filter((s: any) => s.state === 'live').length}
             </p>
           </div>
           <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Scheduled</h3>
+            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Zakazano</h3>
             <p className="font-heading text-3xl font-bold text-blue-600">
               {slots.filter((s: any) => s.state === 'scheduled').length}
             </p>
           </div>
           <div className="bg-white border border-border p-6">
-            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">This Month</h3>
+            <h3 className="text-xs font-medium text-text-secondary mb-2 uppercase">Ovaj Mjesec</h3>
             <p className="font-heading text-3xl font-bold text-text-primary">
               {
                 slots.filter((slot: any) => {

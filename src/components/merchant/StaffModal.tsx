@@ -73,18 +73,18 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
     e.preventDefault()
 
     if (!formData.name || !formData.email) {
-      toast.error('Name and email are required')
+      toast.error('Ime i e-pošta su obavezni')
       return
     }
 
     // Password required for new staff members
     if (!staffMember && !formData.password) {
-      toast.error('Password is required for new staff members')
+      toast.error('Lozinka je obavezna za nove članove osoblja')
       return
     }
 
     if (formData.venueIds.length === 0) {
-      toast.error('Please assign at least one venue')
+      toast.error('Dodijelite najmanje jednu lokaciju')
       return
     }
 
@@ -106,11 +106,11 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
         })
 
         if (response.ok) {
-          toast.success('Staff member updated successfully')
+          toast.success('Član osoblja je uspješno ažuriran')
           onSuccess()
         } else {
           const data = await response.json()
-          toast.error(data.error || 'Failed to update staff member')
+          toast.error(data.error || 'Ažuriranje člana osoblja nije uspjelo')
         }
       } else {
         // Create new staff
@@ -128,16 +128,16 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
         })
 
         if (response.ok) {
-          toast.success('Staff member created successfully')
+          toast.success('Član osoblja je uspješno kreiran')
           onSuccess()
         } else {
           const data = await response.json()
-          toast.error(data.error || 'Failed to create staff member')
+          toast.error(data.error || 'Kreiranje člana osoblja nije uspjelo')
         }
       }
     } catch (error) {
       console.error('Error saving staff member:', error)
-      toast.error('Failed to save staff member')
+      toast.error('Spremanje člana osoblja nije uspjelo')
     } finally {
       setLoading(false)
     }
@@ -150,12 +150,12 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
         <div className="px-6 py-4 border-b border-border flex items-center justify-between sticky top-0 bg-white z-10">
           <div>
             <h2 className="font-heading text-xl font-bold text-text-primary">
-              {staffMember ? 'Edit Staff Member' : 'Add Staff Member'}
+              {staffMember ? 'Uredi člana osoblja' : 'Dodaj člana osoblja'}
             </h2>
             <p className="text-sm text-text-secondary mt-1">
               {staffMember
-                ? 'Update staff member information and venue assignments'
-                : 'Create a new staff account with venue assignments'}
+                ? 'Ažurirajte podatke člana osoblja i dodijeljene lokacije'
+                : 'Kreirajte novi račun člana osoblja s dodijeljenim lokacijama'}
             </p>
           </div>
           <button
@@ -172,12 +172,12 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
           <div>
             <div className="flex items-center gap-2 mb-4">
               <FiUsers className="text-primary text-lg" />
-              <h3 className="font-semibold text-text-primary">Basic Information</h3>
+              <h3 className="font-semibold text-text-primary">Osnovne informacije</h3>
             </div>
             <div className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-text-primary mb-2">
-                  Full Name *
+                  Ime i prezime *
                 </label>
                 <input
                   type="text"
@@ -186,13 +186,13 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-3 bg-white border border-border text-text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="John Doe"
+                  placeholder="Ime i prezime"
                 />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-2">
-                  Email Address *
+                  E-mail adresa *
                 </label>
                 <div className="relative">
                   <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -203,14 +203,14 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="john@example.com"
+                    placeholder="primjer@domena.com"
                   />
                 </div>
               </div>
 
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-text-primary mb-2">
-                  Phone Number
+                  Broj telefona
                 </label>
                 <div className="relative">
                   <FiPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -227,12 +227,12 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
 
               {!staffMember && (
                 <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-text-primary mb-2"
-                  >
-                    Password *
-                  </label>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-text-primary mb-2"
+                >
+                  Lozinka *
+                </label>
                   <div className="relative">
                     <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                     <input
@@ -246,7 +246,7 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
                     />
                   </div>
                   <p className="text-xs text-text-secondary mt-1">
-                    Minimum 8 characters. Staff member will use this to log in.
+                    Minimalno 8 znakova. Član osoblja će ovu lozinku koristiti za prijavu.
                   </p>
                 </div>
               )}
@@ -257,12 +257,12 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
           <div>
             <div className="flex items-center gap-2 mb-4">
               <FiMapPin className="text-primary text-lg" />
-              <h3 className="font-semibold text-text-primary">Venue Assignments *</h3>
+              <h3 className="font-semibold text-text-primary">Dodijeljene lokacije *</h3>
             </div>
             {venues.length === 0 ? (
               <div className="bg-bg-secondary border border-border rounded-lg p-6 text-center">
                 <p className="text-text-secondary">
-                  No venues available. Please create a venue first.
+                  Nema dostupnih lokacija. Molimo prvo kreirajte lokaciju.
                 </p>
               </div>
             ) : (
@@ -284,7 +284,7 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
               </div>
             )}
             <p className="text-xs text-text-secondary mt-2">
-              Staff members can only access features for their assigned venues
+              Članovi osoblja mogu pristupiti samo značajkama za svoje dodijeljene lokacije
             </p>
           </div>
 
@@ -296,7 +296,7 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
               disabled={loading}
               className="flex-1 px-6 py-3 bg-white text-text-secondary border border-border hover:border-primary transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Cancel
+              Odustani
             </button>
             <button
               type="submit"
@@ -304,7 +304,7 @@ export default function StaffModal({ isOpen, onClose, onSuccess, venues, staffMe
               className="flex-1 px-6 py-3 bg-primary text-white hover:bg-primary-hover transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ color: 'white' }}
             >
-              {loading ? 'Saving...' : staffMember ? 'Update Staff Member' : 'Create Staff Member'}
+              {loading ? 'Spremanje...' : staffMember ? 'Ažuriraj člana osoblja' : 'Kreiraj člana osoblja'}
             </button>
           </div>
         </form>

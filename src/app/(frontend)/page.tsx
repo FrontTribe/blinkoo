@@ -90,7 +90,7 @@ export default async function HomePage() {
             {/* Subtitle */}
             <div className="flex justify-center mb-12">
               <p className="font-body text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed text-center">
-                Pretvorite prazne sate u posjetitelje. Ekskluzivne vremenski ograničene ponude u vašim omiljenim lokalnim mjestima.
+                Uštedite do 50% na restoranima, kafićima, teretanama i više. Ekskluzivne vremenski ograničene ponude u vašoj okolini.
               </p>
             </div>
 
@@ -101,7 +101,7 @@ export default async function HomePage() {
                 className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
                 style={{ color: 'white' }}
               >
-                <span style={{ color: 'white' }}>Počnite Štedjeti Danas</span>
+                <span style={{ color: 'white' }}>Pregledaj Ponude</span>
                 <MdArrowForward className="text-lg" style={{ color: 'white' }} />
               </Link>
               {!user && (
@@ -109,7 +109,7 @@ export default async function HomePage() {
                   href="/auth/signup"
                   className="inline-flex items-center justify-center gap-2 bg-white text-text-primary px-6 py-3 text-base font-semibold border border-text-primary hover:bg-bg-secondary transition-colors"
                 >
-                  Započnite
+                  Registrirajte Se Besplatno
                   <BiTrendingUp className="text-lg" />
                 </Link>
               )}
@@ -161,10 +161,10 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-1">
-                  Pregledaj po Kategorijama
+                  Pronađite Ponude po Kategorijama
                 </h2>
                 <p className="text-sm md:text-base text-text-secondary">
-                  Istražite ponude u različitim kategorijama
+                  Otkrijte najbolje ponude u vašim omiljenim kategorijama
                 </p>
               </div>
               <Link
@@ -201,10 +201,10 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-1">
-                  Popularno u Vašoj Blizini
+                  Najpopularnije Ponude u Vašoj Blizini
                 </h2>
                 <p className="text-sm md:text-base text-text-secondary">
-                  Najtraženije ponude u vašoj okolini
+                  Ponude koje drugi kupci najviše koriste
                 </p>
               </div>
               <Link
@@ -237,10 +237,10 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-1">
-                  Trend Ponude
+                  Trenutno Aktualne Ponude
                 </h2>
                 <p className="text-sm md:text-base text-text-secondary">
-                  Pogledajte što je trenutno popularno
+                  Najnovije i najtraženije ponude koje ne smijete propustiti
                 </p>
               </div>
               <Link
@@ -268,9 +268,11 @@ export default async function HomePage() {
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
               Kako Funkcionira
             </h2>
-            <p className="text-base md:text-lg text-text-secondary max-w-2xl mx-auto text-center">
-              Jednostavno, brzo i dizajnirano za kupce i trgovce
-            </p>
+            <div className="flex justify-center">
+              <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
+                Jednostavno, brzo i dizajnirano za kupce i trgovce
+              </p>
+            </div>
           </div>
 
           {/* Feature Cards Grid */}
@@ -332,7 +334,7 @@ export default async function HomePage() {
               className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
               style={{ color: 'white' }}
             >
-              <span style={{ color: 'white' }}>Počnite Istraživati Ponude</span>
+              <span style={{ color: 'white' }}>Pregledaj Sve Ponude</span>
               <MdArrowForward className="text-lg" style={{ color: 'white' }} />
             </Link>
           </div>
@@ -346,9 +348,11 @@ export default async function HomePage() {
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
               Vidite u Akciji
             </h2>
-            <p className="text-base md:text-lg text-text-secondary max-w-2xl mx-auto text-center">
-              Iskusite Blinkoo na različitim platformama
-            </p>
+            <div className="flex justify-center">
+              <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
+                Iskusite Blinkoo na različitim platformama
+              </p>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -476,30 +480,18 @@ export default async function HomePage() {
 
             {/* Merchant CTAs */}
             <div className="text-center">
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="/auth/signup?role=merchant_owner"
-                  className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
-                  style={{ color: 'white' }}
-                >
-                  <span style={{ color: 'white' }}>Počnite Ispunjavati Stolove</span>
-                  <MdArrowForward className="text-lg" style={{ color: 'white' }} />
-                </Link>
-                <Link
-                  href="/merchant/dashboard"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-text-primary px-6 py-3 text-base font-semibold border border-text-primary hover:bg-bg-secondary transition-colors"
-                >
-                  <BiStore className="text-lg" />
-                  Trgovački Nadzorni Panel
-                </Link>
-              </div>
+              <Link
+                href="/auth/signup?role=merchant_owner"
+                className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
+                style={{ color: 'white' }}
+              >
+                <span style={{ color: 'white' }}>Postanite Trgovac</span>
+                <MdArrowForward className="text-lg" style={{ color: 'white' }} />
+              </Link>
             </div>
           </div>
         </div>
       </section>
-
-      {/* FAQ Section */}
-      <FAQ />
 
       {/* Featured Partners */}
       <section className="py-12 bg-white border-b border-[#EBEBEB]">
@@ -508,9 +500,11 @@ export default async function HomePage() {
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
               Povjerenje Vodećih Lokalnih Poslovanja
             </h2>
-            <p className="text-base md:text-lg text-text-secondary max-w-2xl mx-auto text-center">
-              Pridružite se trgovcima iz različitih industrija koji ispunjavaju svoje prazne sate
-            </p>
+            <div className="flex justify-center">
+              <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
+                Otkrijte ponude od provjerenih lokalnih trgovaca u vašoj okolini
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
@@ -544,7 +538,7 @@ export default async function HomePage() {
               Spremni Početi Štedjeti?
             </h2>
             <p className="text-base md:text-lg mb-12 opacity-90">
-              Pridružite se tisućama kupaca koji otkrivaju ekskluzivne lokalne ponude i pomažu trgovcima ispuniti svoje prazne sate.
+              Pridružite se tisućama kupaca koji već štede na restoranima, kafićima, teretanama i više. Besplatna registracija, trenutne uštede.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link

@@ -50,9 +50,9 @@ export default function ForgotPasswordPage() {
               <FiShoppingBag className="text-primary text-3xl" />
             </div>
           </div>
-          <h1 className="font-heading text-3xl font-bold text-text-primary mb-2">Forgot Password?</h1>
+          <h1 className="font-heading text-3xl font-bold text-text-primary mb-2">Zaboravili Ste Lozinku?</h1>
           <p className="text-sm text-text-secondary">
-            No worries! We'll send you reset instructions
+            Bez brige! Poslat ćemo vam upute za resetiranje
           </p>
         </div>
 
@@ -73,9 +73,9 @@ export default function ForgotPasswordPage() {
                 </div>
               </div>
               <div>
-                <h2 className="font-heading text-xl font-bold text-text-primary mb-2">Check Your Email</h2>
+                <h2 className="font-heading text-xl font-bold text-text-primary mb-2">Provjerite Svoju E-poštu</h2>
                 <p className="text-sm text-text-secondary">
-                  We've sent password reset instructions to <strong>{email}</strong>
+                  Poslali smo upute za resetiranje lozinke na <strong>{email}</strong>
                 </p>
               </div>
               <div className="pt-4 space-y-3">
@@ -83,7 +83,7 @@ export default function ForgotPasswordPage() {
                   href="/auth/login"
                   className="block w-full text-center py-3 px-4 bg-primary text-white hover:bg-primary-hover font-semibold rounded-lg transition-colors"
                 >
-                  Back to Sign In
+                  Natrag na Prijavu
                 </Link>
               </div>
             </div>
@@ -92,14 +92,14 @@ export default function ForgotPasswordPage() {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
                 <FiCheckCircle className="text-blue-600 text-xl flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-blue-900">
-                  Enter your email address and we'll send you a link to reset your password.
+                  Unesite svoju e-poštu i poslat ćemo vam link za resetiranje lozinke.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label htmlFor="email" className="block text-sm font-semibold text-text-primary mb-2">
-                    Email Address
+                    E-pošta
                   </label>
                   <div className="relative">
                     <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -143,11 +143,11 @@ export default function ForgotPasswordPage() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      <span>Sending...</span>
+                      <span>Slanje...</span>
                     </>
                   ) : (
                     <>
-                      <span>Send Reset Link</span>
+                      <span>Pošalji Link za Resetiranje</span>
                       <FiArrowRight className="w-5 h-5" />
                     </>
                   )}
@@ -173,9 +173,9 @@ export default function ForgotPasswordPage() {
         {/* Help Text */}
         {!success && (
           <div className="text-center text-xs text-text-tertiary space-y-1">
-            <p>Remember your password?</p>
+            <p>Sjećate se svoje lozinke?</p>
             <Link href="/auth/login" className="text-primary hover:text-primary-hover font-medium">
-              Sign in instead
+              Prijavite se umjesto toga
             </Link>
           </div>
         )}

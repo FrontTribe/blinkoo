@@ -19,13 +19,13 @@ type Props = {
 }
 
 const DAYS: { key: Day; label: string }[] = [
-  { key: 'monday', label: 'Monday' },
-  { key: 'tuesday', label: 'Tuesday' },
-  { key: 'wednesday', label: 'Wednesday' },
-  { key: 'thursday', label: 'Thursday' },
-  { key: 'friday', label: 'Friday' },
-  { key: 'saturday', label: 'Saturday' },
-  { key: 'sunday', label: 'Sunday' },
+  { key: 'monday', label: 'Ponedjeljak' },
+  { key: 'tuesday', label: 'Utorak' },
+  { key: 'wednesday', label: 'Srijeda' },
+  { key: 'thursday', label: 'Četvrtak' },
+  { key: 'friday', label: 'Petak' },
+  { key: 'saturday', label: 'Subota' },
+  { key: 'sunday', label: 'Nedjelja' },
 ]
 
 export function VenueHoursEditor({ initialHours = {}, onChange }: Props) {
@@ -68,13 +68,13 @@ export function VenueHoursEditor({ initialHours = {}, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-text-primary">Operating Hours</h3>
+        <h3 className="font-semibold text-text-primary">Radno Vrijeme</h3>
         <button
           type="button"
           onClick={setSameHours}
           className="text-sm text-primary hover:text-primary-hover font-medium"
         >
-          Copy first day to all
+          Kopiraj prvi dan na sve
         </button>
       </div>
 
@@ -88,7 +88,7 @@ export function VenueHoursEditor({ initialHours = {}, onChange }: Props) {
 
               {dayHours.closed ? (
                 <div className="flex-1 flex items-center justify-center">
-                  <span className="text-sm text-text-tertiary">Closed</span>
+                  <span className="text-sm text-text-tertiary">Zatvoreno</span>
                 </div>
               ) : (
                 <div className="flex-1 flex items-center gap-2">
@@ -101,7 +101,7 @@ export function VenueHoursEditor({ initialHours = {}, onChange }: Props) {
                       className="w-full pl-10 pr-3 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
                     />
                   </div>
-                  <span className="text-text-secondary">to</span>
+                  <span className="text-text-secondary">do</span>
                   <div className="relative flex-1">
                     <FiClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
                     <input
@@ -124,7 +124,7 @@ export function VenueHoursEditor({ initialHours = {}, onChange }: Props) {
                 }`}
                 style={dayHours.closed ? { color: 'white' } : undefined}
               >
-                {dayHours.closed ? 'Open' : 'Closed'}
+                {dayHours.closed ? 'Otvoreno' : 'Zatvoreno'}
               </button>
             </div>
           )
@@ -144,7 +144,7 @@ export function VenueHoursEditor({ initialHours = {}, onChange }: Props) {
           }}
           className="text-sm text-red-600 hover:text-red-700 font-medium"
         >
-          Set all days to closed
+          Postavi sve dane na zatvoreno
         </button>
       </div>
     </div>

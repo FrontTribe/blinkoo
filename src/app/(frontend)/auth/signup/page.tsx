@@ -8,12 +8,13 @@ import { FiMail, FiLock, FiUser, FiPhone, FiArrowRight, FiShoppingBag, FiAlertCi
 function SignupForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const role = searchParams.get('role') || 'customer'
+  const initialRole = searchParams.get('role') || 'customer'
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
+  const [role, setRole] = useState(initialRole)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
@@ -79,7 +80,7 @@ function SignupForm() {
     }
   }
 
-  const isMerchant = role === 'merchant'
+  const isMerchant = role === 'merchant_owner' || role === 'merchant'
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6">
@@ -92,10 +93,10 @@ function SignupForm() {
             </div>
           </div>
           <h1 className="font-heading text-3xl font-bold text-text-primary mb-2">
-            {isMerchant ? 'Become a Merchant' : 'Create Account'}
+            {isMerchant ? 'Postanite Trgovac' : 'Kreirajte Račun'}
           </h1>
           <p className="text-sm text-text-secondary">
-            Join Blinkoo and start discovering great deals
+            Pridružite se Blinkoo i počnite otkrivati odlične ponude
           </p>
         </div>
 
@@ -108,12 +109,53 @@ function SignupForm() {
             </div>
           )}
 
+          {/* Role Selection */}
+          <div>
+            <label className="block text-sm font-semibold text-text-primary mb-3">
+              Registrirajte se kao:
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setRole('customer')}
+                className={`p-4 border-2 rounded-lg transition-all ${
+                  role === 'customer'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-border hover:border-primary/50'
+                }`}
+              >
+                <div className="text-left">
+                  <div className="font-semibold text-text-primary mb-1">Kupac</div>
+                  <div className="text-xs text-text-secondary">
+                    Otkrijte ekskluzivne ponude i uštedite
+                  </div>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('merchant_owner')}
+                className={`p-4 border-2 rounded-lg transition-all ${
+                  role === 'merchant_owner'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-border hover:border-primary/50'
+                }`}
+              >
+                <div className="text-left">
+                  <div className="font-semibold text-text-primary mb-1">Trgovac</div>
+                  <div className="text-xs text-text-secondary">
+                    Ispunite prazne sate i privucite kupce
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
           {isMerchant && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
               <FiCheckCircle className="text-blue-600 text-xl flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-blue-900 mb-1">Merchant Account</p>
-                <p className="text-xs text-blue-800">You're signing up as a merchant to offer deals</p>
+                <p className="text-sm font-medium text-blue-900 mb-1">Trgovački Račun</p>
+                <p className="text-xs text-blue-800">Registrirate se kao trgovac kako biste nudili ponude</p>
               </div>
             </div>
           )}
@@ -121,7 +163,7 @@ function SignupForm() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="name" className="block text-sm font-semibold text-text-primary mb-2">
-                Full Name
+                Ime i Prezime
               </label>
               <div className="relative">
                 <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -140,7 +182,7 @@ function SignupForm() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-text-primary mb-2">
-                Email Address
+                E-pošta
               </label>
               <div className="relative">
                 <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -159,7 +201,7 @@ function SignupForm() {
 
             <div>
               <label htmlFor="phone" className="block text-sm font-semibold text-text-primary mb-2">
-                Phone Number
+                Broj Telefona
               </label>
               <div className="relative">
                 <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -174,12 +216,12 @@ function SignupForm() {
                   className="block w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary placeholder:text-text-tertiary rounded-lg focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
-              <p className="mt-1 text-xs text-text-tertiary">Include country code (e.g., +385 for Croatia)</p>
+              <p className="mt-1 text-xs text-text-tertiary">Uključite pozivni broj (npr. +385 za Hrvatsku)</p>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-semibold text-text-primary mb-2">
-                Password
+                Lozinka
               </label>
               <div className="relative">
                 <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -194,7 +236,7 @@ function SignupForm() {
                     checkPasswordStrength(e.target.value)
                   }}
                   className="block w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary placeholder:text-text-tertiary rounded-lg focus:outline-none focus:border-primary transition-colors"
-                  placeholder="Create a strong password"
+                  placeholder="Kreirajte jaku lozinku"
                 />
               </div>
               {password && (
@@ -217,10 +259,10 @@ function SignupForm() {
                   </div>
                   <p className="text-xs text-text-tertiary mt-1">
                     {passwordStrength <= 2
-                      ? 'Weak password'
+                      ? 'Slaba lozinka'
                       : passwordStrength <= 4
-                        ? 'Medium strength'
-                        : 'Strong password'}
+                        ? 'Srednja snaga'
+                        : 'Jaka lozinka'}
                   </p>
                 </div>
               )}
@@ -233,13 +275,13 @@ function SignupForm() {
                 className="mt-1 w-4 h-4 border-border text-primary focus:ring-primary rounded"
               />
               <label className="text-xs text-text-secondary">
-                I agree to the{' '}
+                Slažem se s{' '}
                 <Link href="/terms" className="text-primary hover:text-primary-hover font-medium">
-                  Terms of Service
+                  Uvjetima Korištenja
                 </Link>{' '}
-                and{' '}
+                i{' '}
                 <Link href="/privacy" className="text-primary hover:text-primary-hover font-medium">
-                  Privacy Policy
+                  Politikom Privatnosti
                 </Link>
               </label>
             </div>
@@ -271,11 +313,11 @@ function SignupForm() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  <span>Creating account...</span>
+                  <span>Kreiranje računa...</span>
                 </>
               ) : (
                 <>
-                  <span>{isMerchant ? 'Create Merchant Account' : 'Create Account'}</span>
+                  <span>{isMerchant ? 'Kreiraj Trgovački Račun' : 'Kreiraj Račun'}</span>
                   <FiArrowRight className="w-5 h-5" />
                 </>
               )}
@@ -288,7 +330,7 @@ function SignupForm() {
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-text-secondary">Already have an account?</span>
+              <span className="px-2 bg-white text-text-secondary">Već imate račun?</span>
             </div>
           </div>
 
@@ -297,7 +339,7 @@ function SignupForm() {
             href="/auth/login"
             className="block w-full text-center py-3 px-4 border-2 border-border text-text-secondary hover:border-primary hover:text-primary font-semibold rounded-lg transition-colors"
           >
-            Sign In
+            Prijava
           </Link>
         </div>
 
@@ -305,13 +347,13 @@ function SignupForm() {
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
             <FiArrowRight className="w-4 h-4 rotate-180" />
-            Back to home
+            Natrag na početnu
           </Link>
         </div>
 
         {/* Additional Info */}
         <div className="text-center text-xs text-text-tertiary space-y-1">
-          <p>Sign up for free and start saving today</p>
+          <p>Registrirajte se besplatno i počnite štedjeti danas</p>
         </div>
       </div>
     </div>

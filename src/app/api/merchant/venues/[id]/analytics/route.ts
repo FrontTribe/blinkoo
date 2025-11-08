@@ -18,12 +18,23 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   }
 
   try {
+    // Parse venue ID - handle both string and number IDs
+    const venueId = isNaN(Number(id)) ? id : parseInt(id)
+
     // Get venue and verify ownership
-    const venue = await payload.findByID({
-      collection: 'venues',
-      id: parseInt(id),
-      depth: 1,
-    })
+    let venue
+    try {
+      venue = await payload.findByID({
+        collection: 'venues',
+        id: venueId,
+        depth: 1,
+      })
+    } catch (error: any) {
+      if (error.status === 404 || error.message?.includes('not found')) {
+        return NextResponse.json({ error: 'Lokacija nije pronađena' }, { status: 404 })
+      }
+      throw error
+    }
 
     // Get merchant
     const merchants = await payload.find({
@@ -32,8 +43,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       limit: 1,
     })
 
-    if (merchants.docs.length === 0 || (venue as any).merchant !== merchants.docs[0].id) {
-      return NextResponse.json({ error: 'Access denied' }, { status: 403 })
+    if (merchants.docs.length === 0) {
+      return NextResponse.json({ error: 'Trgovački račun nije pronađen' }, { status: 403 })
+    }
+
+    const venueMerchantId = typeof (venue as any).merchant === 'object' 
+      ? (venue as any).merchant?.id 
+      : (venue as any).merchant
+
+    if (venueMerchantId !== merchants.docs[0].id) {
+      return NextResponse.json({ error: 'Nemate pristup ovoj lokaciji' }, { status: 403 })
     }
 
     // Get offers for this venue
@@ -162,8 +181,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
         })),
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching venue analytics:', error)
-    return NextResponse.json({ error: 'Failed to fetch venue analytics' }, { status: 500 })
+    const errorMessage = error.message || 'Greška pri učitavanju analitike lokacije'
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }

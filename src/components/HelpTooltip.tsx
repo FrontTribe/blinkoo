@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { FiHelpCircle, FiX } from 'react-icons/fi'
+import { FiHelpCircle } from 'react-icons/fi'
 
 type Position = 'top' | 'bottom' | 'left' | 'right'
 
@@ -18,25 +17,6 @@ export function HelpTooltip({
   children,
   className = '',
 }: HelpTooltipProps) {
-  const [isVisible, setIsVisible] = useState(false)
-  const tooltipRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
-        setIsVisible(false)
-      }
-    }
-
-    if (isVisible) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isVisible])
-
   const positionClasses = {
     top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
     bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
@@ -44,78 +24,31 @@ export function HelpTooltip({
     right: 'left-full top-1/2 -translate-y-1/2 ml-2',
   }
 
-  return (
-    <div className={`relative inline-block ${className}`} ref={tooltipRef}>
-      <button
-        onClick={() => setIsVisible(!isVisible)}
-        className="text-primary hover:text-primary-hover transition-colors"
-        aria-label="Show help"
-        type="button"
-      >
-        {children || <FiHelpCircle className="text-base" />}
-      </button>
+  const arrowClasses = {
+    top: 'top-full left-1/2 -translate-x-1/2 border-t-gray-900 border-l-transparent border-r-transparent border-b-transparent',
+    bottom: 'bottom-full left-1/2 -translate-x-1/2 border-b-gray-900 border-l-transparent border-r-transparent border-t-transparent',
+    left: 'left-full top-1/2 -translate-y-1/2 border-l-gray-900 border-t-transparent border-b-transparent border-r-transparent',
+    right: 'right-full top-1/2 -translate-y-1/2 border-r-gray-900 border-t-transparent border-b-transparent border-l-transparent',
+  }
 
-      {isVisible && (
-        <div
-          className={`absolute z-50 bg-white border border-border rounded-lg shadow-lg p-4 max-w-xs text-sm text-text-primary ${positionClasses[position]} pointer-events-auto`}
-          role="tooltip"
-        >
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <h4 className="font-semibold text-text-primary">Help</h4>
-            <button
-              onClick={() => setIsVisible(false)}
-              className="text-text-tertiary hover:text-text-primary transition-colors"
-              aria-label="Close tooltip"
-            >
-              <FiX className="w-4 h-4" />
-            </button>
-          </div>
-          <p className="text-text-secondary leading-relaxed">{content}</p>
+  return (
+    <div className={`relative inline-flex items-center group ${className}`}>
+      <span className="text-text-tertiary hover:text-primary transition-colors cursor-help">
+        {children || <FiHelpCircle className="w-4 h-4" />}
+      </span>
+      
+      <div
+        className={`absolute z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none ${positionClasses[position]}`}
+        role="tooltip"
+      >
+        <div className="bg-gray-900 text-white text-xs rounded-lg py-2 px-3 max-w-xs min-w-[200px] shadow-xl">
+          <p className="leading-relaxed whitespace-normal">{content}</p>
           {/* Arrow */}
           <div
-            className={`absolute w-0 h-0 ${position === 'top' ? 'top-full border-t-border' : position === 'bottom' ? 'bottom-full border-b-border' : position === 'left' ? 'left-full border-l-border' : 'right-full border-r-border'}`}
-            style={{
-              ...(position === 'top' && {
-                borderTopColor: '#DDDDDD',
-                borderBottomColor: 'transparent',
-                borderWidth: '8px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-              }),
-              ...(position === 'bottom' && {
-                borderBottomColor: '#DDDDDD',
-                borderTopColor: 'transparent',
-                borderWidth: '8px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-              }),
-              ...(position === 'left' && {
-                borderLeftColor: '#DDDDDD',
-                borderRightColor: 'transparent',
-                borderWidth: '8px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-              }),
-              ...(position === 'right' && {
-                borderRightColor: '#DDDDDD',
-                borderLeftColor: 'transparent',
-                borderWidth: '8px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-              }),
-            }}
+            className={`absolute w-0 h-0 border-4 ${arrowClasses[position]}`}
           />
         </div>
-      )}
-
-      {/* Overlay to close on click outside */}
-      {isVisible && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setIsVisible(false)}
-          aria-hidden="true"
-        />
-      )}
+      </div>
     </div>
   )
 }

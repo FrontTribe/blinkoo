@@ -29,7 +29,7 @@ export function NewsletterSignup() {
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
               Budite Obaviješteni o Novim Ponudama
             </h2>
-            <p className="text-base text-text-secondary mb-6">
+            <p className="text-base text-text-secondary mb-20">
               Pridružite se više od 2.450 korisnika koji primaju ekskluzivne ponude u vašoj okolini
             </p>
 

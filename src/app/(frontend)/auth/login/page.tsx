@@ -3,7 +3,15 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { FiLock, FiMail, FiArrowRight, FiShoppingBag, FiAlertCircle } from 'react-icons/fi'
+import {
+  FiLock,
+  FiMail,
+  FiArrowRight,
+  FiShoppingBag,
+  FiAlertCircle,
+  FiEye,
+  FiEyeOff,
+} from 'react-icons/fi'
 
 function getRedirectPathForRole(role: string | undefined): string {
   switch (role) {
@@ -24,6 +32,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -75,9 +84,9 @@ export default function LoginPage() {
               <FiShoppingBag className="text-primary text-3xl" />
             </div>
           </div>
-          <h1 className="font-heading text-3xl font-bold text-text-primary mb-2">Welcome Back</h1>
+          <h1 className="font-heading text-3xl font-bold text-text-primary mb-2">Dobrodošli Natrag</h1>
           <p className="text-sm text-text-secondary">
-            Sign in to your Blinkoo account
+            Prijavite se na svoj Blinkoo račun
           </p>
         </div>
 
@@ -93,7 +102,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-text-primary mb-2">
-                Email Address
+                E-pošta
               </label>
               <div className="relative">
                 <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -112,20 +121,28 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-semibold text-text-primary mb-2">
-                Password
+                Lozinka
               </label>
               <div className="relative">
                 <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={isPasswordVisible ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary placeholder:text-text-tertiary rounded-lg focus:outline-none focus:border-primary transition-colors"
-                  placeholder="Enter your password"
+                  placeholder="Unesite svoju lozinku"
                 />
+                <button
+                  type="button"
+                  onClick={() => setIsPasswordVisible((prev) => !prev)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-text-tertiary hover:text-text-primary transition-colors"
+                  aria-label={isPasswordVisible ? 'Sakrij lozinku' : 'Prikaži lozinku'}
+                >
+                  {isPasswordVisible ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
+                </button>
               </div>
             </div>
 
@@ -135,10 +152,10 @@ export default function LoginPage() {
                   type="checkbox"
                   className="w-4 h-4 border-border text-primary focus:ring-primary rounded"
                 />
-                <span className="text-sm text-text-secondary">Remember me</span>
+                <span className="text-sm text-text-secondary">Zapamti me</span>
               </label>
               <Link href="/auth/forgot-password" className="text-sm text-primary hover:text-primary-hover font-medium">
-                Forgot password?
+                Zaboravili ste lozinku?
               </Link>
             </div>
 
@@ -169,11 +186,11 @@ export default function LoginPage() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  <span>Signing in...</span>
+                  <span>Prijavljivanje...</span>
                 </>
               ) : (
                 <>
-                  <span>Sign In</span>
+                  <span>Prijava</span>
                   <FiArrowRight className="w-5 h-5" />
                 </>
               )}
@@ -186,7 +203,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-text-secondary">Don't have an account?</span>
+              <span className="px-2 bg-white text-text-secondary">Nemate račun?</span>
             </div>
           </div>
 
@@ -195,7 +212,7 @@ export default function LoginPage() {
             href="/auth/signup"
             className="block w-full text-center py-3 px-4 border-2 border-primary text-primary hover:bg-primary/5 font-semibold rounded-lg transition-colors"
           >
-            Create an account
+            Kreirajte Račun
           </Link>
         </div>
 
@@ -203,13 +220,13 @@ export default function LoginPage() {
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
             <FiArrowRight className="w-4 h-4 rotate-180" />
-            Back to home
+            Natrag na početnu
           </Link>
         </div>
 
         {/* Additional Info */}
         <div className="text-center text-xs text-text-tertiary space-y-1">
-          <p>By signing in, you agree to our Terms of Service and Privacy Policy</p>
+          <p>Prijavljivanjem se slažete s našim Uvjetima Korištenja i Politikom Privatnosti</p>
         </div>
       </div>
     </div>

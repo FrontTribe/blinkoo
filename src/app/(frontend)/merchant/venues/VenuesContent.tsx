@@ -38,7 +38,7 @@ export default function VenuesContent() {
   }, [])
 
   async function handleDelete(venueId: string) {
-    if (!confirm('Are you sure you want to delete this venue?')) {
+    if (!confirm('Jeste li sigurni da želite obrisati ovu lokaciju?')) {
       return
     }
 
@@ -56,14 +56,14 @@ export default function VenuesContent() {
       fetchVenues()
     } catch (error) {
       console.error('Error deleting venue:', error)
-      alert('Failed to delete venue. Please try again.')
+      alert('Brisanje lokacije nije uspjelo. Molimo pokušajte ponovno.')
     }
   }
 
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-primary">Loading venues...</p>
+        <p className="text-text-primary">Učitavanje lokacija...</p>
       </div>
     )
   }
@@ -75,10 +75,10 @@ export default function VenuesContent() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-              Manage Venues
+              Upravljaj Lokacijama
             </h1>
             <p className="mt-2 text-sm md:text-base text-text-secondary">
-              Add and manage your venue locations where offers will be available
+              Dodajte i upravljajte svojim lokacijama gdje će ponude biti dostupne
             </p>
           </div>
           <Link
@@ -87,7 +87,7 @@ export default function VenuesContent() {
             style={{ color: 'white' }}
           >
             <FiPlus className="w-5 h-5" />
-            Add Venue
+            Dodaj Lokaciju
           </Link>
         </div>
 
@@ -98,10 +98,10 @@ export default function VenuesContent() {
               <FiMapPin className="text-primary text-3xl" />
             </div>
             <h2 className="font-heading text-2xl font-bold text-text-primary mb-3">
-              No venues yet
+              Još nema lokacija
             </h2>
             <p className="text-text-secondary mb-8 max-w-md mx-auto">
-              Create your first venue to start offering location-based deals to customers.
+              Kreirajte svoju prvu lokaciju da počnete nuditi lokacijske ponude kupcima.
             </p>
             <Link
               href="/merchant/venues/create"
@@ -109,7 +109,7 @@ export default function VenuesContent() {
               style={{ color: 'white' }}
             >
               <FiPlus className="w-5 h-5" />
-              Add Your First Venue
+              Dodajte Svoju Prvu Lokaciju
             </Link>
           </div>
         ) : (
@@ -166,7 +166,7 @@ export default function VenuesContent() {
                             venueData.status === 'active' ? 'bg-green-600' : 'bg-gray-400'
                           }`}
                         />
-                        {venueData.status === 'active' ? 'Active' : 'Inactive'}
+                        {venueData.status === 'active' ? 'Aktivno' : 'Neaktivno'}
                       </span>
                     </div>
 
@@ -179,7 +179,7 @@ export default function VenuesContent() {
                         className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-hover font-medium"
                       >
                         <FiExternalLink className="w-4 h-4" />
-                        View on Map
+                        Pogledaj na Karti
                       </a>
                     )}
                   </div>
@@ -190,21 +190,21 @@ export default function VenuesContent() {
                       <Link
                         href={`/merchant/venues/${venue.id}/analytics`}
                         className="p-2 text-text-secondary hover:text-primary hover:bg-white rounded transition-colors"
-                        title="View analytics"
+                        title="Pogledaj analitiku"
                       >
                         <FiBarChart2 className="w-5 h-5" />
                       </Link>
                       <Link
                         href={`/merchant/venues/${venue.id}/edit`}
                         className="p-2 text-text-secondary hover:text-primary hover:bg-white rounded transition-colors"
-                        title="Edit venue"
+                        title="Uredi lokaciju"
                       >
                         <FiEdit2 className="w-5 h-5" />
                       </Link>
                       <button
                         onClick={() => handleDelete(venue.id)}
                         className="p-2 text-text-secondary hover:text-error hover:bg-white rounded transition-colors"
-                        title="Delete venue"
+                        title="Obriši lokaciju"
                       >
                         <FiTrash2 className="w-5 h-5" />
                       </button>
@@ -213,7 +213,7 @@ export default function VenuesContent() {
                       href={`/merchant/venues/${venue.id}/edit`}
                       className="text-sm font-semibold text-primary hover:text-primary-hover flex items-center gap-1"
                     >
-                      Manage <FiChevronRight className="w-4 h-4" />
+                      Upravljaj <FiChevronRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </div>
@@ -230,12 +230,12 @@ export default function VenuesContent() {
                 <FiMapPin className="text-blue-600 text-xl" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-blue-900 mb-2">Venue Management Tips</h3>
+                <h3 className="font-semibold text-blue-900 mb-2">Savjeti za Upravljanje Lokacijama</h3>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Each venue can host multiple offers at different times</li>
-                  <li>• Set accurate location coordinates for better customer discovery</li>
-                  <li>• Regularly check venue analytics to optimize your offers</li>
-                  <li>• Keep your venue information up to date</li>
+                  <li>• Svaka lokacija može imati više ponuda u različitim vremenima</li>
+                  <li>• Postavite točne koordinate lokacije za bolje pronalaženje kupaca</li>
+                  <li>• Redovito provjeravajte analitiku lokacije da optimizirate svoje ponude</li>
+                  <li>• Održavajte informacije o lokaciji ažurnima</li>
                 </ul>
               </div>
             </div>

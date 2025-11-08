@@ -121,14 +121,14 @@ export default function NavigationClient() {
                 href="/auth/login"
                 className="text-text-primary hover:text-text-secondary px-4 py-2 text-sm font-medium transition-colors"
               >
-                Sign In
+                Prijava
               </Link>
               <Link
                 href="/auth/signup"
                 className="bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary-hover transition-colors"
                 style={{ color: 'white' }}
               >
-                Sign Up
+                Registracija
               </Link>
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function NavigationClient() {
                   }`}
                 >
                   <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
-                  Offers
+                  Ponude
                 </Link>
               )}
               {user && user.role === 'customer' && (
@@ -194,7 +194,7 @@ export default function NavigationClient() {
                     <FiShoppingBag
                       className={`w-4 h-4 ${isActive('/my-claims') ? 'text-primary' : ''}`}
                     />
-                    Claims
+                    Rezervacije
                   </Link>
                 </>
               )}
@@ -214,7 +214,7 @@ export default function NavigationClient() {
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/staff/dashboard' ? 'text-primary' : ''}`}
                   />
-                  Dashboard
+                  Nadzorni Panel
                 </Link>
                 <Link
                   href="/staff/redeem"
@@ -227,7 +227,7 @@ export default function NavigationClient() {
                   <FiShoppingCart
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/redeem') ? 'text-primary' : ''}`}
                   />
-                  Redeem
+                  Iskoristi
                 </Link>
                 <Link
                   href="/staff/history"
@@ -240,7 +240,7 @@ export default function NavigationClient() {
                   <FiClock
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/history') ? 'text-primary' : ''}`}
                   />
-                  History
+                  Povijest
                 </Link>
               </div>
             )}
@@ -259,7 +259,7 @@ export default function NavigationClient() {
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/merchant/dashboard' ? 'text-primary' : ''}`}
                   />
-                  Dashboard
+                  Nadzorni Panel
                 </Link>
                 <Link
                   href="/merchant/offers"
@@ -272,7 +272,7 @@ export default function NavigationClient() {
                   <FiShoppingBag
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/offers') ? 'text-primary' : ''}`}
                   />
-                  Offers
+                  Ponude
                 </Link>
                 <Link
                   href="/merchant/venues"
@@ -285,7 +285,7 @@ export default function NavigationClient() {
                   <FiMapPin
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/venues') ? 'text-primary' : ''}`}
                   />
-                  Venues
+                  Lokacije
                 </Link>
                 <Link
                   href="/merchant/staff"
@@ -298,7 +298,7 @@ export default function NavigationClient() {
                   <FiUsers
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/staff') ? 'text-primary' : ''}`}
                   />
-                  Staff
+                  Osoblje
                 </Link>
                 <Link
                   href="/merchant/analytics"
@@ -311,7 +311,7 @@ export default function NavigationClient() {
                   <FiBarChart2
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/analytics') ? 'text-primary' : ''}`}
                   />
-                  Analytics
+                  Analitika
                 </Link>
                 <Link
                   href="/merchant/settings"
@@ -324,7 +324,7 @@ export default function NavigationClient() {
                   <FiSettings
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/settings') ? 'text-primary' : ''}`}
                   />
-                  Settings
+                  Postavke
                 </Link>
               </div>
             )}
@@ -345,7 +345,7 @@ export default function NavigationClient() {
                   >
                     <MdAccountCircle className="w-5 h-5 text-text-secondary" />
                     <span className="hidden lg:inline text-sm text-text-primary font-medium">
-                      {user.name?.split(' ')[0] || 'Account'}
+                      {user.name?.split(' ')[0] || 'Račun'}
                     </span>
                     <FiChevronDown
                       className={`w-4 h-4 text-text-secondary transition-transform ${
@@ -372,7 +372,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingBag className="w-4 h-4" />
-                              Browse Offers
+                              Pregledaj Ponude
                             </Link>
                             <Link
                               href="/my-claims"
@@ -380,7 +380,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingBag className="w-4 h-4" />
-                              My Claims
+                              Moje Rezervacije
                             </Link>
                             <Link
                               href="/saved-offers"
@@ -388,7 +388,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiBookmark className="w-4 h-4" />
-                              Saved for Later
+                              Spremljeno za Kasnije
                               {savedCount > 0 && (
                                 <span className="ml-auto bg-primary text-white text-xs px-2 py-0.5 rounded-full">
                                   {savedCount}
@@ -401,7 +401,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiHeart className="w-4 h-4" />
-                              Favorites
+                              Favoriti
                             </Link>
                           </>
                         )}
@@ -413,7 +413,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiHome className="w-4 h-4" />
-                              Staff Dashboard
+                              Nadzorni Panel Osoblja
                             </Link>
                             <Link
                               href="/staff/redeem"
@@ -421,7 +421,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingCart className="w-4 h-4" />
-                              Redeem Claims
+                              Iskoristi Rezervacije
                             </Link>
                             <Link
                               href="/staff/history"
@@ -429,7 +429,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiClock className="w-4 h-4" />
-                              Redemption History
+                              Povijest Iskorištenja
                             </Link>
                           </>
                         )}
@@ -441,7 +441,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiMapPin className="w-4 h-4" />
-                              Venues
+                              Lokacije
                             </Link>
                             <Link
                               href="/merchant/analytics"
@@ -449,7 +449,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiBarChart2 className="w-4 h-4" />
-                              Analytics
+                              Analitika
                             </Link>
                             <Link
                               href="/staff/redeem"
@@ -457,7 +457,7 @@ export default function NavigationClient() {
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingCart className="w-4 h-4" />
-                              Redeem Codes
+                              Iskoristi Kodove
                             </Link>
                           </>
                         )}
@@ -468,7 +468,7 @@ export default function NavigationClient() {
                           className="w-full flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-bg-secondary transition-colors"
                         >
                           <MdLogout className="w-4 h-4" />
-                          Sign Out
+                          Odjava
                         </button>
                       </div>
                     </div>
@@ -489,14 +489,14 @@ export default function NavigationClient() {
                   href="/auth/login"
                   className="text-text-primary hover:text-text-secondary px-4 py-2 text-sm font-medium transition-colors"
                 >
-                  Sign In
+                  Prijava
                 </Link>
                 <Link
                   href="/auth/signup"
                   className="bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary-hover transition-colors"
                   style={{ color: 'white' }}
                 >
-                  Sign Up
+                  Registracija
                 </Link>
                 {/* Mobile Menu Button - Show for logged-out users too */}
                 <button
@@ -525,7 +525,7 @@ export default function NavigationClient() {
                 }`}
               >
                 <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
-                Browse Offers
+                Pregledaj Ponude
               </Link>
             )}
 
@@ -562,7 +562,7 @@ export default function NavigationClient() {
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/staff/dashboard' ? 'text-primary' : ''}`}
                   />
-                  Dashboard
+                  Nadzorni Panel
                 </Link>
                 <Link
                   href="/staff/redeem"
@@ -576,7 +576,7 @@ export default function NavigationClient() {
                   <FiShoppingCart
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/redeem') ? 'text-primary' : ''}`}
                   />
-                  Redeem
+                  Iskoristi
                 </Link>
                 <Link
                   href="/staff/history"
@@ -590,7 +590,7 @@ export default function NavigationClient() {
                   <FiClock
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/history') ? 'text-primary' : ''}`}
                   />
-                  History
+                  Povijest
                 </Link>
               </>
             )}
@@ -608,7 +608,7 @@ export default function NavigationClient() {
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/merchant/dashboard' ? 'text-primary' : ''}`}
                   />
-                  Dashboard
+                  Nadzorni Panel
                 </Link>
                 <Link
                   href="/merchant/offers"
@@ -622,7 +622,7 @@ export default function NavigationClient() {
                   <FiShoppingBag
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/offers') ? 'text-primary' : ''}`}
                   />
-                  Offers
+                  Ponude
                 </Link>
                 <Link
                   href="/merchant/venues"
@@ -636,7 +636,7 @@ export default function NavigationClient() {
                   <FiMapPin
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/venues') ? 'text-primary' : ''}`}
                   />
-                  Venues
+                  Lokacije
                 </Link>
                 <Link
                   href="/merchant/analytics"
@@ -650,7 +650,7 @@ export default function NavigationClient() {
                   <FiBarChart2
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/analytics') ? 'text-primary' : ''}`}
                   />
-                  Analytics
+                  Analitika
                 </Link>
                 <Link
                   href="/staff/redeem"
@@ -664,7 +664,7 @@ export default function NavigationClient() {
                   <FiShoppingCart
                     className={`w-4 h-4 ${pathname?.startsWith('/staff') ? 'text-primary' : ''}`}
                   />
-                  Redeem Codes
+                  Iskoristi Codes
                 </Link>
               </>
             )}

@@ -39,11 +39,11 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
         throw new Error(errorData.error || 'Failed to create slot')
       }
 
-      toast.success('Slot created successfully!')
+      toast.success('Slot je uspješno kreiran!')
       onSlotCreated()
     } catch (error: any) {
       console.error('Error creating slot:', error)
-      toast.error(error.message || 'Failed to create slot')
+      toast.error(error.message || 'Kreiranje slotova nije uspjelo')
     } finally {
       setSubmitting(false)
     }
@@ -53,13 +53,13 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <DatePicker
-          label="Start Date & Time *"
+          label="Datum i Vrijeme Početka *"
           value={formData.startsAt}
           onChange={(value) => setFormData({ ...formData, startsAt: value })}
           required
         />
         <DatePicker
-          label="End Date & Time *"
+          label="Datum i Vrijeme Završetka *"
           value={formData.endsAt}
           onChange={(value) => setFormData({ ...formData, endsAt: value })}
           required
@@ -69,7 +69,7 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-text-secondary mb-2">
-            Total Quantity *
+            Ukupna Količina *
           </label>
           <input
             type="number"
@@ -83,7 +83,7 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
 
         <div>
           <label className="block text-sm font-medium text-text-secondary mb-2">
-            Release Mode *
+            Način Otpuštanja *
           </label>
           <select
             value={formData.mode}
@@ -91,8 +91,8 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
             className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
             required
           >
-            <option value="flash">Flash (all at once)</option>
-            <option value="drip">Drip (gradual release)</option>
+            <option value="flash">Flash (sve odjednom)</option>
+            <option value="drip">Drip (postupno otpuštanje)</option>
           </select>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-text-secondary mb-2">
-              Drip Every (minutes)
+              Drip Svakih (minuta)
             </label>
             <input
               type="number"
@@ -113,7 +113,7 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
           </div>
           <div>
             <label className="block text-sm font-medium text-text-secondary mb-2">
-              Drip Quantity
+              Drip Količina
             </label>
             <input
               type="number"
@@ -132,7 +132,7 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
           onClick={onCancel}
           className="px-6 py-3 bg-white text-text-primary border border-border hover:border-primary transition-colors font-semibold"
         >
-          Cancel
+          Odustani
         </button>
         <button
           type="submit"
@@ -140,7 +140,7 @@ export default function SlotForm({ offerId, onSlotCreated, onCancel }: SlotFormP
           className="px-6 py-3 bg-primary text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
           style={{ color: 'white' }}
         >
-          {submitting ? 'Creating...' : 'Create Slot'}
+          {submitting ? 'Kreiranje...' : 'Kreiraj Slot'}
         </button>
       </div>
     </form>

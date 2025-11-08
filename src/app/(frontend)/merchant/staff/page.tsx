@@ -47,14 +47,14 @@ export default function StaffPage() {
       }
     } catch (error) {
       console.error('Error fetching data:', error)
-      toast.error('Failed to load data')
+      toast.error('Učitavanje podataka nije uspjelo')
     } finally {
       setLoading(false)
     }
   }
 
   async function handleDelete(staffId: string) {
-    if (!confirm('Are you sure you want to remove this staff member?')) {
+    if (!confirm('Jeste li sigurni da želite ukloniti ovog člana osoblja?')) {
       return
     }
 
@@ -65,14 +65,14 @@ export default function StaffPage() {
       })
 
       if (response.ok) {
-        toast.success('Staff member removed')
+        toast.success('Član osoblja je uklonjen')
         fetchData()
       } else {
-        toast.error('Failed to remove staff member')
+        toast.error('Uklanjanje člana osoblja nije uspjelo')
       }
     } catch (error) {
       console.error('Error removing staff:', error)
-      toast.error('Failed to remove staff member')
+      toast.error('Uklanjanje člana osoblja nije uspjelo')
     }
   }
 
@@ -93,10 +93,10 @@ export default function StaffPage() {
 
   function getVenueNames(staffMember: StaffMember): string {
     if (!staffMember.venues || staffMember.venues.length === 0) {
-      return 'No venues assigned'
+      return 'Nema dodijeljenih lokacija'
     }
     const names = staffMember.venues.map((v) =>
-      typeof v.venue === 'object' ? v.venue.name : 'Unknown',
+      typeof v.venue === 'object' ? v.venue.name : 'Nepoznato',
     )
     return names.join(', ')
   }
@@ -112,13 +112,13 @@ export default function StaffPage() {
               className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary mb-4"
             >
               <FiArrowLeft />
-              Back to Dashboard
+              Natrag na nadzornu ploču
             </Link>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-              Staff Management
+              Upravljanje Osobljem
             </h1>
             <p className="mt-2 text-sm md:text-base text-text-secondary">
-              Manage staff members and their venue assignments
+              Upravljajte članovima osoblja i njihovim dodijeljenim lokacijama
             </p>
           </div>
           <button
@@ -127,14 +127,14 @@ export default function StaffPage() {
             style={{ color: 'white' }}
           >
             <FiPlus className="w-5 h-5" />
-            Add Staff Member
+            Dodaj člana osoblja
           </button>
         </div>
 
         {/* Staff List */}
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-text-secondary text-sm">Loading staff...</p>
+            <p className="text-text-secondary text-sm">Učitavanje osoblja...</p>
           </div>
         ) : staff.length === 0 ? (
           <div className="bg-white border border-border rounded-lg p-12 text-center">
@@ -142,10 +142,10 @@ export default function StaffPage() {
               <FiUsers className="text-primary text-3xl" />
             </div>
             <h2 className="font-heading text-2xl font-bold text-text-primary mb-3">
-              No staff members yet
+              Još nema članova osoblja
             </h2>
-            <p className="text-text-secondary mb-8 max-w-md mx-auto">
-              Add staff members to help manage your venues and process redemptions.
+            <p className="text-text-secondary mb-8 max-w-md mx-auto text-center">
+              Dodajte članove osoblja kako bi pomogli upravljati lokacijama i obrađivati realizacije.
             </p>
             <button
               onClick={() => setShowModal(true)}
@@ -153,14 +153,14 @@ export default function StaffPage() {
               style={{ color: 'white' }}
             >
               <FiPlus className="w-5 h-5" />
-              Add Your First Staff Member
+              Dodajte svog prvog člana osoblja
             </button>
           </div>
         ) : (
           <div className="bg-white border border-border rounded-lg overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-primary/5 to-transparent">
               <h2 className="font-heading text-lg font-bold text-text-primary">
-                All Staff ({staff.length})
+                Svi članovi osoblja ({staff.length})
               </h2>
             </div>
             <div className="overflow-x-auto">
@@ -168,16 +168,16 @@ export default function StaffPage() {
                 <thead className="bg-bg-secondary border-b border-border">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
-                      Staff Member
+                      Član osoblja
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
-                      Contact
+                      Kontakt
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
-                      Assigned Venues
+                      Dodijeljene lokacije
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
-                      Actions
+                      Radnje
                     </th>
                   </tr>
                 </thead>
@@ -201,7 +201,7 @@ export default function StaffPage() {
                         {member.phone ? (
                           <div className="text-sm text-text-secondary">{member.phone}</div>
                         ) : (
-                          <span className="text-text-tertiary text-xs">No phone</span>
+                          <span className="text-text-tertiary text-xs">Nema telefona</span>
                         )}
                       </td>
                       <td className="px-6 py-4">
@@ -214,14 +214,14 @@ export default function StaffPage() {
                           <button
                             onClick={() => handleEdit(member)}
                             className="p-2 text-text-secondary hover:text-primary hover:bg-white rounded transition-colors"
-                            title="Edit staff member"
+                            title="Uredi člana osoblja"
                           >
                             <FiEdit2 className="w-5 h-5" />
                           </button>
                           <button
                             onClick={() => handleDelete(member.id)}
                             className="p-2 text-text-secondary hover:text-error hover:bg-white rounded transition-colors"
-                            title="Remove staff member"
+                            title="Ukloni člana osoblja"
                           >
                             <FiTrash2 className="w-5 h-5" />
                           </button>
@@ -243,12 +243,12 @@ export default function StaffPage() {
                 <FiCheckCircle className="text-blue-600 text-xl" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-blue-900 mb-2">Staff Management Tips</h3>
+                <h3 className="font-semibold text-blue-900 mb-2">Savjeti za upravljanje osobljem</h3>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Staff members can access the redemption interface to process claims</li>
-                  <li>• Assign staff to specific venues for organized management</li>
-                  <li>• Staff can only access features for their assigned venues</li>
-                  <li>• Regularly review and update staff assignments as needed</li>
+                  <li>• Članovi osoblja mogu pristupiti sučelju za iskorištavanje kako bi obrađivali zahtjeve</li>
+                  <li>• Dodijelite osoblje određenim lokacijama radi boljeg upravljanja</li>
+                  <li>• Osoblje može pristupiti samo značajkama za svoje dodijeljene lokacije</li>
+                  <li>• Redovito pregledavajte i ažurirajte dodjele članova osoblja prema potrebi</li>
                 </ul>
               </div>
             </div>

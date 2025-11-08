@@ -5,6 +5,17 @@ import { useRouter } from 'next/navigation'
 import { FiHeart, FiMessageCircle, FiShare2, FiTrendingUp, FiAward, FiCamera } from 'react-icons/fi'
 import toast from 'react-hot-toast'
 
+function getCroatianPlural(value: number, forms: [string, string, string]): string {
+  const mod10 = value % 10
+  const mod100 = value % 100
+
+  if (value === 1) return forms[0]
+  if (mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)) {
+    return forms[1]
+  }
+  return forms[2]
+}
+
 function formatTimeAgo(date: string): string {
   const now = new Date()
   const time = new Date(date)
@@ -14,10 +25,16 @@ function formatTimeAgo(date: string): string {
   const hours = Math.floor(minutes / 60)
   const days = Math.floor(hours / 24)
 
-  if (days > 0) return `${days} day${days === 1 ? '' : 's'} ago`
-  if (hours > 0) return `${hours} hour${hours === 1 ? '' : 's'} ago`
-  if (minutes > 0) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`
-  return 'just now'
+  if (days > 0) {
+    return `prije ${days} ${getCroatianPlural(days, ['dan', 'dana', 'dana'])}`
+  }
+  if (hours > 0) {
+    return `prije ${hours} ${getCroatianPlural(hours, ['sat', 'sata', 'sati'])}`
+  }
+  if (minutes > 0) {
+    return `prije ${minutes} ${getCroatianPlural(minutes, ['minutu', 'minute', 'minuta'])}`
+  }
+  return 'upravo sada'
 }
 
 type FeedPost = {
@@ -93,7 +110,7 @@ export function SocialFeed() {
       }
     } catch (error) {
       console.error('Error liking post:', error)
-      toast.error('Failed to like post')
+      toast.error('Označavanje objave nije uspjelo')
     }
   }
 
@@ -119,11 +136,11 @@ export function SocialFeed() {
         )
         setCommentText('')
         setCommentingOn(null)
-        toast.success('Comment added!')
+        toast.success('Komentar dodan!')
       }
     } catch (error) {
       console.error('Error adding comment:', error)
-      toast.error('Failed to add comment')
+      toast.error('Dodavanje komentara nije uspjelo')
     }
   }
 
@@ -137,15 +154,15 @@ export function SocialFeed() {
     try {
       if (navigator.share && navigator.canShare(shareData)) {
         await navigator.share(shareData)
-        toast.success('Shared!')
+        toast.success('Uspješno podijeljeno!')
       } else {
         await navigator.clipboard.writeText(shareData.url)
-        toast.success('Link copied to clipboard!')
+        toast.success('Poveznica kopirana u međuspremnik!')
       }
     } catch (error: any) {
       if (error.name !== 'AbortError') {
         console.error('Error sharing:', error)
-        toast.error('Failed to share')
+        toast.error('Dijeljenje nije uspjelo')
       }
     }
   }
@@ -200,7 +217,7 @@ export function SocialFeed() {
   if (posts.length === 0) {
     return (
       <div className="bg-white border border-border rounded-lg p-12 text-center">
-        <p className="text-text-secondary">No posts yet. Be the first to share!</p>
+        <p className="text-text-secondary">Još nema objava. Budite prvi koji će podijeliti nešto!</p>
       </div>
     )
   }
@@ -216,7 +233,7 @@ export function SocialFeed() {
               <h3 className="font-semibold text-text-primary">{post.title}</h3>
             </div>
             <div className="flex items-center gap-2 text-sm text-text-secondary">
-              <span className="font-medium">{post.user.name || 'Anonymous'}</span>
+              <span className="font-medium">{post.user.name || 'Anonimno'}</span>
               <span>•</span>
               <span>{formatTimeAgo(post.createdAt)}</span>
             </div>
@@ -257,7 +274,7 @@ export function SocialFeed() {
                     onClick={() => router.push(`/offers/${post.offer?.id}`)}
                     className="text-sm text-primary hover:underline mt-1"
                   >
-                    View Offer →
+                    Pogledaj ponudu →
                   </button>
                 </div>
               </div>
@@ -273,7 +290,7 @@ export function SocialFeed() {
                 )}
                 <div>
                   <p className="font-semibold text-text-primary">{post.achievement.name}</p>
-                  <p className="text-sm text-text-secondary">Achievement unlocked!</p>
+                  <p className="text-sm text-text-secondary">Postignuće otključano!</p>
                 </div>
               </div>
             </div>
@@ -284,17 +301,17 @@ export function SocialFeed() {
             <div className="p-6 border-b border-border bg-green-50">
               {post.metadata.savings && (
                 <p className="text-lg font-bold text-green-700">
-                  €{post.metadata.savings.toFixed(2)} saved!
+                  Ušteđeno €{post.metadata.savings.toFixed(2)}!
                 </p>
               )}
               {post.metadata.streak && (
                 <p className="text-lg font-bold text-amber-700">
-                  {post.metadata.streak} day streak! 🔥
+                  Serija od {post.metadata.streak} {getCroatianPlural(post.metadata.streak, ['dan', 'dana', 'dana'])}! 🔥
                 </p>
               )}
               {post.metadata.totalSavings && (
                 <p className="text-lg font-bold text-primary">
-                  {post.metadata.totalSavings} total claims
+                  {post.metadata.totalSavings} ukupno iskorištenja
                 </p>
               )}
             </div>
@@ -332,7 +349,7 @@ export function SocialFeed() {
               <textarea
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                placeholder="Write a comment..."
+                placeholder="Napišite komentar..."
                 className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 rows={2}
               />
@@ -344,7 +361,7 @@ export function SocialFeed() {
                   }}
                   className="px-4 py-2 text-sm border border-border rounded-lg hover:bg-bg-secondary transition-colors"
                 >
-                  Cancel
+                  Odustani
                 </button>
                 <button
                   onClick={() => handleComment(post.id)}
@@ -352,7 +369,7 @@ export function SocialFeed() {
                   className="px-4 py-2 text-sm bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   style={{ color: 'white' }}
                 >
-                  Post
+                  Objavi
                 </button>
               </div>
             </div>
@@ -366,7 +383,7 @@ export function SocialFeed() {
             onClick={() => fetchFeed()}
             className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
           >
-            Load More
+            Učitaj više
           </button>
         </div>
       )}

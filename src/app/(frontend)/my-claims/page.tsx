@@ -11,6 +11,13 @@ import { ClaimsListSkeleton } from '@/components/SkeletonLoader'
 import { EmptyState } from '@/components/EmptyState'
 import { useClaims } from '@/hooks/useClaims'
 
+const STATUS_LABELS: Record<string, string> = {
+  RESERVED: 'Rezervirano',
+  REDEEMED: 'Iskorišteno',
+  EXPIRED: 'Isteklo',
+  CANCELLED: 'Otkazano',
+}
+
 export default function MyClaimsPage() {
   const { claims, loading, mutate } = useClaims()
   const [timeRemaining, setTimeRemaining] = useState<Record<string, number>>({})
@@ -37,16 +44,17 @@ export default function MyClaimsPage() {
   }, [claims])
 
   function formatDate(date: string): string {
-    return new Date(date).toLocaleString('en-US', {
+    return new Date(date).toLocaleString('hr-HR', {
       month: 'short',
       day: 'numeric',
-      hour: 'numeric',
+      hour: '2-digit',
       minute: '2-digit',
+      hour12: false,
     })
   }
 
   function getTimeRemaining(diffMs: number): string {
-    if (diffMs <= 0) return 'Expired'
+    if (diffMs <= 0) return 'Isteklo'
 
     const diffMins = Math.floor(diffMs / 1000 / 60)
     const diffSecs = Math.floor((diffMs / 1000) % 60)
@@ -96,16 +104,16 @@ export default function MyClaimsPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Section */}
         <div className="mb-8">
-          <h1 className="font-heading text-4xl font-bold text-text-primary mb-2">My Claims</h1>
-          <p className="text-text-secondary text-sm">View and manage your claimed offers</p>
+          <h1 className="font-heading text-4xl font-bold text-text-primary mb-2">Moje rezervacije</h1>
+          <p className="text-text-secondary text-sm">Pregledajte i upravljajte svojim rezerviranim ponudama</p>
         </div>
 
         {claims.length === 0 ? (
           <EmptyState
-            title="No Claims Yet"
-            description="Start claiming offers and enjoying great deals!"
+            title="Još nema rezervacija"
+            description="Počnite rezervirati ponude i iskoristite sjajne popuste!"
             action={{
-              label: 'Browse Offers',
+              label: 'Pregledaj ponude',
               href: '/offers',
             }}
           />
@@ -131,7 +139,7 @@ export default function MyClaimsPage() {
                       </div>
                       <div className={`px-4 py-2 border-2 ${getStatusColor(claimData.status)}`}>
                         <span className="text-xs font-bold uppercase tracking-wider">
-                          {claimData.status}
+                          {STATUS_LABELS[claimData.status] || claimData.status}
                         </span>
                       </div>
                     </div>
@@ -140,16 +148,16 @@ export default function MyClaimsPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 pt-4 border-t border-border">
                       <div>
                         <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-1">
-                          Claimed
+                          Rezervirano
                         </p>
                         <p className="text-sm font-medium text-text-primary">
-                          {claimData.reservedAt ? formatDate(claimData.reservedAt) : 'N/A'}
+                          {claimData.reservedAt ? formatDate(claimData.reservedAt) : 'Nije dostupno'}
                         </p>
                       </div>
                       {claimData.redeemedAt && (
                         <div>
                           <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-1">
-                            Redeemed
+                            Iskorišteno
                           </p>
                           <p className="text-sm font-medium text-text-primary">
                             {formatDate(claimData.redeemedAt)}
@@ -159,7 +167,7 @@ export default function MyClaimsPage() {
                       {claimData.expiresAt && claimData.status === 'RESERVED' && (
                         <div>
                           <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-1">
-                            Expires
+                            Istječe
                           </p>
                           <p className="text-sm font-medium text-text-primary">
                             {formatDate(claimData.expiresAt)}
@@ -175,7 +183,7 @@ export default function MyClaimsPage() {
                       {/* Time Remaining */}
                       <div className="bg-error border-2 border-error p-4 mb-4">
                         <p className="text-xs font-bold text-white mb-2 text-center uppercase tracking-wider">
-                          Time Remaining
+                          Preostalo vrijeme
                         </p>
                         <p className="text-4xl font-bold text-center text-white">
                           {timeRemaining[claim.id] !== undefined
@@ -188,7 +196,7 @@ export default function MyClaimsPage() {
                       <div className="bg-white border-2 border-primary p-6">
                         {/* 6-Digit Code */}
                         <p className="text-xs font-bold text-text-secondary mb-3 text-center uppercase tracking-wider">
-                          Show This Code to Staff
+                          Pokažite ovaj kod osoblju
                         </p>
                         <p className="font-heading text-5xl font-bold text-center text-primary tracking-widest mb-6">
                           {claimData.sixCode}
@@ -208,7 +216,7 @@ export default function MyClaimsPage() {
                         </div>
 
                         <p className="text-xs text-text-tertiary text-center mt-4">
-                          Or scan the QR code with a mobile device
+                          Ili skenirajte QR kod mobilnim uređajem
                         </p>
                       </div>
                     </div>
@@ -223,10 +231,10 @@ export default function MyClaimsPage() {
                         </div>
                         <div className="flex-1">
                           <h4 className="font-heading text-lg font-bold text-text-primary mb-1">
-                            Share Your Experience
+                            Podijelite svoje iskustvo
                           </h4>
                           <p className="text-sm text-text-secondary">
-                            Help others discover great deals by leaving a review
+                            Pomozite drugima otkriti sjajne ponude ostavljanjem recenzije
                           </p>
                         </div>
                       </div>
@@ -236,7 +244,7 @@ export default function MyClaimsPage() {
                         style={{ color: 'white' }}
                       >
                         <FiMessageSquare />
-                        Write a Review
+                        Napišite recenziju
                       </button>
                     </div>
                   )}
@@ -248,10 +256,10 @@ export default function MyClaimsPage() {
                         <FiCheckCircle className="text-success text-2xl flex-shrink-0" />
                         <div>
                           <p className="text-sm font-bold text-success uppercase tracking-wider">
-                            Review Submitted
+                            Recenzija poslana
                           </p>
                           <p className="text-xs text-text-secondary mt-0.5">
-                            Thank you for your feedback!
+                            Hvala na povratnim informacijama!
                           </p>
                         </div>
                       </div>

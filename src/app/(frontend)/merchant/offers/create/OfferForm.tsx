@@ -6,6 +6,7 @@ import Link from 'next/link'
 import toast, { Toaster } from 'react-hot-toast'
 import { DatePicker } from '@/components/DatePicker'
 import { FiArrowLeft, FiInfo } from 'react-icons/fi'
+import { HelpTooltip } from '@/components/HelpTooltip'
 
 type Venue = {
   id: string
@@ -80,9 +81,9 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
       if (response.ok) {
         const data = await response.json()
         setPhotoId(data.doc.id)
-        toast.success('Photo uploaded!')
+        toast.success('Slika je učitana!')
       } else {
-        toast.error('Failed to upload photo')
+        toast.error('Učitavanje slike nije uspjelo')
         setPhotoFile(null)
         setPhotoPreview(offer?.photo || null)
       }
@@ -121,7 +122,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
         throw new Error(data.error || `Failed to ${isEdit ? 'update' : 'create'} offer`)
       }
 
-      toast.success(isEdit ? 'Offer updated successfully!' : 'Offer created successfully!')
+      toast.success(isEdit ? 'Ponuda je uspješno ažurirana!' : 'Ponuda je uspješno kreirana!')
 
       // Small delay before redirect to show toast
       setTimeout(() => {
@@ -146,15 +147,15 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
             className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary mb-4 transition-colors"
           >
             <FiArrowLeft className="w-4 h-4" />
-            Back to Offers
+            Natrag na Ponude
           </Link>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-            {isEdit ? 'Edit Offer' : 'Create New Offer'}
+            {isEdit ? 'Uredi Ponudu' : 'Kreiraj Novu Ponudu'}
           </h1>
           <p className="mt-2 text-sm md:text-base text-text-secondary">
             {isEdit
-              ? 'Update your offer details and settings'
-              : 'Fill in the details below to create a new off-peak offer'}
+              ? 'Ažurirajte detalje i postavke svoje ponude'
+              : 'Ispunite detalje u nastavku da kreirate novu ponudu'}
           </p>
         </div>
 
@@ -170,12 +171,12 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
           <div className="bg-white border border-border rounded-lg p-6 space-y-6">
             <div className="flex items-center gap-2 border-b border-border pb-4">
               <FiInfo className="text-primary text-lg" />
-              <h2 className="font-heading text-lg font-bold text-text-primary">Basic Information</h2>
+              <h2 className="font-heading text-lg font-bold text-text-primary">Osnovne Informacije</h2>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-text-primary mb-2">
-                Offer Title <span className="text-error">*</span>
+                Naslov Ponude <span className="text-error">*</span>
               </label>
               <input
                 type="text"
@@ -188,7 +189,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-text-primary mb-2">Description</label>
+              <label className="block text-sm font-semibold text-text-primary mb-2">Opis</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -199,7 +200,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-text-primary mb-2">Offer Photo</label>
+              <label className="block text-sm font-semibold text-text-primary mb-2">Slika Ponude</label>
               <div className="space-y-3">
                 {photoPreview && (
                   <div className="relative w-32 h-32 border border-border rounded-lg overflow-hidden">
@@ -213,13 +214,13 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
                   disabled={uploadingPhoto}
                   className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded"
                 />
-                {uploadingPhoto && <p className="text-sm text-text-tertiary">Uploading...</p>}
+                {uploadingPhoto && <p className="text-sm text-text-tertiary">Učitavanje...</p>}
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-text-primary mb-2">
-                Venue <span className="text-error">*</span>
+                Lokacija <span className="text-error">*</span>
               </label>
               <select
                 value={formData.venueId}
@@ -241,13 +242,13 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
           <div className="bg-white border border-border rounded-lg p-6 space-y-6">
             <div className="flex items-center gap-2 border-b border-border pb-4">
               <FiInfo className="text-primary text-lg" />
-              <h2 className="font-heading text-lg font-bold text-text-primary">Offer Details</h2>
+              <h2 className="font-heading text-lg font-bold text-text-primary">Detalji Ponude</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-semibold text-text-primary mb-2">
-                  Offer Type <span className="text-error">*</span>
+                  Vrsta Ponude <span className="text-error">*</span>
                 </label>
                 <select
                   value={formData.type}
@@ -255,16 +256,16 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
                   className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
                   required
                 >
-                  <option value="percent">Percentage Discount</option>
-                  <option value="fixed">Fixed Amount Off</option>
-                  <option value="bogo">Buy One Get One</option>
-                  <option value="addon">Free Add-on</option>
+                  <option value="percent">Postotak Popusta</option>
+                  <option value="fixed">Fiksni Iznos Popusta</option>
+                  <option value="bogo">Kupi Jedan Dobij Jedan</option>
+                  <option value="addon">Besplatno Dodatno</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-text-primary mb-2">
-                  Discount Value <span className="text-error">*</span>
+                  Vrijednost Popusta <span className="text-error">*</span>
                 </label>
                 <input
                   type="number"
@@ -275,14 +276,14 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
                   required
                 />
                 <p className="text-xs text-text-secondary mt-1">
-                  {formData.type === 'percent' ? 'Percentage (e.g., 20 for 20%)' : 'Amount in euros'}
+                  {formData.type === 'percent' ? 'Postotak (npr., 20 za 20%)' : 'Iznos u eurima'}
                 </p>
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-text-primary mb-2">
-                Terms & Conditions
+                Uvjeti i Odredbe
               </label>
               <textarea
                 value={formData.terms}
@@ -299,22 +300,21 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
             <div className="bg-white border border-border rounded-lg p-6 space-y-6">
               <div className="flex items-center gap-2 border-b border-border pb-4">
                 <FiInfo className="text-primary text-lg" />
-                <h2 className="font-heading text-lg font-bold text-text-primary">Initial Time Slot</h2>
+                <h2 className="font-heading text-lg font-bold text-text-primary">Početni Vremenski Slot</h2>
               </div>
               <p className="text-sm text-text-secondary bg-blue-50 border border-blue-200 rounded-lg p-3">
-                Define the first available time slot. You can add more slots later from the offer detail
-                page.
+                Definirajte prvi dostupan vremenski slot. Možete dodati više slotova kasnije sa stranice detalja ponude.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <DatePicker
-                  label="Start Date & Time"
+                  label="Datum i Vrijeme Početka"
                   value={formData.startsAt}
                   onChange={(value) => setFormData({ ...formData, startsAt: value })}
                   required
                 />
                 <DatePicker
-                  label="End Date & Time"
+                  label="Datum i Vrijeme Završetka"
                   value={formData.endsAt}
                   onChange={(value) => setFormData({ ...formData, endsAt: value })}
                   required
@@ -324,7 +324,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-text-primary mb-2">
-                    Total Quantity <span className="text-error">*</span>
+                    Ukupna Količina <span className="text-error">*</span>
                   </label>
                   <input
                     type="number"
@@ -337,7 +337,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-text-primary mb-2">
-                    Release Mode <span className="text-error">*</span>
+                    Način Otpuštanja <span className="text-error">*</span>
                   </label>
                   <select
                     value={formData.mode}
@@ -345,8 +345,8 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
                     className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
                     required
                   >
-                    <option value="flash">Flash (all at once)</option>
-                    <option value="drip">Drip (gradual release)</option>
+                    <option value="flash">Flash (sve odjednom)</option>
+                    <option value="drip">Drip (postupno otpuštanje)</option>
                   </select>
                 </div>
               </div>
@@ -355,7 +355,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-text-primary mb-2">
-                      Drip Every (minutes)
+                      Drip Svakih (minuta)
                     </label>
                     <input
                       type="number"
@@ -369,7 +369,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-text-primary mb-2">
-                      Drip Quantity
+                      Drip Količina
                     </label>
                     <input
                       type="number"
@@ -388,13 +388,17 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
           <div className="bg-white border border-border rounded-lg p-6 space-y-6">
             <div className="flex items-center gap-2 border-b border-border pb-4">
               <FiInfo className="text-primary text-lg" />
-              <h2 className="font-heading text-lg font-bold text-text-primary">Advanced Settings</h2>
+              <h2 className="font-heading text-lg font-bold text-text-primary">Napredne Postavke</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">
-                  Per User Limit
+                <label className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-2">
+                  Limit po Korisniku
+                  <HelpTooltip
+                    content="Maksimalan broj ponuda koje jedan korisnik može rezervirati za ovu ponudu. Ostavite prazno ili 0 za neograničeno."
+                    position="top"
+                  />
                 </label>
                 <input
                   type="number"
@@ -406,8 +410,12 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-2">
                   Cooldown (min)
+                  <HelpTooltip
+                    content="Vrijeme u minutama koje korisnik mora pričekati između rezervacija iste ponude. Sprječava prebrzo višestruko rezerviranje."
+                    position="top"
+                  />
                 </label>
                 <input
                   type="number"
@@ -419,8 +427,12 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-text-primary mb-2">
                   Geofence (km)
+                  <HelpTooltip
+                    content="Maksimalna udaljenost u kilometrima od lokacije na kojoj korisnici mogu vidjeti i rezervirati ovu ponudu. 0 znači da nema geografskog ograničenja."
+                    position="top"
+                  />
                 </label>
                 <input
                   type="number"
@@ -440,7 +452,7 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
               onClick={() => router.back()}
               className="px-6 py-3 bg-white text-text-secondary border border-border hover:border-primary transition-colors font-semibold rounded"
             >
-              Cancel
+              Odustani
             </button>
             <button
               type="submit"
@@ -450,11 +462,11 @@ export function OfferForm({ venues, offer, isEdit = false }: Props) {
             >
               {loading
                 ? isEdit
-                  ? 'Saving...'
-                  : 'Creating...'
+                  ? 'Spremanje...'
+                  : 'Kreiranje...'
                 : isEdit
-                  ? 'Save Changes'
-                  : 'Create Offer'}
+                  ? 'Spremi Promjene'
+                  : 'Kreiraj Ponudu'}
             </button>
           </div>
         </form>

@@ -94,7 +94,7 @@ export default function SettingsPage() {
       }
     } catch (error) {
       console.error('Error fetching data:', error)
-      toast.error('Failed to load settings')
+      toast.error('Učitavanje postavki nije uspjelo')
     } finally {
       setLoading(false)
     }
@@ -115,14 +115,14 @@ export default function SettingsPage() {
       })
 
       if (response.ok) {
-        toast.success('Profile updated successfully')
+        toast.success('Profil je uspješno ažuriran')
       } else {
         const data = await response.json()
-        toast.error(data.error || 'Failed to update profile')
+        toast.error(data.error || 'Ažuriranje profila nije uspjelo')
       }
     } catch (error) {
       console.error('Error updating profile:', error)
-      toast.error('Failed to update profile')
+      toast.error('Ažuriranje profila nije uspjelo')
     } finally {
       setSaving(false)
     }
@@ -143,14 +143,14 @@ export default function SettingsPage() {
       })
 
       if (response.ok) {
-        toast.success('Account updated successfully')
+        toast.success('Račun je uspješno ažuriran')
       } else {
         const data = await response.json()
-        toast.error(data.error || 'Failed to update account')
+        toast.error(data.error || 'Ažuriranje računa nije uspjelo')
       }
     } catch (error) {
       console.error('Error updating account:', error)
-      toast.error('Failed to update account')
+      toast.error('Ažuriranje računa nije uspjelo')
     } finally {
       setSaving(false)
     }
@@ -158,17 +158,17 @@ export default function SettingsPage() {
 
   async function handleChangePassword() {
     if (!passwordData.currentPassword || !passwordData.newPassword) {
-      toast.error('Please fill in all password fields')
+      toast.error('Molimo ispunite sva polja za lozinku')
       return
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error('New passwords do not match')
+      toast.error('Nove lozinke se ne podudaraju')
       return
     }
 
     if (passwordData.newPassword.length < 8) {
-      toast.error('Password must be at least 8 characters')
+      toast.error('Lozinka mora imati najmanje 8 znakova')
       return
     }
 
@@ -185,15 +185,15 @@ export default function SettingsPage() {
       })
 
       if (response.ok) {
-        toast.success('Password changed successfully')
+        toast.success('Lozinka je uspješno promijenjena')
         setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' })
       } else {
         const data = await response.json()
-        toast.error(data.error || 'Failed to change password')
+        toast.error(data.error || 'Promjena lozinke nije uspjela')
       }
     } catch (error) {
       console.error('Error changing password:', error)
-      toast.error('Failed to change password')
+      toast.error('Promjena lozinke nije uspjela')
     } finally {
       setSaving(false)
     }
@@ -212,14 +212,14 @@ export default function SettingsPage() {
       })
 
       if (response.ok) {
-        toast.success('Notification preferences updated')
+        toast.success('Postavke obavijesti su ažurirane')
       } else {
         const data = await response.json()
-        toast.error(data.error || 'Failed to update preferences')
+        toast.error(data.error || 'Ažuriranje postavki nije uspjelo')
       }
     } catch (error) {
       console.error('Error updating preferences:', error)
-      toast.error('Failed to update preferences')
+      toast.error('Ažuriranje postavki nije uspjelo')
     } finally {
       setSaving(false)
     }
@@ -242,7 +242,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-secondary text-sm">Loading settings...</p>
+        <p className="text-text-secondary text-sm">Učitavanje postavki...</p>
       </div>
     )
   }
@@ -257,13 +257,13 @@ export default function SettingsPage() {
             className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary mb-4"
           >
             <FiArrowLeft />
-            Back to Dashboard
+            Natrag na nadzornu ploču
           </Link>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-            Settings
+            Postavke
           </h1>
           <p className="mt-2 text-sm md:text-base text-text-secondary">
-            Manage your account and business information
+            Upravljajte svojim računom i podacima o poslovanju
           </p>
         </div>
 
@@ -279,7 +279,7 @@ export default function SettingsPage() {
               }`}
             >
               <FiInfo className="inline mr-2" />
-              Business Profile
+              Poslovni profil
             </button>
             <button
               onClick={() => setActiveTab('account')}
@@ -290,7 +290,7 @@ export default function SettingsPage() {
               }`}
             >
               <FiUser className="inline mr-2" />
-              Account Settings
+              Postavke računa
             </button>
             <button
               onClick={() => setActiveTab('notifications')}
@@ -301,7 +301,7 @@ export default function SettingsPage() {
               }`}
             >
               <FiBell className="inline mr-2" />
-              Notifications
+              Obavijesti
             </button>
           </div>
         </div>
@@ -312,16 +312,16 @@ export default function SettingsPage() {
             <div className="p-6 space-y-6">
               <div>
                 <h2 className="font-heading text-lg font-bold text-text-primary mb-4">
-                  Business Profile
+                  Poslovni profil
                 </h2>
                 <p className="text-sm text-text-secondary mb-6">
-                  Update your business information that customers will see
+                  Ažurirajte informacije o poslovanju koje će kupci vidjeti
                 </p>
               </div>
 
               <div>
                 <label htmlFor="business-name" className="block text-sm font-medium text-text-primary mb-2">
-                  Business Name *
+                  Naziv poslovanja *
                 </label>
                 <input
                   type="text"
@@ -330,13 +330,13 @@ export default function SettingsPage() {
                   value={profileData.name}
                   onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                   className="w-full px-4 py-3 bg-white border border-border text-text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="Your Business Name"
+                  placeholder="Naziv vašeg poslovanja"
                 />
               </div>
 
               <div>
                 <label htmlFor="business-description" className="block text-sm font-medium text-text-primary mb-2">
-                  Business Description
+                  Opis poslovanja
                 </label>
                 <textarea
                   id="business-description"
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                     setProfileData({ ...profileData, description: e.target.value })
                   }
                   className="w-full px-4 py-3 bg-white border border-border text-text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="Tell customers about your business..."
+                  placeholder="Recite kupcima nešto o svom poslu..."
                 />
               </div>
 
@@ -358,7 +358,7 @@ export default function SettingsPage() {
                   style={{ color: 'white' }}
                 >
                   <FiSave />
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  {saving ? 'Spremanje...' : 'Spremi promjene'}
                 </button>
               </div>
             </div>
@@ -368,16 +368,16 @@ export default function SettingsPage() {
             <div className="p-6 space-y-6">
               <div>
                 <h2 className="font-heading text-lg font-bold text-text-primary mb-4">
-                  Account Information
+                  Podaci o računu
                 </h2>
                 <p className="text-sm text-text-secondary mb-6">
-                  Update your personal account details
+                  Ažurirajte osobne podatke o računu
                 </p>
               </div>
 
               <div>
                 <label htmlFor="account-name" className="block text-sm font-medium text-text-primary mb-2">
-                  Full Name
+                  Ime i prezime
                 </label>
                 <input
                   type="text"
@@ -390,7 +390,7 @@ export default function SettingsPage() {
 
               <div>
                 <label htmlFor="account-email" className="block text-sm font-medium text-text-primary mb-2">
-                  Email Address
+                  E-mail adresa
                 </label>
                 <input
                   type="email"
@@ -403,7 +403,7 @@ export default function SettingsPage() {
 
               <div>
                 <label htmlFor="account-phone" className="block text-sm font-medium text-text-primary mb-2">
-                  Phone Number
+                  Broj telefona
                 </label>
                 <input
                   type="tel"
@@ -422,7 +422,7 @@ export default function SettingsPage() {
                   style={{ color: 'white' }}
                 >
                   <FiSave />
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  {saving ? 'Spremanje...' : 'Spremi promjene'}
                 </button>
               </div>
 
@@ -430,17 +430,17 @@ export default function SettingsPage() {
                 <div className="mb-4">
                   <h3 className="font-semibold text-text-primary mb-2 flex items-center gap-2">
                     <FiLock />
-                    Change Password
+                    Promijeni lozinku
                   </h3>
                   <p className="text-sm text-text-secondary">
-                    Update your password to keep your account secure
+                    Ažurirajte lozinku kako biste zadržali sigurnost računa
                   </p>
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <label htmlFor="current-password" className="block text-sm font-medium text-text-primary mb-2">
-                      Current Password
+                      Trenutna lozinka
                     </label>
                     <input
                       type="password"
@@ -455,7 +455,7 @@ export default function SettingsPage() {
 
                   <div>
                     <label htmlFor="new-password" className="block text-sm font-medium text-text-primary mb-2">
-                      New Password
+                      Nova lozinka
                     </label>
                     <input
                       type="password"
@@ -470,7 +470,7 @@ export default function SettingsPage() {
 
                   <div>
                     <label htmlFor="confirm-password" className="block text-sm font-medium text-text-primary mb-2">
-                      Confirm New Password
+                      Potvrdi novu lozinku
                     </label>
                     <input
                       type="password"
@@ -489,7 +489,7 @@ export default function SettingsPage() {
                     className="inline-flex items-center gap-2 bg-white text-text-secondary border border-border px-6 py-3 hover:border-primary font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <FiLock />
-                    Change Password
+                    Promijeni lozinku
                   </button>
                 </div>
               </div>
@@ -500,18 +500,18 @@ export default function SettingsPage() {
             <div className="p-6 space-y-6">
               <div>
                 <h2 className="font-heading text-lg font-bold text-text-primary mb-4">
-                  Notification Preferences
+                  Postavke obavijesti
                 </h2>
                 <p className="text-sm text-text-secondary mb-6">
-                  Control how you receive notifications about your business
+                  Kontrolirajte kako primate obavijesti o svom poslovanju
                 </p>
               </div>
 
               <div className="space-y-4">
                 <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
                   <div>
-                    <div className="font-semibold text-text-primary">In-App Notifications</div>
-                    <div className="text-sm text-text-secondary">Receive notifications within the app</div>
+                    <div className="font-semibold text-text-primary">Obavijesti u aplikaciji</div>
+                    <div className="text-sm text-text-secondary">Primajte obavijesti unutar aplikacije</div>
                   </div>
                   <input
                     type="checkbox"
@@ -519,14 +519,14 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       setNotificationPrefs({ ...notificationPrefs, inApp: e.target.checked })
                     }
-                    className="w-6 h-6 border-border rounded focus:ring-2 focus:ring-primary text-primary"
+                    className="h-5 w-5 rounded border-2 border-border text-primary accent-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-0 transition-colors"
                   />
                 </label>
 
                 <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
                   <div>
-                    <div className="font-semibold text-text-primary">Email Notifications</div>
-                    <div className="text-sm text-text-secondary">Receive notifications via email</div>
+                    <div className="font-semibold text-text-primary">E-mail obavijesti</div>
+                    <div className="text-sm text-text-secondary">Primajte obavijesti putem e-pošte</div>
                   </div>
                   <input
                     type="checkbox"
@@ -534,14 +534,14 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       setNotificationPrefs({ ...notificationPrefs, email: e.target.checked })
                     }
-                    className="w-6 h-6 border-border rounded focus:ring-2 focus:ring-primary text-primary"
+                    className="h-5 w-5 rounded border-2 border-border text-primary accent-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-0 transition-colors"
                   />
                 </label>
 
                 <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
                   <div>
-                    <div className="font-semibold text-text-primary">Push Notifications</div>
-                    <div className="text-sm text-text-secondary">Receive push notifications on your device</div>
+                    <div className="font-semibold text-text-primary">Push obavijesti</div>
+                    <div className="text-sm text-text-secondary">Primajte push obavijesti na svoj uređaj</div>
                   </div>
                   <input
                     type="checkbox"
@@ -549,7 +549,7 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       setNotificationPrefs({ ...notificationPrefs, push: e.target.checked })
                     }
-                    className="w-6 h-6 border-border rounded focus:ring-2 focus:ring-primary text-primary"
+                    className="h-5 w-5 rounded border-2 border-border text-primary accent-primary checked:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-0 transition-colors"
                   />
                 </label>
               </div>
@@ -562,7 +562,7 @@ export default function SettingsPage() {
                   style={{ color: 'white' }}
                 >
                   <FiSave />
-                  {saving ? 'Saving...' : 'Save Preferences'}
+                  {saving ? 'Spremanje...' : 'Spremi postavke'}
                 </button>
               </div>
             </div>

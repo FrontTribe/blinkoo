@@ -19,7 +19,7 @@ export function SuggestedTimeslots({ slots }: SuggestedTimeslotsProps) {
     return (
       <div className="bg-white border border-border p-6 text-center">
         <p className="text-text-secondary text-sm">
-          Not enough data yet. Start running offers to get timing suggestions.
+          Još nema dovoljno podataka. Pokrenite ponude kako biste dobili prijedloge termina.
         </p>
       </div>
     )
@@ -33,7 +33,7 @@ export function SuggestedTimeslots({ slots }: SuggestedTimeslotsProps) {
       <div className="flex items-center gap-2 mb-4">
         <FiTrendingUp className="text-primary text-lg" />
         <h3 className="font-heading text-lg font-semibold text-text-primary">
-          Suggested Time Slots
+          Predloženi termini
         </h3>
       </div>
 
@@ -60,7 +60,7 @@ export function SuggestedTimeslots({ slots }: SuggestedTimeslotsProps) {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-xs text-text-tertiary mb-1">Confidence</div>
+                <div className="text-xs text-text-tertiary mb-1">Pouzdanost</div>
                 <div className="text-lg font-bold text-primary">
                   {Math.round(slot.confidence * 100)}%
                 </div>
@@ -72,8 +72,8 @@ export function SuggestedTimeslots({ slots }: SuggestedTimeslotsProps) {
 
       <div className="bg-blue-50 border border-blue-200 p-4">
         <p className="text-xs text-blue-800">
-          <strong>Tip:</strong> Based on your last 30 days of data. These times have shown the most
-          customer engagement.
+          <strong>Savjet:</strong> Temelji se na vašim posljednjih 30 dana podataka. Ovi termini pokazuju
+          najveći angažman korisnika.
         </p>
       </div>
     </div>

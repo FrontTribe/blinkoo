@@ -179,7 +179,7 @@ export default function CreateVenuePage() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to create venue')
+        throw new Error(data.error || 'Kreiranje lokacije nije uspjelo')
       }
 
       const result = await response.json()
@@ -204,13 +204,13 @@ export default function CreateVenuePage() {
             className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary mb-4 transition-colors"
           >
             <FiArrowLeft className="w-4 h-4" />
-            Back to Venues
+            Natrag na Lokacije
           </Link>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-            Add New Venue
+            Dodaj Novu Lokaciju
           </h1>
           <p className="mt-2 text-sm md:text-base text-text-secondary">
-            Create a new venue location where your offers will be available
+            Kreirajte novu lokaciju gdje će vaše ponude biti dostupne
           </p>
         </div>
 
@@ -226,12 +226,12 @@ export default function CreateVenuePage() {
           <div className="bg-white border border-border rounded-lg p-6 space-y-6">
             <div className="flex items-center gap-2 border-b border-border pb-4">
               <FiInfo className="text-primary text-lg" />
-              <h2 className="font-heading text-lg font-bold text-text-primary">Basic Information</h2>
+              <h2 className="font-heading text-lg font-bold text-text-primary">Osnovne Informacije</h2>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-text-primary mb-2">
-                Venue Name <span className="text-error">*</span>
+                Naziv Lokacije <span className="text-error">*</span>
               </label>
               <div className="relative">
                 <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -247,19 +247,19 @@ export default function CreateVenuePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-text-primary mb-2">Description</label>
+              <label className="block text-sm font-semibold text-text-primary mb-2">Opis</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors resize-none rounded"
-                placeholder="Brief description of your venue..."
+                placeholder="Kratak opis vaše lokacije..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-text-primary mb-2">
-                Category <span className="text-error">*</span>
+                Kategorija <span className="text-error">*</span>
               </label>
               <select
                 value={formData.category}
@@ -267,7 +267,7 @@ export default function CreateVenuePage() {
                 className="w-full px-4 py-3 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors rounded"
                 required
               >
-                <option value="">Select a category</option>
+                <option value="">Odaberite kategoriju</option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name}
@@ -281,17 +281,17 @@ export default function CreateVenuePage() {
           <div className="bg-white border border-border rounded-lg p-6 space-y-6">
             <div className="flex items-center gap-2 border-b border-border pb-4">
               <FiMapPin className="text-primary text-lg" />
-              <h2 className="font-heading text-lg font-bold text-text-primary">Location</h2>
+              <h2 className="font-heading text-lg font-bold text-text-primary">Lokacija</h2>
             </div>
 
             <div className="relative">
               <label className="block text-sm font-semibold text-text-primary mb-2">
-                Search Location <span className="text-error">*</span>
+                Pretraži Lokaciju <span className="text-error">*</span>
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search for address..."
+                  placeholder="Pretražite adresu..."
                   value={formData.address}
                   onChange={(e) => {
                     setFormData({ ...formData, address: e.target.value })
@@ -324,7 +324,7 @@ export default function CreateVenuePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">City</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Grad</label>
                 <input
                   type="text"
                   value={formData.city}
@@ -333,7 +333,7 @@ export default function CreateVenuePage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">Country</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Država</label>
                 <input
                   type="text"
                   value={formData.country}
@@ -342,7 +342,7 @@ export default function CreateVenuePage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">Postal Code</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Poštanski Broj</label>
                 <input
                   type="text"
                   value={formData.postalCode}
@@ -356,7 +356,7 @@ export default function CreateVenuePage() {
             {formData.lat && formData.lng ? (
               <div>
                 <label className="block text-sm font-semibold text-text-primary mb-2">
-                  Location Preview
+                  Pregled Lokacije
                 </label>
                 <div className="border border-border rounded-lg overflow-hidden">
                   <LocationMap
@@ -366,14 +366,14 @@ export default function CreateVenuePage() {
                   />
                 </div>
                 <p className="mt-2 text-xs text-text-tertiary">
-                  Coordinates: {formData.lat}, {formData.lng}
+                  Koordinate: {formData.lat}, {formData.lng}
                 </p>
               </div>
             ) : (
               <div className="bg-bg-secondary border border-border rounded-lg p-12 text-center">
                 <FiMapPin className="text-text-tertiary text-4xl mx-auto mb-3" />
                 <p className="text-text-secondary text-sm">
-                  Search for an address above to see location on map
+                  Pretražite adresu gore da vidite lokaciju na karti
                 </p>
               </div>
             )}
@@ -387,12 +387,12 @@ export default function CreateVenuePage() {
           <div className="bg-white border border-border rounded-lg p-6 space-y-6">
             <div className="flex items-center gap-2 border-b border-border pb-4">
               <FiMail className="text-primary text-lg" />
-              <h2 className="font-heading text-lg font-bold text-text-primary">Contact Information</h2>
+              <h2 className="font-heading text-lg font-bold text-text-primary">Kontakt Informacije</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">Phone</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Telefon</label>
                 <div className="relative">
                   <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                   <input
@@ -406,7 +406,7 @@ export default function CreateVenuePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-text-primary mb-2">Email</label>
+                <label className="block text-sm font-semibold text-text-primary mb-2">E-pošta</label>
                 <div className="relative">
                   <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
                   <input
@@ -425,12 +425,12 @@ export default function CreateVenuePage() {
           <div className="bg-white border border-border rounded-lg p-6 space-y-6">
             <div className="flex items-center gap-2 border-b border-border pb-4">
               <FiClock className="text-primary text-lg" />
-              <h2 className="font-heading text-lg font-bold text-text-primary">Opening Hours</h2>
+              <h2 className="font-heading text-lg font-bold text-text-primary">Radno Vrijeme</h2>
             </div>
 
             <div>
               <p className="text-sm text-text-secondary mb-4">
-                Set your venue's operating hours. This helps customers know when you're open.
+                Postavite radno vrijeme svoje lokacije. Ovo pomaže kupcima da znaju kada ste otvoreni.
               </p>
               <VenueHoursEditor
                 initialHours={formData.openHours}
@@ -446,7 +446,7 @@ export default function CreateVenuePage() {
               onClick={() => router.back()}
               className="px-6 py-3 bg-white text-text-secondary border border-border hover:border-primary transition-colors font-semibold rounded"
             >
-              Cancel
+              Odustani
             </button>
             <button
               type="submit"
@@ -454,7 +454,7 @@ export default function CreateVenuePage() {
               className="px-6 py-3 bg-primary text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold rounded"
               style={{ color: 'white' }}
             >
-              {loading ? 'Creating...' : 'Create Venue'}
+              {loading ? 'Kreiranje...' : 'Kreiraj Lokaciju'}
             </button>
           </div>
         </form>

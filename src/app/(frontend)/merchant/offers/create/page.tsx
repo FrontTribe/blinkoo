@@ -32,7 +32,7 @@ export default function CreateOfferPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-primary">Loading venues...</p>
+        <p className="text-text-primary">Učitavanje lokacija...</p>
       </div>
     )
   }
@@ -41,16 +41,16 @@ export default function CreateOfferPage() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="bg-white border border-border p-10 max-w-md">
-          <h2 className="font-heading text-2xl font-bold text-text-primary mb-4">No Venues</h2>
+          <h2 className="font-heading text-2xl font-bold text-text-primary mb-4">Nema Lokacija</h2>
           <p className="text-text-secondary mb-6">
-            You need to create a venue first before creating offers.
+            Morate prvo kreirati lokaciju prije kreiranja ponuda.
           </p>
           <Link
             href="/merchant/venues/create"
             className="block text-center bg-primary text-white py-4 px-6 hover:bg-primary-hover transition-colors font-semibold"
             style={{ color: 'white' }}
           >
-            Create Venue
+            Kreiraj Lokaciju
           </Link>
         </div>
       </div>

@@ -24,7 +24,7 @@ const MapView = dynamic(() => import('./MapView'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full flex items-center justify-center bg-[#F7F7F7] border-l border-[#EBEBEB]">
-      <p className="text-text-secondary">Loading map...</p>
+      <p className="text-text-secondary">Učitavanje karte...</p>
     </div>
   ),
 })
@@ -68,14 +68,14 @@ type Category = {
   icon: string
 }
 
-const defaultCategories: Category[] = [{ id: 'all', name: 'All', slug: 'all', icon: 'FiGrid' }]
+const defaultCategories: Category[] = [{ id: 'all', name: 'Sve', slug: 'all', icon: 'FiGrid' }]
 
 function getTimeRemaining(endsAt: string): string {
   const now = new Date()
   const end = new Date(endsAt)
   const diff = end.getTime() - now.getTime()
 
-  if (diff <= 0) return 'Ended'
+  if (diff <= 0) return 'Završeno'
 
   const minutes = Math.floor(diff / 1000 / 60)
   const hours = Math.floor(minutes / 60)
@@ -83,7 +83,7 @@ function getTimeRemaining(endsAt: string): string {
 
   if (days > 0) {
     const remainingHours = hours % 24
-    return `${days}${days === 1 ? ' day' : ' days'} ${remainingHours}h`
+    return `${days}${days === 1 ? ' dan' : ' dana'} ${remainingHours}h`
   }
   if (hours > 0) {
     return `${hours}h ${minutes % 60}m`
@@ -111,7 +111,7 @@ function CountdownDisplay({ endsAt }: { endsAt: string }) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs text-text-secondary">Ends in</span>
+      <span className="text-xs text-text-secondary">Završava za</span>
       <span className="text-sm font-semibold text-primary">
         {timeRemaining}
       </span>
@@ -129,15 +129,15 @@ function getMinutesRemaining(endsAt: string): number {
 function getOfferLabel(type: string, value: number): string {
   switch (type) {
     case 'percent':
-      return `${value}% off`
+      return `${value}% popusta`
     case 'fixed':
-      return `€${value} off`
+      return `€${value} popusta`
     case 'bogo':
       return 'BOGO'
     case 'addon':
-      return 'Free Add-on'
+      return 'Besplatno Dodatno'
     default:
-      return 'Special'
+      return 'Posebno'
   }
 }
 
@@ -350,10 +350,10 @@ export default function OffersContent({
         {/* Header Row */}
         <div className="flex items-center justify-between h-14 px-4 shrink-0 border-b border-border">
           <h4 className="text-base font-semibold text-text-primary">
-            {filteredOffers.length} {filteredOffers.length === 1 ? 'offer' : 'offers'}
+            {filteredOffers.length} {filteredOffers.length === 1 ? 'ponuda' : filteredOffers.length < 5 ? 'ponude' : 'ponuda'}
             {searchQuery && offers.length !== filteredOffers.length && (
               <span className="text-text-tertiary text-sm ml-1">
-                (filtered from {offers.length})
+                (filtrirano od {offers.length})
               </span>
             )}
           </h4>
@@ -367,7 +367,7 @@ export default function OffersContent({
           >
             <div className="flex items-center gap-2">
               <FiFilter className="text-sm" />
-              <span className="text-xs">Filters</span>
+              <span className="text-xs">Filteri</span>
               {getActiveFilterCount() > 0 && (
                 <span className="bg-primary text-white text-[10px] px-1.5 py-0.5">
                   {getActiveFilterCount()}
@@ -380,7 +380,7 @@ export default function OffersContent({
         {/* Search Bar */}
         <div className="px-4 py-3 border-b border-border shrink-0">
           <SearchBar
-            placeholder="Search offers by title, venue, or description..."
+            placeholder="Pretražite ponude po naslovu, lokaciji ili opisu..."
             onSearch={setSearchQuery}
             className="w-full"
           />
@@ -436,21 +436,21 @@ export default function OffersContent({
           <div className="px-4 py-4">
             {filteredOffers.length === 0 ? (
               <EmptyState
-                title={searchQuery ? 'No offers match your search' : 'No offers found'}
+                title={searchQuery ? 'Nema ponuda koje odgovaraju vašoj pretrazi' : 'Nema pronađenih ponuda'}
                 description={
                   searchQuery
-                    ? `Try a different search term or clear the search to see all offers`
-                    : 'Try adjusting your filters or check back later for new offers'
+                    ? `Pokušajte s drugim pojmom za pretragu ili očistite pretragu da vidite sve ponude`
+                    : 'Pokušajte prilagoditi filtere ili provjerite kasnije za nove ponude'
                 }
                 action={
                   searchQuery
                     ? {
-                        label: 'Clear Search',
+                        label: 'Očisti Pretragu',
                         href: '#',
                         onClick: () => setSearchQuery(''),
                       }
                     : {
-                        label: 'Clear Filters',
+                        label: 'Očisti Filtere',
                         href: pathname || '/offers',
                       }
                 }
@@ -513,7 +513,7 @@ export default function OffersContent({
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-bg-secondary text-text-tertiary text-sm">
-                          No Image
+                          Nema Slike
                         </div>
                       )}
 
@@ -525,7 +525,7 @@ export default function OffersContent({
                       {/* Quantity Badge */}
                       {item.slot.qtyRemaining < 10 && (
                         <div className="absolute bottom-2 left-2 bg-error text-white px-2.5 py-1 text-xs font-semibold">
-                          Only {item.slot.qtyRemaining} left
+                          Preostalo samo {item.slot.qtyRemaining}
                         </div>
                       )}
                     </div>
@@ -560,7 +560,7 @@ export default function OffersContent({
                             </>
                           )}
                           {item.venue.distance !== null && (
-                            <span>{item.venue.distance.toFixed(1)} km away</span>
+                            <span>{item.venue.distance.toFixed(1)} km udaljeno</span>
                           )}
                         </div>
                       </div>
@@ -585,7 +585,7 @@ export default function OffersContent({
               className="bg-white border border-border px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-sm font-semibold hover:bg-bg-secondary transition-colors"
             >
               <FiList className="w-4 h-4" />
-              List View
+              Pregled Popisa
             </button>
           </div>
           <MapView offers={filteredOffers} />
@@ -609,7 +609,7 @@ export default function OffersContent({
           >
             <div className="flex items-center gap-2">
               <FiList className="w-5 h-5" />
-              <span className="font-semibold">List</span>
+              <span className="font-semibold">Popis</span>
             </div>
           </button>
           <button
@@ -622,7 +622,7 @@ export default function OffersContent({
           >
             <div className="flex items-center gap-2">
               <FiMap className="w-5 h-5" />
-              <span className="font-semibold">Map</span>
+              <span className="font-semibold">Karta</span>
             </div>
           </button>
         </div>

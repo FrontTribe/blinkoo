@@ -3,7 +3,15 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FiArrowLeft, FiClock, FiUsers, FiMapPin, FiBookmark } from 'react-icons/fi'
+import {
+  FiArrowLeft,
+  FiClock,
+  FiUsers,
+  FiMapPin,
+  FiBookmark,
+  FiBell,
+  FiCheck,
+} from 'react-icons/fi'
 import { DynamicIcon } from '@/components/DynamicIcon'
 import { SavedButton } from '@/components/SavedButton'
 import { EmptyState } from '@/components/EmptyState'
@@ -37,16 +45,25 @@ type SavedOffer = {
 function getOfferLabel(type: string, value: number): string {
   switch (type) {
     case 'percent':
-      return `${value}% off`
+      return `${value}% popusta`
     case 'fixed':
-      return `€${value} off`
+      return `-${value.toFixed(2)} €`
     case 'bogo':
-      return 'BOGO'
+      return '2 za 1'
     case 'addon':
-      return 'Free Add-on'
+      return 'Besplatan dodatak'
     default:
-      return 'Special'
+      return 'Posebna ponuda'
   }
+}
+
+function formatSavedDate(date: string): string {
+  return new Date(date).toLocaleDateString('hr-HR', {
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 export default function SavedOffersPage() {
@@ -74,40 +91,29 @@ export default function SavedOffersPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
-        <p className="text-text-primary">Loading saved offers...</p>
+        <p className="text-text-primary text-sm">Učitavanje spremljenih ponuda...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
-      {/* Header */}
-      <div className="border-b border-border bg-white sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-16">
-            <Link
-              href="/offers"
-              className="inline-flex items-center gap-2 text-text-primary hover:text-text-secondary transition-colors text-sm font-medium"
-            >
-              <FiArrowLeft className="text-base" />
-              <span>Back to offers</span>
-            </Link>
-
-            <div className="flex items-center gap-3">
-              <h1 className="text-lg font-semibold text-text-primary">Saved for Later</h1>
-            </div>
-          </div>
+    <div className="min-h-screen bg-bg-secondary pb-20 md:pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-12">
+        <div className="mb-8">
+          <h1 className="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-2">
+            Spremljene ponude
+          </h1>
+          <p className="text-sm md:text-base text-text-secondary">
+            Rezervirajte favorite i primajte obavijesti kada se oslobode termini.
+          </p>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {savedOffers.length === 0 ? (
           <EmptyState
-            title="No saved offers yet"
-            description="Start saving offers you're interested in and we'll notify you when slots become available"
+            title="Trenutno nema spremljenih ponuda"
+            description="Spremite ponude koje vas zanimaju i obavijestit ćemo vas kada se oslobode mjesta."
             action={{
-              label: 'Browse Offers',
+              label: 'Pregledaj ponude',
               href: '/offers',
             }}
           />
@@ -117,7 +123,7 @@ export default function SavedOffersPage() {
               <Link
                 key={saved.id}
                 href={`/offers/${saved.offer.id}`}
-                className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white"
+                className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white rounded-xl shadow-sm hover:shadow-lg"
               >
                 {/* Saved Button */}
                 <div className="absolute top-3 right-3 z-10" onClick={(e) => e.preventDefault()}>
@@ -158,17 +164,17 @@ export default function SavedOffersPage() {
                 {/* Content */}
                 <div className="p-4">
                   {/* Offer Title */}
-                  <h3 className="text-sm font-semibold text-text-primary line-clamp-2 mb-2">
+                  <h3 className="text-base font-semibold text-text-primary line-clamp-2 mb-2">
                     {saved.offer.title}
                   </h3>
 
                   {/* Venue Info */}
                   {saved.offer.venue && (
-                    <div className="space-y-2 mb-3">
+                    <div className="space-y-2 mb-4 text-sm">
                       {/* Venue Name */}
                       <div className="flex items-center gap-2">
                         <FiMapPin className="text-text-secondary text-xs" />
-                        <p className="text-xs text-text-secondary line-clamp-1">
+                        <p className="text-xs text-text-secondary line-clamp-1 uppercase tracking-wide">
                           {saved.offer.venue.name}
                         </p>
                       </div>
@@ -187,14 +193,18 @@ export default function SavedOffersPage() {
                   )}
 
                   {/* Notification Status */}
-                  <div className="pt-3 border-t border-border">
-                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                  <div className="pt-3 border-t border-border space-y-2">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-text-tertiary">
                       <FiClock className="text-xs" />
-                      {saved.notifyOnSlotStart && <span>Notify on slot start</span>}
+                      <span>Spremljeno {formatSavedDate(saved.createdAt)}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <FiBell className="text-sm text-primary" />
+                      {saved.notifyOnSlotStart && <span>Obavijesti pri otvaranju termina</span>}
                       {saved.notify30MinBefore && saved.notifyOnSlotStart && <span>•</span>}
-                      {saved.notify30MinBefore && <span>30min before</span>}
+                      {saved.notify30MinBefore && <span>30 min prije početka</span>}
                       {!saved.notifyOnSlotStart && !saved.notify30MinBefore && (
-                        <span>No notifications</span>
+                        <span>Obavijesti su isključene</span>
                       )}
                     </div>
                   </div>

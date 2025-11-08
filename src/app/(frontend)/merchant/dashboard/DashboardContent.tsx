@@ -55,7 +55,7 @@ export default function DashboardContent() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-text-primary">Loading...</div>
+        <div className="text-text-primary">Učitavanje...</div>
       </div>
     )
   }
@@ -65,17 +65,17 @@ export default function DashboardContent() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="bg-white p-10 max-w-md w-full mx-4 border border-border">
           <h2 className="font-heading text-2xl font-bold text-text-primary mb-4">
-            Sign In Required
+            Potrebna Prijava
           </h2>
           <p className="text-text-secondary mb-6">
-            Please sign in to access the merchant dashboard
+            Molimo prijavite se za pristup trgovačkom nadzornom panelu
           </p>
           <Link
             href="/auth/login"
             className="block bg-primary text-white py-4 px-6 text-center hover:bg-primary-hover transition-colors font-semibold"
             style={{ color: 'white' }}
           >
-            Sign In
+            Prijava
           </Link>
         </div>
       </div>
@@ -96,10 +96,10 @@ export default function DashboardContent() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-              Dashboard
+              Nadzorni Panel
             </h1>
             <p className="mt-2 text-sm md:text-base text-text-secondary">
-              Welcome back, {user?.name || 'Merchant'}! Here&apos;s what&apos;s happening today.
+              Dobrodošli natrag, {user?.name || 'Trgovac'}! Evo što se danas događa.
             </p>
           </div>
           <div className="flex gap-3">
@@ -108,7 +108,7 @@ export default function DashboardContent() {
               className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
               style={{ color: 'white' }}
             >
-              + Create Offer
+              + Kreiraj Ponudu
             </Link>
           </div>
         </div>
@@ -120,16 +120,16 @@ export default function DashboardContent() {
               <div className="bg-error/10 border border-error rounded-lg p-4 flex items-start gap-3">
                 <FiAlertCircle className="text-error text-xl flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-error mb-1">Low Stock Alert</h3>
+                  <h3 className="font-semibold text-error mb-1">Upozorenje o Niskoj Zalihi</h3>
                   <p className="text-sm text-text-secondary">
-                    {lowStockCount} live offer{lowStockCount > 1 ? 's have' : ' has'} less than 10 slots remaining
+                    {lowStockCount} aktivn{lowStockCount === 1 ? 'a ponuda ima' : lowStockCount < 5 ? 'e ponude imaju' : 'ih ponuda ima'} manje od 10 preostalih mjesta
                   </p>
                 </div>
                 <Link
                   href="/merchant/offers"
                   className="text-sm font-semibold text-error hover:text-error/80"
                 >
-                  View Offers →
+                  Pogledaj Ponude →
                 </Link>
               </div>
             )}
@@ -137,16 +137,16 @@ export default function DashboardContent() {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
                 <FiClock className="text-amber-600 text-xl flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-amber-900 mb-1">Ending Soon</h3>
+                  <h3 className="font-semibold text-amber-900 mb-1">Završava Uskoro</h3>
                   <p className="text-sm text-amber-700">
-                    {endingSoonCount} offer{endingSoonCount > 1 ? 's are' : ' is'} ending in less than 2 hours
+                    {endingSoonCount} ponud{endingSoonCount === 1 ? 'a završava' : endingSoonCount < 5 ? 'e završavaju' : 'a završava'} za manje od 2 sata
                   </p>
                 </div>
                 <Link
                   href="/merchant/offers"
                   className="text-sm font-semibold text-amber-900 hover:text-amber-800"
                 >
-                  View Offers →
+                  Pogledaj Ponude →
                 </Link>
               </div>
             )}
@@ -161,11 +161,11 @@ export default function DashboardContent() {
                 <FiUsers className="text-primary text-lg" />
               </div>
               <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                Total Offers
+                Ukupno Ponuda
               </h3>
             </div>
             <p className="font-heading text-3xl font-bold text-text-primary">{offers.length}</p>
-            <p className="text-xs text-text-secondary mt-2">{liveSlots.length} live right now</p>
+            <p className="text-xs text-text-secondary mt-2">{liveSlots.length} aktivno sada</p>
           </div>
 
           <div className="bg-white border border-border p-6 hover:border-primary transition-colors">
@@ -174,7 +174,7 @@ export default function DashboardContent() {
                 <FiCheckCircle className="text-green-600 text-lg" />
               </div>
               <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                Today&apos;s Claims
+                Današnje Rezervacije
               </h3>
             </div>
             <p className="font-heading text-3xl font-bold text-primary">
@@ -182,7 +182,7 @@ export default function DashboardContent() {
             </p>
             {todayStats?.summary && (
               <p className="text-xs text-text-secondary mt-2">
-                {todayStats.summary.redeemedClaims} redeemed
+                {todayStats.summary.redeemedClaims} iskorišteno
               </p>
             )}
           </div>
@@ -193,7 +193,7 @@ export default function DashboardContent() {
                 <FiTrendingUp className="text-blue-600 text-lg" />
               </div>
               <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                Fill Rate
+                Stopa Ispunjenosti
               </h3>
             </div>
             <p className="font-heading text-3xl font-bold text-blue-600">
@@ -201,7 +201,7 @@ export default function DashboardContent() {
             </p>
             {todayStats?.summary && (
               <p className="text-xs text-text-secondary mt-2">
-                {todayStats.summary.totalClaimed}/{todayStats.summary.totalCapacity} capacity
+                {todayStats.summary.totalClaimed}/{todayStats.summary.totalCapacity} kapaciteta
               </p>
             )}
           </div>
@@ -212,11 +212,11 @@ export default function DashboardContent() {
                 <FiClock className="text-purple-600 text-lg" />
               </div>
               <h3 className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-                Live Slots
+                Aktivni Slotovi
               </h3>
             </div>
             <p className="font-heading text-3xl font-bold text-purple-600">{liveSlots.length}</p>
-            <p className="text-xs text-text-secondary mt-2">Active offers running now</p>
+            <p className="text-xs text-text-secondary mt-2">Aktivne ponude koje trenutno traju</p>
           </div>
         </div>
 
@@ -227,14 +227,14 @@ export default function DashboardContent() {
             <div className="bg-white border border-border">
               <div className="px-6 py-4 border-b border-border flex items-center justify-between">
                 <h2 className="font-heading text-lg font-semibold text-text-primary">
-                  Live Offer Slots
+                  Aktivni Slotovi Ponuda
                 </h2>
                 {liveSlots.length > 0 && (
                   <Link
                     href="/merchant/offers"
                     className="text-sm font-medium text-primary hover:text-primary-hover flex items-center gap-1"
                   >
-                    View All <FiChevronRight className="w-4 h-4" />
+                    Pogledaj Sve <FiChevronRight className="w-4 h-4" />
                   </Link>
                 )}
               </div>
@@ -244,12 +244,12 @@ export default function DashboardContent() {
                     <div className="w-16 h-16 mx-auto rounded-full bg-bg-secondary flex items-center justify-center mb-4">
                       <FiUsers className="text-text-tertiary text-2xl" />
                     </div>
-                    <p className="text-text-tertiary font-medium mb-2">No live slots at the moment</p>
+                    <p className="text-text-tertiary font-medium mb-2">Trenutno nema aktivnih slotova</p>
                     <Link
                       href="/merchant/offers/create"
                       className="text-primary hover:text-primary-hover text-sm font-semibold inline-flex items-center gap-1"
                     >
-                      Create your first offer <FiChevronRight className="w-4 h-4" />
+                      Kreirajte svoju prvu ponudu <FiChevronRight className="w-4 h-4" />
                     </Link>
                   </div>
                 ) : (
@@ -270,22 +270,22 @@ export default function DashboardContent() {
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1 min-w-0">
                               <h3 className="font-semibold text-text-primary text-sm mb-1 group-hover:text-primary transition-colors">
-                                {offer?.title || 'Untitled Offer'}
+                                {offer?.title || 'Neimenovana Ponuda'}
                               </h3>
                               <p className="text-xs text-text-secondary truncate">
-                                {venue?.name || 'Unknown Venue'}
+                                {venue?.name || 'Nepoznata Lokacija'}
                               </p>
                               <div className="flex items-center gap-4 mt-2">
                                 {isLowStock && (
                                   <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-error/10 text-error text-xs font-medium rounded">
                                     <FiAlertCircle className="w-3 h-3" />
-                                    Low Stock
+                                    Niska Zaliha
                                   </span>
                                 )}
                                 {hoursUntilEnd <= 2 && (
                                   <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded">
                                     <FiClock className="w-3 h-3" />
-                                    Ending Soon
+                                    Završava Uskoro
                                   </span>
                                 )}
                               </div>
@@ -294,7 +294,7 @@ export default function DashboardContent() {
                               <div className="text-lg font-bold text-primary">
                                 {slot.qtyRemaining}
                               </div>
-                              <div className="text-xs text-text-secondary">of {slot.qtyTotal} left</div>
+                              <div className="text-xs text-text-secondary">od {slot.qtyTotal} preostalo</div>
                             </div>
                           </div>
                         </Link>
@@ -312,21 +312,21 @@ export default function DashboardContent() {
             <div className="bg-white border border-border">
               <div className="px-6 py-4 border-b border-border flex items-center justify-between">
                 <h2 className="font-heading text-lg font-semibold text-text-primary">
-                  Recent Activity
+                  Nedavna Aktivnost
                 </h2>
                 {recentClaims.length > 0 && (
                   <Link
                     href="/merchant/claims"
                     className="text-sm font-medium text-primary hover:text-primary-hover flex items-center gap-1"
                   >
-                    View All <FiChevronRight className="w-4 h-4" />
+                    Pogledaj Sve <FiChevronRight className="w-4 h-4" />
                   </Link>
                 )}
               </div>
               <div className="p-6">
                 {recentClaims.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-text-tertiary text-sm">No recent claims</p>
+                    <p className="text-text-tertiary text-sm">Nema nedavnih rezervacija</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -346,7 +346,7 @@ export default function DashboardContent() {
                           className="block border border-border p-3 hover:border-primary transition-all bg-white"
                         >
                           <p className="font-semibold text-sm text-text-primary line-clamp-1">
-                            {offer?.title || 'Unknown Offer'}
+                            {offer?.title || 'Nepoznata Ponuda'}
                           </p>
                           <div className="flex items-center justify-between mt-2">
                             <span
@@ -373,14 +373,14 @@ export default function DashboardContent() {
 
             {/* Quick Links */}
             <div className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 p-6">
-              <h3 className="font-semibold text-text-primary mb-4">Quick Actions</h3>
+              <h3 className="font-semibold text-text-primary mb-4">Brze Akcije</h3>
               <div className="space-y-2">
                 <Link
                   href="/merchant/analytics"
                   className="flex items-center justify-between p-3 bg-white border border-border hover:border-primary transition-colors group"
                 >
                   <span className="text-sm font-medium text-text-primary group-hover:text-primary">
-                    View Analytics
+                    Pogledaj Analitiku
                   </span>
                   <FiChevronRight className="text-text-tertiary group-hover:text-primary" />
                 </Link>
@@ -389,7 +389,7 @@ export default function DashboardContent() {
                   className="flex items-center justify-between p-3 bg-white border border-border hover:border-primary transition-colors group"
                 >
                   <span className="text-sm font-medium text-text-primary group-hover:text-primary">
-                    Customer Insights
+                    Uvid u Kupce
                   </span>
                   <FiChevronRight className="text-text-tertiary group-hover:text-primary" />
                 </Link>
@@ -398,7 +398,7 @@ export default function DashboardContent() {
                   className="flex items-center justify-between p-3 bg-white border border-border hover:border-primary transition-colors group"
                 >
                   <span className="text-sm font-medium text-text-primary group-hover:text-primary">
-                    Manage Venues
+                    Upravljaj Lokacijama
                   </span>
                   <FiChevronRight className="text-text-tertiary group-hover:text-primary" />
                 </Link>
@@ -407,7 +407,7 @@ export default function DashboardContent() {
                   className="flex items-center justify-between p-3 bg-white border border-border hover:border-primary transition-colors group"
                 >
                   <span className="text-sm font-medium text-text-primary group-hover:text-primary">
-                    All Claims
+                    Sve Rezervacije
                   </span>
                   <FiChevronRight className="text-text-tertiary group-hover:text-primary" />
                 </Link>

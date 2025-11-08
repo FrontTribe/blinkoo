@@ -43,7 +43,7 @@ export default function EditVenuePage() {
         })
 
         if (!response.ok) {
-          throw new Error('Failed to fetch venue')
+          throw new Error('Učitavanje lokacije nije uspjelo')
         }
 
         const data = await response.json()
@@ -66,7 +66,7 @@ export default function EditVenuePage() {
         })
       } catch (err) {
         console.error('Error fetching venue:', err)
-        setError('Failed to load venue data')
+        setError('Učitavanje podataka lokacije nije uspjelo')
       } finally {
         setFetching(false)
       }
@@ -205,7 +205,7 @@ export default function EditVenuePage() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to update venue')
+        throw new Error(data.error || 'Ažuriranje lokacije nije uspjelo')
       }
 
       // Force a hard refresh to show the updated venue
@@ -221,7 +221,7 @@ export default function EditVenuePage() {
   if (fetching) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-primary">Loading venue...</p>
+        <p className="text-text-primary">Učitavanje lokacije...</p>
       </div>
     )
   }
@@ -234,11 +234,11 @@ export default function EditVenuePage() {
           className="inline-flex items-center gap-2 text-text-secondary hover:text-primary mb-6 transition-colors"
         >
           <MdArrowBack />
-          Back to venues
+          Natrag na lokacije
         </Link>
 
         <div className="bg-white border border-border p-6">
-          <h1 className="font-heading text-2xl font-bold text-text-primary mb-6">Edit Venue</h1>
+          <h1 className="font-heading text-2xl font-bold text-text-primary mb-6">Uredi Lokaciju</h1>
 
           {error && (
             <div className="bg-white border border-red-200 p-4 mb-6">
@@ -249,7 +249,7 @@ export default function EditVenuePage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-2">
-                Venue Name *
+                Naziv Lokacije *
               </label>
               <div className="relative">
                 <MdLocationOn className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
@@ -265,12 +265,12 @@ export default function EditVenuePage() {
 
             <div className="relative">
               <label className="block text-sm font-medium text-text-secondary mb-2">
-                Search Location *
+                Pretraži Lokaciju *
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search for address..."
+                  placeholder="Pretražite adresu..."
                   value={formData.address}
                   onChange={(e) => {
                     setFormData({ ...formData, address: e.target.value })
@@ -303,7 +303,7 @@ export default function EditVenuePage() {
 
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">City</label>
+                <label className="block text-sm font-medium text-text-secondary mb-2">Grad</label>
                 <input
                   type="text"
                   value={formData.city}
@@ -313,7 +313,7 @@ export default function EditVenuePage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-2">
-                  Country
+                  Država
                 </label>
                 <input
                   type="text"
@@ -324,7 +324,7 @@ export default function EditVenuePage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-2">
-                  Postal Code
+                  Poštanski Broj
                 </label>
                 <input
                   type="text"
@@ -343,7 +343,7 @@ export default function EditVenuePage() {
             {formData.lat && formData.lng ? (
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-2">
-                  Location Preview
+                  Pregled Lokacije
                 </label>
                 <LocationMap
                   center={[parseFloat(formData.lng), parseFloat(formData.lat)]}
@@ -351,20 +351,20 @@ export default function EditVenuePage() {
                   onLoad={handleMapLoad}
                 />
                 <p className="mt-2 text-xs text-text-tertiary">
-                  📍 Coordinates: {formData.lat}, {formData.lng}
+                  📍 Koordinate: {formData.lat}, {formData.lng}
                 </p>
               </div>
             ) : (
               <div className="bg-bg-secondary border border-border p-12 text-center">
                 <p className="text-text-secondary">
-                  Search for an address above to see location on map
+                  Pretražite adresu gore da vidite lokaciju na karti
                 </p>
               </div>
             )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">Phone</label>
+                <label className="block text-sm font-medium text-text-secondary mb-2">Telefon</label>
                 <div className="relative">
                   <MdPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
                   <input
@@ -377,7 +377,7 @@ export default function EditVenuePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-2">Email</label>
+                <label className="block text-sm font-medium text-text-secondary mb-2">E-pošta</label>
                 <div className="relative">
                   <MdEmail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-tertiary" />
                   <input
@@ -408,9 +408,9 @@ export default function EditVenuePage() {
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                 className="w-full px-3 py-2 bg-white text-text-primary border border-border focus:outline-none focus:border-primary transition-colors"
               >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="closed">Closed</option>
+                <option value="active">Aktivno</option>
+                <option value="inactive">Neaktivno</option>
+                <option value="closed">Zatvoreno</option>
               </select>
             </div>
 
@@ -420,14 +420,14 @@ export default function EditVenuePage() {
                 onClick={() => router.back()}
                 className="px-6 py-2 bg-bg-secondary text-text-primary border border-border hover:bg-[#F7F7F7] transition-colors font-semibold"
               >
-                Cancel
+                Odustani
               </button>
               <button
                 type="submit"
                 disabled={loading}
                 className="px-6 py-2 bg-primary text-white hover:bg-primary-hover disabled:opacity-50 transition-colors font-semibold"
               >
-                {loading ? 'Saving...' : 'Save Changes'}
+                {loading ? 'Spremanje...' : 'Spremi Promjene'}
               </button>
             </div>
           </form>

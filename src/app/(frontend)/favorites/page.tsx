@@ -2,8 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { FiHeart, FiTrash2 } from 'react-icons/fi'
+import { FiHeart, FiTrash2, FiMapPin } from 'react-icons/fi'
 import toast from 'react-hot-toast'
+
+const FAVORITE_TYPE_LABELS: Record<string, string> = {
+  venue: 'Lokacija',
+  offer: 'Ponuda',
+}
+
+function formatCategory(category: any): string {
+  if (!category) return 'Nekategorizirano'
+  if (typeof category === 'string') return category
+  return category.name || 'Nekategorizirano'
+}
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<any[]>([])
@@ -32,7 +43,6 @@ export default function FavoritesPage() {
   }
 
   async function handleRemove(venueId: number) {
-    // Find offers for this venue
     const response = await fetch('/api/web/favorites', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -41,75 +51,107 @@ export default function FavoritesPage() {
     })
 
     if (response.ok) {
-      toast.success('Removed from favorites')
+      toast.success('Uklonjeno iz favorita')
       fetchFavorites()
     } else {
-      toast.error('Failed to remove favorite')
+      toast.error('Uklanjanje nije uspjelo')
     }
   }
 
   if (loading) {
     return (
       <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
-        <div className="text-text-primary">Loading...</div>
+        <div className="text-text-primary text-sm">Učitavanje favorita...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-bg-secondary">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-bg-secondary pb-20 md:pb-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12">
         <div className="mb-8">
-          <h1 className="font-heading text-3xl font-bold text-text-primary">My Favorites</h1>
-          <p className="mt-2 text-sm text-text-secondary">Your saved venues and offers</p>
+          <h1 className="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-2">
+            Moji favoriti
+          </h1>
+          <p className="text-sm md:text-base text-text-secondary">
+            Spremljene lokacije i ponude koje želite posjetiti kasnije.
+          </p>
         </div>
 
         {favorites.length === 0 ? (
-          <div className="bg-white border border-border p-12 text-center">
-            <FiHeart className="w-16 h-16 text-text-tertiary mx-auto mb-4" />
-            <p className="text-text-secondary mb-4 text-sm">
-              You haven&apos;t favorited any venues yet
+          <div className="bg-white border border-border rounded-xl p-12 text-center shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <FiHeart className="w-8 h-8 text-primary" />
+            </div>
+            <h2 className="text-lg font-semibold text-text-primary mb-2">
+              Još nema favorita
+            </h2>
+            <p className="text-text-secondary mb-6 text-sm">
+              Spremite ponude i lokacije koje volite kako bi im se lako vratili.
             </p>
             <Link
               href="/offers"
-              className="inline-block bg-text-primary text-white px-6 py-3 hover:bg-text-secondary transition-colors font-semibold text-sm"
+              className="inline-flex items-center justify-center bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-hover transition-colors font-semibold text-sm"
               style={{ color: 'white' }}
             >
-              Browse Offers
+              Pregledaj ponude
             </Link>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {favorites.map((favorite) => {
               const venue = favorite.venue
 
               if (!venue) return null
 
               return (
-                <div key={favorite.id} className="bg-white border border-border">
-                  <div className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-heading text-base font-semibold text-text-primary">
+                <div
+                  key={favorite.id}
+                  className="bg-white border border-border rounded-xl shadow-sm hover:shadow-lg transition-shadow"
+                >
+                  <div className="p-5 md:p-6">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      <div className="flex-1 space-y-2">
+                        <div className="flex items-center gap-3">
+                          <FiHeart className="text-primary" />
+                          <span className="text-xs font-semibold uppercase tracking-wide text-text-tertiary">
+                            {FAVORITE_TYPE_LABELS[favorite.type] || 'Favorit'}
+                          </span>
+                        </div>
+                        <h3 className="font-heading text-xl font-bold text-text-primary">
                           {venue.name}
                         </h3>
-                        <p className="text-xs text-text-secondary mt-1">{venue.address}</p>
-                        {venue.category && (
-                          <p className="text-xs text-text-tertiary mt-1 capitalize">
-                            {typeof venue.category === 'object' && venue.category.name
-                              ? venue.category.name
-                              : 'Uncategorized'}
-                          </p>
-                        )}
+                        <div className="flex items-center gap-2 text-sm text-text-secondary">
+                          <FiMapPin className="text-text-tertiary" />
+                          <span>{venue.address || 'Adresa nije navedena'}</span>
+                        </div>
+                        <p className="text-xs text-text-tertiary uppercase tracking-wide">
+                          {formatCategory(venue.category)}
+                        </p>
                       </div>
-                      <button
-                        onClick={() => handleRemove(venue.id)}
-                        className="text-error hover:text-error/80 transition-colors p-2"
-                        title="Remove from favorites"
-                      >
-                        <FiTrash2 className="w-5 h-5" />
-                      </button>
+
+                      <div className="flex items-center gap-3 self-start">
+                        <Link
+                          href={`/venues/${venue.id}`}
+                          className="px-4 py-2 text-sm font-semibold border border-border rounded-lg text-text-primary hover:border-primary transition-colors"
+                        >
+                          Detalji lokacije
+                        </Link>
+                        <button
+                          onClick={() => handleRemove(venue.id)}
+                          className="p-2 text-error hover:bg-error/10 rounded-lg transition-colors"
+                          title="Ukloni iz favorita"
+                        >
+                          <FiTrash2 className="w-5 h-5" />
+                        </button>
+                      </div>
                     </div>
+
+                    {favorite.notes && (
+                      <div className="mt-4 bg-bg-secondary border border-border rounded-lg p-3 text-xs text-text-secondary">
+                        Napomena: {favorite.notes}
+                      </div>
+                    )}
                   </div>
                 </div>
               )

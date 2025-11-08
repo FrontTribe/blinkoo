@@ -54,7 +54,7 @@ export default function ManageOffersPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-text-secondary text-sm">Loading offers...</p>
+        <p className="text-text-secondary text-sm">Učitavanje ponuda...</p>
       </div>
     )
   }
@@ -66,10 +66,10 @@ export default function ManageOffersPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-text-primary">
-              Manage Offers
+              Upravljaj Ponudama
             </h1>
             <p className="mt-2 text-sm md:text-base text-text-secondary">
-              Create and manage your off-peak offers
+              Kreirajte i upravljajte svojim ponudama
             </p>
           </div>
           <Link
@@ -78,7 +78,7 @@ export default function ManageOffersPage() {
             style={{ color: 'white' }}
           >
             <FiPlus className="w-5 h-5" />
-            Create Offer
+            Kreiraj Ponudu
           </Link>
         </div>
 
@@ -88,7 +88,7 @@ export default function ManageOffersPage() {
             <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
             <input
               type="text"
-              placeholder="Search offers by title, description, or venue..."
+              placeholder="Pretražite ponude po naslovu, opisu ili lokaciji..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary placeholder:text-text-tertiary focus:border-primary focus:outline-none"
@@ -103,12 +103,12 @@ export default function ManageOffersPage() {
               <FiPackage className="text-primary text-3xl" />
             </div>
             <h2 className="font-heading text-2xl font-bold text-text-primary mb-3">
-              {offers.length === 0 ? 'No offers yet' : `No results for "${searchQuery}"`}
+              {offers.length === 0 ? 'Još nema ponuda' : `Nema rezultata za "${searchQuery}"`}
             </h2>
             <p className="text-text-secondary mb-8 max-w-md mx-auto">
               {offers.length === 0
-                ? 'Create your first offer to start attracting customers during off-peak hours.'
-                : 'Try a different search term or clear the search to see all offers.'}
+                ? 'Kreirajte svoju prvu ponudu da počnete privlačiti kupce tijekom praznih sati.'
+                : 'Pokušajte s drugim pojmom za pretragu ili očistite pretragu da vidite sve ponude.'}
             </p>
             {offers.length === 0 ? (
               <Link
@@ -117,14 +117,14 @@ export default function ManageOffersPage() {
                 style={{ color: 'white' }}
               >
                 <FiPlus className="w-5 h-5" />
-                Create Your First Offer
+                Kreirajte Svoju Prvu Ponudu
               </Link>
             ) : (
               <button
                 onClick={() => setSearchQuery('')}
                 className="inline-flex items-center gap-2 bg-white text-text-secondary border border-border px-6 py-3 hover:border-primary font-semibold transition-colors"
               >
-                Clear Search
+                Očisti Pretragu
               </button>
             )}
           </div>
@@ -155,7 +155,7 @@ export default function ManageOffersPage() {
                             />
                           ) : (
                             <div className="w-full h-full bg-bg-secondary flex items-center justify-center">
-                              <span className="text-text-tertiary text-xs">No image</span>
+                              <span className="text-text-tertiary text-xs">Nema slike</span>
                             </div>
                           )}
                         </div>
@@ -169,7 +169,7 @@ export default function ManageOffersPage() {
                           {offerData.title}
                         </h3>
                         <p className="text-xs font-medium text-text-secondary">
-                          {venue?.name || 'Unknown Venue'}
+                          {venue?.name || 'Nepoznata Lokacija'}
                         </p>
                       </div>
                     </div>
@@ -187,10 +187,10 @@ export default function ManageOffersPage() {
                     {/* Offer Type Badge */}
                     <div>
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border bg-bg-secondary border-border">
-                        {offerData.type === 'percent' && `${offerData.discountValue}% OFF`}
-                        {offerData.type === 'fixed' && `€${offerData.discountValue} OFF`}
+                        {offerData.type === 'percent' && `${offerData.discountValue}% POPUSTA`}
+                        {offerData.type === 'fixed' && `€${offerData.discountValue} POPUSTA`}
                         {offerData.type === 'bogo' && 'BOGO'}
-                        {offerData.type === 'addon' && 'Free Add-on'}
+                        {offerData.type === 'addon' && 'Besplatno Dodatno'}
                       </span>
                     </div>
 
@@ -208,7 +208,7 @@ export default function ManageOffersPage() {
                             isActive ? 'bg-green-600' : 'bg-gray-400'
                           }`}
                         />
-                        {isActive ? 'Active' : 'Inactive'}
+                        {isActive ? 'Aktivno' : 'Neaktivno'}
                       </span>
                     </div>
                   </div>
@@ -219,12 +219,12 @@ export default function ManageOffersPage() {
                       href={`/merchant/offers/${offer.id}`}
                       className="text-sm font-semibold text-primary hover:text-primary-hover flex items-center gap-1"
                     >
-                      View Details <FiChevronRight className="w-4 h-4" />
+                      Pogledaj Detalje <FiChevronRight className="w-4 h-4" />
                     </Link>
                     <Link
                       href={`/merchant/offers/${offer.id}/edit`}
                       className="p-2 text-text-secondary hover:text-primary hover:bg-white rounded transition-colors"
-                      title="Edit offer"
+                      title="Uredi ponudu"
                     >
                       <FiEdit2 className="w-5 h-5" />
                     </Link>
@@ -243,12 +243,12 @@ export default function ManageOffersPage() {
                 <FiPackage className="text-blue-600 text-xl" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-blue-900 mb-2">Offer Management Tips</h3>
+                <h3 className="font-semibold text-blue-900 mb-2">Savjeti za Upravljanje Ponudama</h3>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Create multiple time slots for the same offer to maximize coverage</li>
-                  <li>• Monitor fill rates to optimize pricing and timing</li>
-                  <li>• Use drip mode to gradually release slots throughout the day</li>
-                  <li>• Adjust geofence settings to target the right customer radius</li>
+                  <li>• Kreirajte više vremenskih slotova za istu ponudu da maksimizirate pokrivenost</li>
+                  <li>• Pratite stope ispunjenosti da optimizirate cijene i vrijeme</li>
+                  <li>• Koristite drip način rada za postupno otpuštanje slotova tijekom dana</li>
+                  <li>• Prilagodite geofence postavke da ciljate pravi radijus kupaca</li>
                 </ul>
               </div>
             </div>
