@@ -13,9 +13,10 @@ type CurrentUser = {
  */
 export async function getCurrentUser(): Promise<CurrentUser> {
   try {
-    const cookieHeader = headers().get('cookie')
-    const host = headers().get('host')
-    const protocol = headers().get('x-forwarded-proto') ?? 'http'
+    const requestHeaders = await headers()
+    const cookieHeader = requestHeaders.get('cookie')
+    const host = requestHeaders.get('host')
+    const protocol = requestHeaders.get('x-forwarded-proto') ?? 'http'
 
     if (!cookieHeader || !host) {
       return null
