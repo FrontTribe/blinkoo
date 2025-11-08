@@ -9,6 +9,9 @@ import './styles.css'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ['latin'],
   variable: '--font-bricolage-grotesque',
