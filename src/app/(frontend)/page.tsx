@@ -493,40 +493,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Partners */}
-      <section className="py-12 bg-white border-b border-[#EBEBEB]">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center mb-10">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
-              Povjerenje Vodećih Lokalnih Poslovanja
-            </h2>
-            <div className="flex justify-center">
-              <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
-                Otkrijte ponude od provjerenih lokalnih trgovaca u vašoj okolini
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {[
-              'Brew & Bites Cafe',
-              'FitZone Studio',
-              'The Corner Restaurant',
-              'Spa Serenity',
-              'Cinema Club',
-              'Tech Hub Co-Work',
-            ].map((name, i) => (
-              <div
-                key={i}
-                className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 text-center hover:border-primary transition-colors"
-              >
-                <div className="text-sm font-semibold text-text-primary">{name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Newsletter Section */}
       <NewsletterSignup />
 

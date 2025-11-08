@@ -40,7 +40,7 @@ export function NewsletterSignup() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto"
+                className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto mt-6"
               >
                 <input
                   type="email"
