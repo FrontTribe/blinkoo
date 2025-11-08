@@ -4,6 +4,7 @@ import { ConditionalNavigation } from '@/components/ConditionalNavigation'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { ServiceWorkerRegister } from './service-worker-register'
 import { Toaster } from 'react-hot-toast'
+import { getCurrentUser } from '@/lib/getCurrentUser'
 import './styles.css'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -60,6 +61,7 @@ export const metadata = {
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
+  const currentUser = await getCurrentUser()
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -101,7 +103,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       <body>
         <ErrorBoundary>
           <ServiceWorkerRegister />
-          <ConditionalNavigation />
+          <ConditionalNavigation initialUser={currentUser} />
           <main className="pb-16 md:pb-0">{children}</main>
           <Toaster
             position="top-right"

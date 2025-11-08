@@ -1,16 +1,15 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import dynamic from 'next/dynamic'
+import NavigationClient from './NavigationClient'
 import { MobileBottomNav } from './mobile/MobileBottomNav'
 import { MobileStaffNav } from './mobile/MobileStaffNav'
 
-// Dynamically import Navigation only when needed (client-side)
-const DynamicNavigation = dynamic(() => import('./NavigationClient'), {
-  ssr: false,
-})
+type Props = {
+  initialUser?: any | null
+}
 
-export function ConditionalNavigation() {
+export function ConditionalNavigation({ initialUser }: Props) {
   const pathname = usePathname()
   const isAuthPage = pathname?.startsWith('/auth')
   const isMerchantPage = pathname?.startsWith('/merchant')
@@ -22,7 +21,7 @@ export function ConditionalNavigation() {
 
   return (
     <>
-      {!isAuthPage && <DynamicNavigation />}
+      {!isAuthPage && <NavigationClient initialUser={initialUser} />}
       {showCustomerBottomNav && <MobileBottomNav />}
       {showStaffBottomNav && <MobileStaffNav />}
     </>

@@ -22,9 +22,13 @@ import {
 } from 'react-icons/fi'
 import { NotificationBell } from '@/components/NotificationBell'
 
-export default function NavigationClient() {
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+type NavigationClientProps = {
+  initialUser?: any | null
+}
+
+export default function NavigationClient({ initialUser = null }: NavigationClientProps) {
+  const [user, setUser] = useState<any>(initialUser)
+  const [loading, setLoading] = useState(!initialUser)
   const [scrolled, setScrolled] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
@@ -55,32 +59,57 @@ export default function NavigationClient() {
   }
 
   useEffect(() => {
-    console.log('NavigationClient - fetching user')
-    // Fetch user on client side
-    fetch('/api/web/auth/me', { credentials: 'include' })
-      .then((res) => {
-        console.log('NavigationClient - response status:', res.status)
-        return res.ok ? res.json() : null
-      })
-      .then((data) => {
-        console.log('NavigationClient - user data:', data?.email)
-        if (data) {
+    let isMounted = true
+
+    async function hydrateUser() {
+      try {
+        const res = await fetch('/api/web/auth/me', { credentials: 'include' })
+        if (!res.ok) {
+          if (isMounted) {
+            setUser(null)
+            setLoading(false)
+          }
+          return
+        }
+
+        const data = await res.json()
+        if (isMounted && data) {
           setUser(data)
-          // Fetch saved count
+
           if (data.role === 'customer') {
-            fetch('/api/web/saved-offers', { credentials: 'include' })
-              .then((res) => res.ok && res.json())
-              .then((data) => setSavedCount(data?.savedOffers?.length || 0))
-              .catch(() => setSavedCount(0))
+            try {
+              const savedRes = await fetch('/api/web/saved-offers', { credentials: 'include' })
+              if (savedRes.ok) {
+                const savedData = await savedRes.json()
+                setSavedCount(savedData?.savedOffers?.length || 0)
+              } else {
+                setSavedCount(0)
+              }
+            } catch {
+              setSavedCount(0)
+            }
           }
         }
-        setLoading(false)
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('NavigationClient - fetch error:', err)
-        setLoading(false)
-      })
-  }, [])
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
+      }
+    }
+
+    // Fetch only if we don't have initial user or to refresh saved count
+    if (!initialUser) {
+      hydrateUser()
+    } else if (initialUser?.role === 'customer') {
+      hydrateUser()
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [initialUser])
 
   // Close user menu when clicking outside
   useEffect(() => {
