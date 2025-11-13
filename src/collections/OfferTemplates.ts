@@ -4,6 +4,7 @@ export const OfferTemplates: CollectionConfig = {
   slug: 'offer-templates',
   admin: {
     useAsTitle: 'name',
+    group: 'Content',
   },
   access: {
     read: ({ req: { user } }) => Boolean(user),

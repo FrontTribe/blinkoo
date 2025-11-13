@@ -4,6 +4,7 @@ export const Favorites: CollectionConfig = {
   slug: 'favorites',
   admin: {
     useAsTitle: 'id',
+    group: 'Customer Activity',
   },
   access: {
     read: ({ req: { user } }) => {

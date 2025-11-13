@@ -4,6 +4,7 @@ export const OfferSlots: CollectionConfig = {
   slug: 'offer-slots',
   admin: {
     useAsTitle: 'id',
+    group: 'Content',
   },
   access: {
     read: () => true,

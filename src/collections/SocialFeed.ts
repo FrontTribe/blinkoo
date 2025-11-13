@@ -4,6 +4,7 @@ export const SocialFeed: CollectionConfig = {
   slug: 'social-feed',
   admin: {
     useAsTitle: 'title',
+    group: 'Engagement',
   },
   access: {
     read: () => true,

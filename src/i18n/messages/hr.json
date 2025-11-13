@@ -135,6 +135,57 @@
       "clearAll": "Očisti Sve",
       "showResults": "Prikaži Rezultate",
       "showResultsWithCount": "Prikaži Rezultate ({count})"
+    },
+    "detail": {
+      "backToOffers": "Natrag na ponude",
+      "offerNotFound": "Ponuda nije pronađena",
+      "browseOffers": "Pregledaj ponude",
+      "aboutThisOffer": "O ovoj ponudi",
+      "noDescription": "Nema opisa",
+      "termsAndConditions": "Uvjeti i odredbe",
+      "whereYoullGo": "Gdje ćete ići",
+      "timeRemaining": "Preostalo vrijeme",
+      "available": "Dostupno",
+      "left": "preostalo",
+      "total": "Ukupno",
+      "kmAway": "km udaljeno",
+      "outsideGeofenceZone": "Izvan geofence zone",
+      "outsideGeofenceMessage": "Trenutno ste {distance} km udaljeni. Morate biti unutar {geofenceKm} km od ovog objekta da biste zatražili ovu ponudu.",
+      "specialOffer": "Posebna ponuda",
+      "free": "Besplatno",
+      "outsideGeofence": "Izvan geofence",
+      "outsideGeofenceShort": "Trenutno {distance} km udaljeno. Morate biti unutar {geofenceKm} km.",
+      "claimOffer": "🎉 Zatražite ovu ponudu",
+      "claimOfferOutside": "⚠️ Zatražite ponudu (izvan geofence)",
+      "claimWarning": "Upozorenje: Možda ste predaleko od objekta da biste zatražili",
+      "claimInfo": "Zatražite ovu ponudu da biste dobili jedinstveni QR kod. Pokažite ga u objektu unutar 7 minuta za iskorištavanje.",
+      "termsApply": "Primjenjuju se uvjeti i odredbe",
+      "ended": "Završeno",
+      "endsIn": "Završava za",
+      "day": "dan",
+      "days": "dana",
+      "reviews": {
+        "customerReviews": "Recenzije kupaca",
+        "outOf5": "od 5",
+        "review": "recenzija",
+        "reviews": "recenzija",
+        "noReviewsYet": "Još nema recenzija - budite prvi!",
+        "writeReview": "Napišite recenziju",
+        "shareExperience": "Podijelite svoje iskustvo",
+        "rating": "Ocjena",
+        "comment": "Komentar (opcionalno)",
+        "shareExperiencePlaceholder": "Podijelite svoje iskustvo...",
+        "addPhotos": "Dodajte fotografije (opcionalno)",
+        "submitting": "Slanje...",
+        "submitReview": "Pošaljite recenziju",
+        "cancel": "Odustani",
+        "noReviewsMessage": "Još nema recenzija. Budite prvi koji će recenzirati!",
+        "anonymous": "Anonimno",
+        "loadingReviews": "Učitavanje recenzija...",
+        "pleaseSelectRating": "Molimo odaberite ocjenu",
+        "reviewSubmitted": "Recenzija je poslana!",
+        "failedToSubmit": "Neuspješno slanje recenzije"
+      }
     }
   },
   "home": {
@@ -307,57 +358,451 @@
     "contact": "Kontakt",
     "copyright": "© {year} Blinkoo. Sva prava pridržana."
   },
-  "offers": {
-    "detail": {
-      "backToOffers": "Natrag na ponude",
-      "offerNotFound": "Ponuda nije pronađena",
-      "browseOffers": "Pregledaj ponude",
-      "aboutThisOffer": "O ovoj ponudi",
-      "noDescription": "Nema opisa",
-      "termsAndConditions": "Uvjeti i odredbe",
-      "whereYoullGo": "Gdje ćete ići",
-      "timeRemaining": "Preostalo vrijeme",
-      "available": "Dostupno",
-      "left": "preostalo",
-      "total": "Ukupno",
-      "kmAway": "km udaljeno",
-      "outsideGeofenceZone": "Izvan geofence zone",
-      "outsideGeofenceMessage": "Trenutno ste {distance} km udaljeni. Morate biti unutar {geofenceKm} km od ovog objekta da biste zatražili ovu ponudu.",
-      "specialOffer": "Posebna ponuda",
-      "free": "Besplatno",
-      "outsideGeofence": "Izvan geofence",
-      "outsideGeofenceShort": "Trenutno {distance} km udaljeno. Morate biti unutar {geofenceKm} km.",
-      "claimOffer": "🎉 Zatražite ovu ponudu",
-      "claimOfferOutside": "⚠️ Zatražite ponudu (izvan geofence)",
-      "claimWarning": "Upozorenje: Možda ste predaleko od objekta da biste zatražili",
-      "claimInfo": "Zatražite ovu ponudu da biste dobili jedinstveni QR kod. Pokažite ga u objektu unutar 7 minuta za iskorištavanje.",
-      "termsApply": "Primjenjuju se uvjeti i odredbe",
-      "ended": "Završeno",
-      "endsIn": "Završava za",
-      "day": "dan",
-      "days": "dana",
-      "reviews": {
-        "customerReviews": "Recenzije kupaca",
-        "outOf5": "od 5",
-        "review": "recenzija",
-        "reviews": "recenzija",
-        "noReviewsYet": "Još nema recenzija - budite prvi!",
-        "writeReview": "Napišite recenziju",
-        "shareExperience": "Podijelite svoje iskustvo",
-        "rating": "Ocjena",
-        "comment": "Komentar (opcionalno)",
-        "shareExperiencePlaceholder": "Podijelite svoje iskustvo...",
-        "addPhotos": "Dodajte fotografije (opcionalno)",
-        "submitting": "Slanje...",
-        "submitReview": "Pošaljite recenziju",
-        "cancel": "Odustani",
-        "noReviewsMessage": "Još nema recenzija. Budite prvi koji će recenzirati!",
-        "anonymous": "Anonimno",
-        "loadingReviews": "Učitavanje recenzija...",
-        "pleaseSelectRating": "Molimo odaberite ocjenu",
-        "reviewSubmitted": "Recenzija je poslana!",
-        "failedToSubmit": "Neuspješno slanje recenzije"
+  "merchant": {
+    "dashboard": {
+      "loading": "Učitavanje...",
+      "loginRequired": "Potrebna Prijava",
+      "loginRequiredMessage": "Molimo prijavite se za pristup trgovačkom nadzornom panelu",
+      "login": "Prijava",
+      "title": "Nadzorni Panel",
+      "welcome": "Dobrodošli natrag, {name}! Evo što se danas događa.",
+      "merchant": "Trgovac",
+      "createOffer": "+ Kreiraj Ponudu",
+      "lowStockWarning": "Upozorenje o Niskoj Zalihi",
+      "lowStockMessage": "{count, plural, =1 {# aktivna ponuda ima} other {# aktivne ponude imaju}} manje od 10 preostalih mjesta",
+      "endingSoon": "Završava Uskoro",
+      "endingSoonMessage": "{count, plural, =1 {# ponuda završava} other {# ponude završavaju}} za manje od 2 sata",
+      "viewOffers": "Pogledaj Ponude →",
+      "metrics": {
+        "totalOffers": "Ukupno Ponuda",
+        "activeNow": "aktivno sada",
+        "todayReservations": "Današnje Rezervacije",
+        "redeemed": "iskorišteno",
+        "fillRate": "Stopa Ispunjenosti",
+        "ofCapacity": "kapaciteta",
+        "activeSlots": "Aktivni Slotovi",
+        "activeOffersCurrentlyRunning": "Aktivne ponude koje trenutno traju"
+      },
+      "liveSlots": {
+        "title": "Aktivni Slotovi Ponuda",
+        "viewAll": "Pogledaj Sve",
+        "noActiveSlots": "Trenutno nema aktivnih slotova",
+        "createFirstOffer": "Kreirajte svoju prvu ponudu",
+        "unnamedOffer": "Neimenovana Ponuda",
+        "unknownLocation": "Nepoznata Lokacija",
+        "lowStock": "Niska Zaliha",
+        "endingSoon": "Završava Uskoro",
+        "remaining": "preostalo",
+        "of": "od"
+      },
+      "recentActivity": {
+        "title": "Nedavna Aktivnost",
+        "viewAll": "Pogledaj Sve",
+        "noRecentReservations": "Nema nedavnih rezervacija",
+        "unknownOffer": "Nepoznata Ponuda"
+      },
+      "quickLinks": {
+        "title": "Brze Akcije",
+        "viewAnalytics": "Pogledaj Analitiku",
+        "customerInsights": "Uvid u Kupce",
+        "manageVenues": "Upravljaj Lokacijama",
+        "allReservations": "Sve Rezervacije"
       }
+  },
+  "offers": {
+      "loading": "Učitavanje ponuda...",
+      "title": "Upravljaj Ponudama",
+      "subtitle": "Kreirajte i upravljajte svojim ponudama",
+      "createOffer": "Kreiraj Ponudu",
+      "searchPlaceholder": "Pretražite ponude po naslovu, opisu ili lokaciji...",
+      "emptyState": {
+        "title": "Još nema ponuda",
+        "noResults": "Nema rezultata za \"{query}\"",
+        "description": "Kreirajte svoju prvu ponudu da počnete privlačiti kupce tijekom praznih sati.",
+        "noResultsDescription": "Pokušajte s drugim pojmom za pretragu ili očistite pretragu da vidite sve ponude.",
+        "createFirstOffer": "Kreirajte Svoju Prvu Ponudu",
+        "clearSearch": "Očisti Pretragu"
+      },
+      "card": {
+        "noImage": "Nema slike",
+        "unknownLocation": "Nepoznata Lokacija",
+        "percentDiscount": "{value}% POPUSTA",
+        "fixedDiscount": "€{value} POPUSTA",
+        "bogo": "BOGO",
+        "freeAddon": "Besplatno Dodatno",
+        "active": "Aktivno",
+        "inactive": "Neaktivno",
+        "viewDetails": "Pogledaj Detalje",
+        "editOffer": "Uredi ponudu"
+      },
+      "tips": {
+        "title": "Savjeti za Upravljanje Ponudama",
+        "tip1": "• Kreirajte više vremenskih slotova za istu ponudu da maksimizirate pokrivenost",
+        "tip2": "• Pratite stope ispunjenosti da optimizirate cijene i vrijeme",
+        "tip3": "• Koristite drip način rada za postupno otpuštanje slotova tijekom dana",
+        "tip4": "• Prilagodite geofence postavke da ciljate pravi radijus kupaca"
+      },
+      "form": {
+        "backToOffers": "Natrag na Ponude",
+        "createTitle": "Kreiraj Novu Ponudu",
+        "editTitle": "Uredi Ponudu",
+        "createSubtitle": "Ispunite detalje u nastavku da kreirate novu ponudu",
+        "editSubtitle": "Ažurirajte detalje i postavke svoje ponude",
+        "basicInfo": "Osnovne Informacije",
+        "title": "Naslov Ponude",
+        "titlePlaceholder": "npr., Happy Hour Special",
+        "description": "Opis",
+        "descriptionPlaceholder": "Opišite što čini ovu ponudu posebnom...",
+        "terms": "Uvjeti i Odredbe",
+        "termsPlaceholder": "Uvjeti, ograničenja ili posebni uvjeti...",
+        "photo": "Slika Ponude",
+        "venue": "Lokacija",
+        "offerDetails": "Detalji Ponude",
+        "offerType": "Vrsta Ponude",
+        "offerTypePercent": "Postotak Popusta",
+        "offerTypeFixed": "Fiksni Iznos Popusta",
+        "offerTypeBogo": "Kupi Jedan Dobij Jedan",
+        "offerTypeAddon": "Besplatno Dodatno",
+        "discountValue": "Vrijednost Popusta",
+        "discountValuePercentHelp": "Postotak (npr., 20 za 20%)",
+        "discountValueFixedHelp": "Iznos u eurima",
+        "initialTimeSlot": "Početni Vremenski Slot",
+        "initialTimeSlotDescription": "Definirajte prvi dostupan vremenski slot. Možete dodati više slotova kasnije sa stranice detalja ponude.",
+        "startDateTime": "Datum i Vrijeme Početka",
+        "endDateTime": "Datum i Vrijeme Završetka",
+        "totalQuantity": "Ukupna Količina",
+        "releaseMode": "Način Otpuštanja",
+        "releaseModeFlash": "Flash (sve odjednom)",
+        "releaseModeDrip": "Drip (postupno otpuštanje)",
+        "dripEveryMinutes": "Drip Svakih (minuta)",
+        "dripQuantity": "Drip Količina",
+        "advancedSettings": "Napredne Postavke",
+        "perUserLimit": "Limit po Korisniku",
+        "perUserLimitTooltip": "Maksimalan broj ponuda koje jedan korisnik može rezervirati za ovu ponudu. Ostavite prazno ili 0 za neograničeno.",
+        "cooldownMinutes": "Cooldown (minuta)",
+        "cooldownMinutesTooltip": "Vrijeme u minutama koje korisnik mora pričekati između rezervacija iste ponude. Sprječava prebrzo višestruko rezerviranje.",
+        "geofenceKm": "Geofence (km)",
+        "geofenceKmTooltip": "Maksimalna udaljenost u kilometrima od lokacije na kojoj korisnici mogu vidjeti i rezervirati ovu ponudu. 0 znači da nema geografskog ograničenja.",
+        "uploading": "Učitavanje...",
+        "photoUploadSuccess": "Slika je učitana!",
+        "photoUploadError": "Učitavanje slike nije uspjelo",
+        "cancel": "Odustani",
+        "create": "Kreiraj Ponudu",
+        "save": "Spremi Promjene",
+        "creating": "Kreiranje...",
+        "saving": "Spremanje...",
+        "createSuccess": "Ponuda je uspješno kreirana!",
+        "saveSuccess": "Ponuda je uspješno ažurirana!"
+      }
+    },
+    "claims": {
+      "loading": "Učitavanje rezervacija...",
+      "title": "Upravljanje Rezervacijama",
+      "subtitle": "Pregledajte i upravljajte svim rezervacijama kupaca za vaše ponude",
+      "export": "Izvezi",
+      "backToDashboard": "← Nadzorni Panel",
+      "summary": {
+        "totalClaims": "Ukupno Rezervacija",
+        "reserved": "Rezervirano",
+        "redeemed": "Iskorišteno",
+        "expired": "Isteklo"
+      },
+      "overview": {
+        "title": "Pregled Rezervacija"
+      },
+      "filters": {
+        "title": "Filteri",
+        "search": "Pretraži",
+        "searchPlaceholder": "Ponuda, kupac...",
+        "status": "Status",
+        "allStatuses": "Svi Statusi",
+        "startDate": "Početni Datum",
+        "endDate": "Završni Datum"
+      },
+      "bulkActions": {
+        "selected": "{count} rezervacij{count, plural, =1 {a} other {a}} odabrano",
+        "markRedeemed": "Označi Iskorišteno",
+        "markExpired": "Označi Isteklo",
+        "clearSelection": "Očisti Odabir"
+      },
+      "table": {
+        "title": "Sve Rezervacije ({count})",
+        "claimId": "ID Rezervacije",
+        "offer": "Ponuda",
+        "customer": "Kupac",
+        "reserved": "Rezervirano",
+        "status": "Status",
+        "actions": "Akcije",
+        "noClaimsFound": "Nema pronađenih rezervacija",
+        "tryAdjustingFilters": "Pokušajte prilagoditi filtere",
+        "redeem": "Iskoristi",
+        "expire": "Istekni",
+        "qrCode": "QR Kod"
+      },
+      "qrModal": {
+        "title": "QR Kod - Rezervacija #{id}",
+        "description": "Skenirajte ovaj QR kod za provjeru i iskorištenje ove rezervacije",
+        "viewDetails": "Pogledaj Detalje"
+      },
+      "toast": {
+        "statusUpdated": "Status rezervacije ažuriran",
+        "statusUpdateFailed": "Ažuriranje statusa rezervacije nije uspjelo",
+        "noClaimsSelected": "Nema odabranih rezervacija",
+        "bulkUpdateSuccess": "Uspješno ažurirano {count} rezervacija",
+        "bulkUpdateFailed": "Masovna akcija nije uspjela"
+      }
+    },
+    "settings": {
+      "loading": "Učitavanje postavki...",
+      "title": "Postavke",
+      "subtitle": "Upravljajte svojim računom i podacima o poslovanju",
+      "backToDashboard": "Natrag na nadzornu ploču",
+      "tabs": {
+        "profile": "Poslovni profil",
+        "account": "Postavke računa",
+        "notifications": "Obavijesti"
+      },
+      "profile": {
+        "title": "Poslovni profil",
+        "subtitle": "Ažurirajte informacije o poslovanju koje će kupci vidjeti",
+        "businessName": "Naziv poslovanja *",
+        "businessNamePlaceholder": "Naziv vašeg poslovanja",
+        "businessDescription": "Opis poslovanja",
+        "businessDescriptionPlaceholder": "Recite kupcima nešto o svom poslu...",
+        "save": "Spremi promjene",
+        "saving": "Spremanje...",
+        "success": "Profil je uspješno ažuriran",
+        "error": "Ažuriranje profila nije uspjelo"
+      },
+      "account": {
+        "title": "Podaci o računu",
+        "subtitle": "Ažurirajte osobne podatke o računu",
+        "fullName": "Ime i prezime",
+        "email": "E-mail adresa",
+        "phone": "Broj telefona",
+        "save": "Spremi promjene",
+        "saving": "Spremanje...",
+        "success": "Račun je uspješno ažuriran",
+        "error": "Ažuriranje računa nije uspjelo",
+        "changePassword": {
+          "title": "Promijeni lozinku",
+          "subtitle": "Ažurirajte lozinku kako biste zadržali sigurnost računa",
+          "currentPassword": "Trenutna lozinka",
+          "newPassword": "Nova lozinka",
+          "confirmPassword": "Potvrdi novu lozinku",
+          "button": "Promijeni lozinku",
+          "success": "Lozinka je uspješno promijenjena",
+          "error": "Promjena lozinke nije uspjela",
+          "fieldsRequired": "Molimo ispunite sva polja za lozinku",
+          "passwordsDontMatch": "Nove lozinke se ne podudaraju",
+          "passwordTooShort": "Lozinka mora imati najmanje 8 znakova"
+        }
+      },
+      "notifications": {
+        "title": "Postavke obavijesti",
+        "subtitle": "Kontrolirajte kako primate obavijesti o svom poslovanju",
+        "inApp": {
+          "title": "Obavijesti u aplikaciji",
+          "description": "Primajte obavijesti unutar aplikacije"
+        },
+        "email": {
+          "title": "E-mail obavijesti",
+          "description": "Primajte obavijesti putem e-pošte"
+        },
+        "push": {
+          "title": "Push obavijesti",
+          "description": "Primajte push obavijesti na svoj uređaj"
+        },
+        "save": "Spremi postavke",
+        "saving": "Spremanje...",
+        "success": "Postavke obavijesti su ažurirane",
+        "error": "Ažuriranje postavki nije uspjelo"
+      },
+      "error": {
+        "loadingFailed": "Učitavanje postavki nije uspjelo"
+      }
+    },
+    "venues": {
+      "loading": "Učitavanje lokacija...",
+      "title": "Upravljaj Lokacijama",
+      "subtitle": "Dodajte i upravljajte svojim lokacijama gdje će ponude biti dostupne",
+      "addVenue": "Dodaj Lokaciju",
+      "emptyState": {
+        "title": "Još nema lokacija",
+        "description": "Dodajte svoju prvu lokaciju da počnete stvarati ponude bazirane na lokaciji",
+        "addFirstVenue": "Dodajte Svoju Prvu Lokaciju"
+      },
+      "card": {
+        "viewDetails": "Pogledaj Detalje",
+        "editVenue": "Uredi lokaciju",
+        "deleteVenue": "Obriši lokaciju",
+        "viewAnalytics": "Pogledaj Analitiku",
+        "unknownAddress": "Nepoznata Adresa"
+      },
+      "deleteConfirm": "Jeste li sigurni da želite obrisati ovu lokaciju?",
+      "deleteError": "Brisanje lokacije nije uspjelo. Molimo pokušajte ponovno.",
+      "active": "Aktivno",
+      "inactive": "Neaktivno",
+      "viewOnMap": "Pogledaj na Karti",
+      "manage": "Upravljaj",
+      "tips": {
+        "title": "Savjeti za Upravljanje Lokacijama",
+        "tip1": "• Svaka lokacija može imati više ponuda u različitim vremenima",
+        "tip2": "• Postavite točne koordinate lokacije za bolje pronalaženje kupaca",
+        "tip3": "• Redovito provjeravajte analitiku lokacije da optimizirate svoje ponude",
+        "tip4": "• Održavajte informacije o lokaciji ažurnima"
+      }
+    },
+    "analytics": {
+      "loading": "Učitavanje analitike...",
+      "title": "Analitika i uvidi",
+      "subtitle": "Pratite svoje performanse i optimizirajte svoje ponude",
+      "backToDashboard": "← Natrag na nadzornu ploču",
+      "export": "Izvezi",
+      "dateRange": {
+        "startDate": "Početni Datum",
+        "endDate": "Završni Datum",
+        "apply": "Primijeni"
+      },
+      "metrics": {
+        "totalOffers": "Ukupno Ponuda",
+        "totalClaims": "Ukupno Rezervacija",
+        "redeemed": "Iskorišteno",
+        "expired": "Isteklo",
+        "reserved": "Rezervirano",
+        "totalRevenue": "Ukupni Prihod",
+        "redemptionRate": "Stopa Iskorištenja",
+        "fillRate": "Stopa Ispunjenosti",
+        "avgTimeToRedemption": "Prosječno Vrijeme do Iskorištenja",
+        "repeatCustomerRate": "Stopa Ponavljajućih Kupaca",
+        "uplift": "Povećanje Prometa"
+      },
+      "badges": {
+        "topPerformer": "Najbolji rezultat",
+        "highConversion": "Visoka konverzija",
+        "needsImprovement": "Potrebno poboljšanje"
+      }
+    },
+    "customers": {
+      "loading": "Učitavanje kupaca...",
+      "title": "Uvid u Kupce",
+      "subtitle": "Razumijte svoje kupce i potaknite zadržavanje",
+      "backToDashboard": "← Natrag na nadzornu ploču",
+      "summary": {
+        "new": "Novi Kupci",
+        "regular": "Redoviti Kupci",
+        "vip": "VIP Kupci",
+        "dormant": "Neaktivni Kupci"
+      },
+      "filters": {
+        "title": "Filter po Segmentu",
+        "all": "Svi",
+        "new": "Novi",
+        "regular": "Redoviti",
+        "vip": "VIP",
+        "dormant": "Neaktivni"
+      },
+      "emptyState": {
+        "title": "Nema pronađenih kupaca",
+        "description": "Kupci će se pojaviti ovdje kako stupaju u interakciju s vašim ponudama"
+      }
+    },
+    "staff": {
+      "loading": "Učitavanje osoblja...",
+      "title": "Upravljanje Osobljem",
+      "subtitle": "Upravljajte članovima osoblja i njihovim dodijeljenim lokacijama",
+      "backToDashboard": "Natrag na nadzornu ploču",
+      "addStaff": "Dodaj člana osoblja",
+      "emptyState": {
+        "title": "Još nema članova osoblja",
+        "description": "Dodajte članove osoblja kako bi pomogli upravljati lokacijama i obrađivati realizacije.",
+        "addFirstStaff": "Dodajte Svoj Prvi Član Osoblja"
+      },
+      "table": {
+        "name": "Ime",
+        "email": "E-mail",
+        "phone": "Telefon",
+        "venues": "Dodijeljene Lokacije",
+        "actions": "Akcije",
+        "noVenues": "Nema dodijeljenih lokacija",
+        "unknown": "Nepoznato"
+      },
+      "toast": {
+        "loadFailed": "Učitavanje podataka nije uspjelo",
+        "deleteConfirm": "Jeste li sigurni da želite ukloniti ovog člana osoblja?",
+        "deleteSuccess": "Član osoblja je uklonjen",
+        "deleteFailed": "Uklanjanje člana osoblja nije uspjelo"
+      },
+      "noPhone": "Nema telefona",
+      "allStaff": "Svi članovi osoblja",
+      "tips": {
+        "title": "Savjeti za upravljanje osobljem",
+        "tip1": "• Članovi osoblja mogu pristupiti sučelju za iskorištavanje kako bi obrađivali zahtjeve",
+        "tip2": "• Dodijelite osoblje određenim lokacijama radi boljeg upravljanja",
+        "tip3": "• Osoblje može pristupiti samo značajkama za svoje dodijeljene lokacije",
+        "tip4": "• Redovito pregledavajte i ažurirajte dodjele članova osoblja prema potrebi"
+      }
+    },
+    "notifications": {
+      "loading": "Učitavanje obavijesti...",
+      "title": "Obavijesti",
+      "subtitle": "Pregledajte i upravljajte obavijestima o računu",
+      "backToDashboard": "Natrag na nadzornu ploču",
+      "filters": {
+        "all": "Sve",
+        "unread": "Nepročitane"
+      },
+      "markAsRead": "Označi kao pročitano",
+      "markAllAsRead": "Označi sve kao pročitano",
+      "emptyState": {
+        "title": "Nema obavijesti",
+        "description": "Sve ste ažurirali! Nove obavijesti će se pojaviti ovdje."
+      },
+      "toast": {
+        "markedAsRead": "Označeno kao pročitano",
+        "markAsReadFailed": "Označavanje kao pročitano nije uspjelo",
+        "allMarkedAsRead": "Sve obavijesti su označene kao pročitane",
+        "markAllFailed": "Označavanje svih kao pročitano nije uspjelo"
+      }
+    }
+  },
+  "staffRedeem": {
+    "loading": "Učitavanje...",
+    "title": "Realizacija za Osoblje",
+    "subtitle": "Provjerite i realizirajte zahtjeve kupaca",
+    "backToDashboard": "Natrag na nadzornu ploču",
+    "scanQRCode": "Skeniraj QR Kod",
+    "enterCodeManually": "Ili Unesite Kod Ručno",
+    "enterCode": "UNESITE KOD",
+    "codeHint": "Kupac može pokazati QR kod ili unijeti kod ručno",
+    "redeemClaim": "Realiziraj Zahtjev",
+    "processing": "Obrađivanje...",
+    "howItWorks": "Kako funkcionira:",
+    "howItWorksDescription": "Kupci će vam pokazati svoj QR kod ili 6-znamenkasti kod. Unesite kod iznad kako biste provjerili i realizirali njihov zahtjev. Provjerite da je kupac prisutan u vašoj lokaciji prije realizacije.",
+    "quickAccess": "Brzi Pristup",
+    "scanRedeem": "Skeniraj i Realiziraj",
+    "handsFree": "Bez Dodira",
+    "secure": "Sigurno",
+    "verified": "Provjereno",
+    "messages": {
+      "success": "Zahtjev je uspješno realiziran!",
+      "failed": "Realizacija zahtjeva nije uspjela",
+      "failedDefault": "Realizacija zahtjeva nije uspjela"
+    },
+    "voiceInput": {
+      "listening": "Slušanje...",
+      "heard": "Čujem:",
+      "instructions": "Govorite kod jasno (slova i brojevi)",
+      "useVoiceInput": "Koristite Glasovni Unos",
+      "cancel": "Otkaži glasovni unos",
+      "error": "Greška u glasovnom unosu. Molimo pokušajte ponovno ili unesite kod ručno."
+    },
+    "qrScanner": {
+      "title": "Skeniraj QR Kod",
+      "startCamera": "Pokreni Kameru",
+      "failedToStart": "Pokretanje kamere nije uspjelo",
+      "instructions": "Postavite QR kod unutar okvira za skeniranje",
+      "helpText": "Usmjerite kameru na QR kod kupca"
     }
   }
 }

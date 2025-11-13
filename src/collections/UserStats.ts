@@ -4,6 +4,7 @@ export const UserStats: CollectionConfig = {
   slug: 'user-stats',
   admin: {
     useAsTitle: 'id',
+    group: 'Analytics',
   },
   access: {
     read: ({ req: { user } }) => {

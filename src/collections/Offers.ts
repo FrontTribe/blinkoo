@@ -4,6 +4,7 @@ export const Offers: CollectionConfig = {
   slug: 'offers',
   admin: {
     useAsTitle: 'title',
+    group: 'Content',
   },
   access: {
     read: () => true,
@@ -38,16 +39,19 @@ export const Offers: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Title',
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Description',
+      localized: true,
     },
     {
       name: 'terms',
       type: 'textarea',
       label: 'Terms & Conditions',
+      localized: true,
     },
     {
       name: 'type',
@@ -167,6 +171,11 @@ export const Offers: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, data, operation }) => {
+        // Log locale context for debugging
+        console.log('BeforeChange - Operation:', operation)
+        console.log('BeforeChange - Locale:', req.locale)
+        console.log('BeforeChange - Data keys:', Object.keys(data))
+
         if (operation === 'create' && data.venue) {
           // Fetch the venue to get its category
           // data.venue can be a number, string, or object with id property
@@ -187,9 +196,11 @@ export const Offers: CollectionConfig = {
           const numericId = typeof venueId === 'string' ? parseInt(venueId, 10) : venueId
           console.log('BeforeChange - numericId:', numericId, 'type:', typeof numericId)
 
+          // Fetch venue with locale context
           const venue = await req.payload.findByID({
             collection: 'venues',
             id: numericId,
+            locale: req.locale || 'hr', // Use request locale or fallback to default
           })
           console.log('BeforeChange - venue found:', venue.id, venue.name)
 

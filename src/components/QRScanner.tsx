@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Html5Qrcode } from 'html5-qrcode'
 import { FiCamera, FiX } from 'react-icons/fi'
 
@@ -10,6 +11,7 @@ type QRScannerProps = {
 }
 
 export function QRScanner({ onScan, onClose }: QRScannerProps) {
+  const t = useTranslations('staffRedeem.qrScanner')
   const [scanning, setScanning] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const scannerRef = useRef<Html5Qrcode | null>(null)
@@ -38,7 +40,7 @@ export function QRScanner({ onScan, onClose }: QRScannerProps) {
       )
       .catch((err) => {
         console.error('Error starting scanner:', err)
-        setError('Failed to start camera')
+        setError(t('failedToStart'))
         setScanning(false)
       })
 
@@ -70,7 +72,7 @@ export function QRScanner({ onScan, onClose }: QRScannerProps) {
     <div className="fixed inset-0 bg-black/90 z-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-black/50">
-        <h2 className="text-white font-semibold text-lg">Scan QR Code</h2>
+        <h2 className="text-white font-semibold text-lg">{t('title')}</h2>
         <button
           onClick={() => {
             stopScanning()
@@ -92,10 +94,10 @@ export function QRScanner({ onScan, onClose }: QRScannerProps) {
               style={{ color: 'white' }}
             >
               <FiCamera className="w-6 h-6" />
-              Start Camera
+              {t('startCamera')}
             </button>
             {error && <p className="text-white mb-4">{error}</p>}
-            <p className="text-white/70 text-sm">Position the QR code within the frame to scan</p>
+            <p className="text-white/70 text-sm">{t('instructions')}</p>
           </div>
         ) : (
           <div className="relative w-full max-w-md">
@@ -107,7 +109,7 @@ export function QRScanner({ onScan, onClose }: QRScannerProps) {
 
       {/* Instructions */}
       <div className="p-4 bg-black/50 text-center">
-        <p className="text-white/70 text-sm">Point your camera at the customer&apos;s QR code</p>
+        <p className="text-white/70 text-sm">{t('helpText')}</p>
       </div>
     </div>
   )

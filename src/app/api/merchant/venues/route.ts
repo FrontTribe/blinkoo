@@ -25,10 +25,14 @@ export async function GET(request: Request) {
   }
 
   try {
+    // Get locale from query params, default to 'hr'
+    const { searchParams } = new URL(request.url)
+    const locale = (searchParams.get('locale') || 'hr') as 'hr' | 'en'
 
     // Get merchant's venues with category data
     const venues = await payload.find({
       collection: 'venues',
+      locale,
       where: {
         merchant: { equals: merchant.id },
       },
@@ -71,6 +75,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
 
+    // Get locale from request body or query params, default to 'hr'
+    const { searchParams } = new URL(request.url)
+    const locale = (body.locale || searchParams.get('locale') || 'hr') as 'hr' | 'en'
+
     // Validate category exists
     let categoryId = body.category
     if (!categoryId) {
@@ -81,6 +89,7 @@ export async function POST(request: Request) {
       const category = await payload.findByID({
         collection: 'categories',
         id: categoryId,
+        locale,
       })
       categoryId = category.id
     } catch (error) {
@@ -91,6 +100,7 @@ export async function POST(request: Request) {
     // Create venue
     const venue = await payload.create({
       collection: 'venues',
+      locale,
       data: {
         merchant: merchant.id,
         name: body.name,

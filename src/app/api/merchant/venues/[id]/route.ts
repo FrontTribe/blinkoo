@@ -63,6 +63,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   try {
     const body = await request.json()
 
+    // Get locale from request body or query params, default to 'hr'
+    const { searchParams } = new URL(request.url)
+    const locale = (body.locale || searchParams.get('locale') || 'hr') as 'hr' | 'en'
+
     // Get merchant for this user
     const merchants = await payload.find({
       collection: 'merchants',
@@ -82,6 +86,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const venue = await payload.findByID({
       collection: 'venues',
       id,
+      locale,
     })
 
     const venueMerchantId = typeof venue.merchant === 'object' ? venue.merchant.id : venue.merchant
@@ -90,12 +95,14 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
-    // Update venue
+    // Update venue with locale
     const updatedVenue = await payload.update({
       collection: 'venues',
       id,
+      locale,
       data: {
         name: body.name,
+        description: body.description,
         address: body.address,
         city: body.city,
         country: body.country || 'Croatia',

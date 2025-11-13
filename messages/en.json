@@ -1,0 +1,363 @@
+{
+  "nav": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "offers": "Offers",
+    "feed": "Feed",
+    "myClaims": "My Reservations",
+    "savedOffers": "Saved for Later",
+    "favorites": "Favorites",
+    "dashboard": "Dashboard",
+    "staffDashboard": "Staff Dashboard",
+    "redeem": "Redeem",
+    "redeemReservations": "Redeem Reservations",
+    "redeemCodes": "Redeem Codes",
+    "history": "History",
+    "redemptionHistory": "Redemption History",
+    "venues": "Venues",
+    "staff": "Staff",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "account": "Account",
+    "logout": "Logout",
+    "browseOffers": "Browse Offers",
+    "loading": "Loading..."
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your Blinkoo account",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "loginButton": "Login",
+      "loggingIn": "Logging in...",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create Account",
+      "backToHome": "Back to home",
+      "agreement": "By signing in, you agree to our Terms of Service and Privacy Policy",
+      "enterPassword": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "signup": {
+      "title": "Create Account",
+      "titleMerchant": "Become a Merchant",
+      "subtitle": "Join Blinkoo and start discovering great offers",
+      "registerAs": "Register as:",
+      "customer": {
+        "label": "Customer",
+        "description": "Discover exclusive offers and save"
+      },
+      "merchant": {
+        "label": "Merchant",
+        "description": "Fill off-peak hours and attract customers"
+      },
+      "merchantAccount": {
+        "title": "Merchant Account",
+        "description": "Register as a merchant to offer deals"
+      },
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "phoneHint": "Include country code (e.g., +385 for Croatia)",
+      "password": "Password",
+      "createPassword": "Create a strong password",
+      "passwordStrength": {
+        "weak": "Weak password",
+        "medium": "Medium strength",
+        "strong": "Strong password"
+      },
+      "agreeTerms": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "createAccountButton": "Create Account",
+      "createMerchantAccount": "Create Merchant Account",
+      "creatingAccount": "Creating account...",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "backToHome": "Back to home",
+      "signUpFree": "Sign up for free and start saving today"
+    }
+  },
+  "offers": {
+    "loadingMap": "Loading map...",
+    "all": "All",
+    "ended": "Ended",
+    "day": "day",
+    "days": "days",
+    "endsIn": "Ends in",
+    "discount": {
+      "percent": "{value}% off",
+      "fixed": "€{value} off",
+      "bogo": "BOGO",
+      "addon": "Free Addon",
+      "special": "Special"
+    },
+    "offer": "offer",
+    "offers": "offers",
+    "offersPlural": "offers",
+    "filteredFrom": "filtered from",
+    "filtersLabel": "Filters",
+    "searchPlaceholder": "Search offers by title, location or description...",
+    "noOffersMatch": "No offers match your search",
+    "noOffersFound": "No offers found",
+    "tryDifferentSearch": "Try a different search term or clear the search to see all offers",
+    "tryAdjustingFilters": "Try adjusting filters or check back later for new offers",
+    "clearSearch": "Clear Search",
+    "clearFilters": "Clear Filters",
+    "noImage": "No Image",
+    "onlyRemaining": "Only {count} remaining",
+    "kmAway": "{distance} km away",
+    "listView": "List View",
+    "list": "List",
+    "map": "Map",
+    "filters": {
+      "title": "Filters",
+      "distance": "Distance",
+      "time": "Time",
+      "discount": "Discount",
+      "sort": "Sort",
+      "custom": "Custom: {distance} km",
+      "anyDistance": "Any distance",
+      "endingSoon": "Ending soon (< 1h)",
+      "allDay": "All day",
+      "percentDiscount": "Percentage discount",
+      "fixedAmount": "Fixed amount",
+      "bogo": "BOGO",
+      "freeAddon": "Free addon",
+      "nearestFirst": "Nearest first",
+      "endingSoonSort": "Ending soon",
+      "newest": "Newest",
+      "bestDiscount": "Best discount",
+      "clearAll": "Clear All",
+      "showResults": "Show Results",
+      "showResultsWithCount": "Show Results ({count})"
+    }
+  },
+  "home": {
+    "hero": {
+      "activeOffersBadge": "{count} Active Offers Available Now",
+      "title": "Discover Exclusive Offers in Your Area",
+      "subtitle": "Save up to 50% at restaurants, cafes, gyms, and more. Exclusive time-limited offers in your neighborhood.",
+      "browseOffers": "Browse Offers",
+      "signUpFree": "Sign Up Free"
+    },
+    "stats": {
+      "activeOffers": "Active Offers",
+      "categories": "Categories",
+      "freeToUse": "Free to Use",
+      "averageSavings": "Average Savings"
+    },
+    "categories": {
+      "title": "Find Offers by Category",
+      "subtitle": "Discover the best offers in your favorite categories",
+      "viewAll": "View All"
+    },
+    "popular": {
+      "title": "Most Popular Offers Near You",
+      "subtitle": "Offers that other customers use the most",
+      "viewAll": "View All"
+    },
+    "liveOffers": {
+      "title": "Currently Live Offers",
+      "subtitle": "Latest and most sought-after offers you can't miss",
+      "viewAll": "View All"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Simple, fast, and designed for customers and merchants",
+      "discover": {
+        "title": "Discover",
+        "subtitle": "Browse active offers",
+        "description": "See exclusive time-limited offers from local merchants in real-time. Map view or list—your choice."
+      },
+      "reserve": {
+        "title": "Reserve",
+        "subtitle": "Reserve instantly",
+        "description": "One click to reserve your offer. Get a unique QR code and 6-digit code for redemption. No fees, no complications."
+      },
+      "redeem": {
+        "title": "Redeem",
+        "subtitle": "Show and save",
+        "description": "Visit the venue and show your code to staff. Instant savings, no complicated checkout process."
+      },
+      "cta": "Browse All Offers"
+    },
+    "visualExamples": {
+      "title": "See It In Action",
+      "subtitle": "Experience Blinkoo across different platforms",
+      "discoverOffers": {
+        "title": "Discover Offers",
+        "description": "Browse active offers on map or list",
+        "placeholder": "Map View"
+      },
+      "instantRedeem": {
+        "title": "Instant Redemption",
+        "description": "Show QR code or 6-digit code to staff",
+        "placeholder": "QR Code Screen"
+      },
+      "merchantDashboard": {
+        "title": "Merchant Dashboard",
+        "description": "Track performance and manage offers",
+        "placeholder": "Analytics Dashboard"
+      }
+    },
+    "forMerchants": {
+      "badge": "For Merchants",
+      "title": "Fill Your Off-Peak Hours",
+      "subtitle": "Create time-limited offers with limited quantity that turn off-peak hours into customers",
+      "roi": {
+        "value": "40%",
+        "label": "Average increase in off-peak revenue"
+      },
+      "targetedSlots": {
+        "title": "Targeted Time Slots",
+        "description": "Create offers for specific off-peak hours. Quick publish or scheduled publish—you decide."
+      },
+      "controlInventory": {
+        "title": "Control Inventory",
+        "description": "Set quantity limits, geofencing, and per-user limits to prevent abuse."
+      },
+      "trackPerformance": {
+        "title": "Track Performance",
+        "description": "Real-time analytics dashboard to track reservations, redemptions, and ROI of your offers."
+      },
+      "cta": "Become a Merchant"
+    },
+    "finalCta": {
+      "title": "Ready to Start Saving?",
+      "subtitle": "Join thousands of customers already saving at restaurants, cafes, gyms, and more. Free registration, instant savings.",
+      "browseAll": "Browse All Offers",
+      "signUpFree": "Sign Up Free"
+    }
+  },
+  "testimonials": {
+    "title": "What People Say",
+    "subtitle": "Join thousands of satisfied customers and merchants using Blinkoo",
+    "items": [
+      {
+        "quote": "Blinkoo helped us fill our 2-4pm slot with over 30 customers daily. Revenue increased by 35% in our off-peak hours.",
+        "author": "Sarah Chen",
+        "role": "Owner, Brew & Bites Cafe"
+      },
+      {
+        "quote": "I've saved over $200 this month on outings. The offers are real and redemption is super simple with QR code.",
+        "author": "Marcus Rodriguez",
+        "role": "Foodie & Local Explorer"
+      },
+      {
+        "quote": "As a gym owner, our 10am-2pm slot was dead. Now it's our second busiest time. Blinkoo transformed our business.",
+        "author": "Jennifer Park",
+        "role": "Owner, FitZone Studio"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about using Blinkoo",
+    "items": [
+      {
+        "question": "How can I reserve an offer?",
+        "answer": "Simply browse available offers, click 'Reserve' to secure your spot and receive a unique QR code or 6-digit code for redemption. No fees, instant confirmation."
+      },
+      {
+        "question": "Is there a fee for using Blinkoo?",
+        "answer": "Blinkoo is completely free for customers. Merchants only pay a small commission when offers are successfully redeemed. No upfront costs or subscriptions."
+      },
+      {
+        "question": "What if I can't make it on time?",
+        "answer": "Offers are time-limited by design. If you can't make it, your reservation will expire and the offer becomes available to others. Always check the expiration time before reserving."
+      },
+      {
+        "question": "How do merchants benefit?",
+        "answer": "Merchants fill off-peak hours with targeted customers. They control inventory, pricing, and timing. Average merchants see a 35-40% increase in off-peak traffic with no upfront costs."
+      },
+      {
+        "question": "Are offers really limited?",
+        "answer": "Yes! Each offer has a limited quantity to create urgency and exclusivity. Once an offer is reserved, it disappears. This ensures offers are real and impactful."
+      },
+      {
+        "question": "How can I redeem my reservation?",
+        "answer": "Visit the venue during the active offer time, show your 6-digit code or QR code to staff and enjoy the discount. Redemption is instant and simple."
+      },
+      {
+        "question": "Can I reserve multiple offers?",
+        "answer": "Yes, you can reserve multiple offers from different merchants. Each offer has its own time limit and redemption process. Check your 'My Reservations' section to manage them all."
+      },
+      {
+        "question": "What types of businesses use Blinkoo?",
+        "answer": "Restaurants, cafes, gyms, wellness centers, entertainment venues, and more. Any local business that wants to attract traffic during off-peak hours."
+      }
+    ]
+  },
+  "newsletter": {
+    "title": "Stay Updated on New Offers",
+    "subtitle": "Join over 2,450 users receiving exclusive offers in your area",
+    "placeholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "success": "✓ Thank you! Check your email for confirmation."
+  },
+  "footer": {
+    "description": "Platform for time-limited offers at your favorite local venues.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact",
+    "copyright": "© {year} Blinkoo. All rights reserved."
+  },
+  "offers": {
+    "detail": {
+      "backToOffers": "Back to offers",
+      "offerNotFound": "Offer Not Found",
+      "browseOffers": "Browse offers",
+      "aboutThisOffer": "About this offer",
+      "noDescription": "No description available",
+      "termsAndConditions": "Terms & Conditions",
+      "whereYoullGo": "Where you'll go",
+      "timeRemaining": "Time Remaining",
+      "available": "Available",
+      "left": "left",
+      "total": "Total",
+      "kmAway": "km away",
+      "outsideGeofenceZone": "Outside Geofence Zone",
+      "outsideGeofenceMessage": "You're currently {distance} km away. You need to be within {geofenceKm} km of this venue to claim this offer.",
+      "specialOffer": "Special Offer",
+      "free": "Free",
+      "outsideGeofence": "Outside Geofence",
+      "outsideGeofenceShort": "Currently {distance} km away. Need to be within {geofenceKm} km.",
+      "claimOffer": "🎉 Claim This Offer",
+      "claimOfferOutside": "⚠️ Claim Offer (Outside Geofence)",
+      "claimWarning": "Warning: You may be too far from the venue to claim",
+      "claimInfo": "Claim this offer to get a unique QR code. Show it at the venue within 7 minutes to redeem.",
+      "termsApply": "Terms and conditions apply",
+      "ended": "Ended",
+      "endsIn": "Ends in",
+      "day": "day",
+      "days": "days",
+      "reviews": {
+        "customerReviews": "Customer Reviews",
+        "outOf5": "out of 5",
+        "review": "review",
+        "reviews": "reviews",
+        "noReviewsYet": "No reviews yet - be the first!",
+        "writeReview": "Write Review",
+        "shareExperience": "Share Your Experience",
+        "rating": "Rating",
+        "comment": "Comment (optional)",
+        "shareExperiencePlaceholder": "Share your experience...",
+        "addPhotos": "Add Photos (optional)",
+        "submitting": "Submitting...",
+        "submitReview": "Submit Review",
+        "cancel": "Cancel",
+        "noReviewsMessage": "No reviews yet. Be the first to review!",
+        "anonymous": "Anonymous",
+        "loadingReviews": "Loading reviews...",
+        "pleaseSelectRating": "Please select a rating",
+        "reviewSubmitted": "Review submitted!",
+        "failedToSubmit": "Failed to submit review"
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@ export const Venues: CollectionConfig = {
   slug: 'venues',
   admin: {
     useAsTitle: 'name',
+    group: 'Content',
   },
   access: {
     read: () => true,
@@ -27,11 +28,13 @@ export const Venues: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Venue Name',
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Description',
+      localized: true,
     },
     {
       name: 'address',

@@ -1,57 +1,20 @@
 'use client'
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useLocale } from 'next-intl'
+import { useRouter, usePathname } from '@/i18n/navigation'
 import { FiGlobe } from 'react-icons/fi'
-import { locales, type Locale } from '@/i18n/config'
+import { type Locale } from '@/i18n/config'
 
 export function LocaleSwitcher() {
+  const locale = useLocale() as Locale
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const [locale, setLocale] = useState<Locale>('en')
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-    // Get locale from cookie
-    const cookieLocale = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('locale='))
-      ?.split('=')[1] as Locale | undefined
-
-    if (cookieLocale && locales.includes(cookieLocale)) {
-      setLocale(cookieLocale)
-    } else {
-      // Check URL params
-      const urlLocale = searchParams.get('locale')
-      if (urlLocale && locales.includes(urlLocale as Locale)) {
-        setLocale(urlLocale as Locale)
-      }
-    }
-  }, [searchParams])
 
   function changeLocale(newLocale: Locale) {
     if (newLocale === locale) return
 
-    // Set cookie
-    document.cookie = `locale=${newLocale}; path=/; max-age=31536000` // 1 year
-    setLocale(newLocale)
-
-    // Update URL with locale param
-    const currentUrl = new URL(window.location.href)
-    currentUrl.searchParams.set('locale', newLocale)
-
-    // Reload page to apply new locale
-    window.location.href = currentUrl.toString()
-  }
-
-  if (!mounted) {
-    return (
-      <div className="flex items-center gap-1.5 px-2 py-1.5">
-        <FiGlobe className="w-4 h-4 text-text-tertiary" />
-      </div>
-    )
+    // Use next-intl's router to navigate to the same pathname with new locale
+    router.replace(pathname, { locale: newLocale })
   }
 
   return (

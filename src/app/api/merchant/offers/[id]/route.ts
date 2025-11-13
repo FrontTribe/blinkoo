@@ -15,6 +15,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   }
 
   try {
+    // Get locale from query params, default to 'hr'
+    const { searchParams } = new URL(request.url)
+    const locale = (searchParams.get('locale') || 'hr') as 'hr' | 'en'
+
     // Get merchant for this user
     const merchants = await payload.find({
       collection: 'merchants',
@@ -39,10 +43,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     const venueIds = venues.docs.map((v) => v.id)
 
-    // Get the specific offer
+    // Get the specific offer with locale context
     const offer = await payload.findByID({
       collection: 'offers',
       id,
+      locale, // Fetch with locale context to get localized fields
       depth: 2,
     })
 
@@ -73,6 +78,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
   try {
     const body = await request.json()
+    
+    // Get locale from request body or query params, default to 'hr'
+    const { searchParams } = new URL(request.url)
+    const locale = (body.locale || searchParams.get('locale') || 'hr') as 'hr' | 'en'
 
     // Get merchant for this user
     const merchants = await payload.find({
@@ -111,10 +120,11 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
-    // Update offer
+    // Update offer with locale context
     const updatedOffer = await payload.update({
       collection: 'offers',
       id,
+      locale, // Pass locale to update the correct localized fields
       data: {
         title: body.title,
         description: body.description,

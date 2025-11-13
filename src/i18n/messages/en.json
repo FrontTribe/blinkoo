@@ -135,6 +135,57 @@
       "clearAll": "Clear All",
       "showResults": "Show Results",
       "showResultsWithCount": "Show Results ({count})"
+    },
+    "detail": {
+      "backToOffers": "Back to offers",
+      "offerNotFound": "Offer not found",
+      "browseOffers": "Browse offers",
+      "aboutThisOffer": "About this offer",
+      "noDescription": "No description",
+      "termsAndConditions": "Terms and Conditions",
+      "whereYoullGo": "Where you'll go",
+      "timeRemaining": "Time remaining",
+      "available": "Available",
+      "left": "left",
+      "total": "Total",
+      "kmAway": "km away",
+      "outsideGeofenceZone": "Outside geofence zone",
+      "outsideGeofenceMessage": "You are currently {distance} km away. You must be within {geofenceKm} km of this venue to claim this offer.",
+      "specialOffer": "Special offer",
+      "free": "Free",
+      "outsideGeofence": "Outside geofence",
+      "outsideGeofenceShort": "Currently {distance} km away. You must be within {geofenceKm} km.",
+      "claimOffer": "🎉 Claim this offer",
+      "claimOfferOutside": "⚠️ Claim offer (outside geofence)",
+      "claimWarning": "Warning: You may be too far from the venue to claim",
+      "claimInfo": "Claim this offer to get a unique QR code. Show it at the venue within 7 minutes to redeem.",
+      "termsApply": "Terms and conditions apply",
+      "ended": "Ended",
+      "endsIn": "Ends in",
+      "day": "day",
+      "days": "days",
+      "reviews": {
+        "customerReviews": "Customer Reviews",
+        "outOf5": "out of 5",
+        "review": "review",
+        "reviews": "reviews",
+        "noReviewsYet": "No reviews yet - be the first!",
+        "writeReview": "Write a review",
+        "shareExperience": "Share your experience",
+        "rating": "Rating",
+        "comment": "Comment (optional)",
+        "shareExperiencePlaceholder": "Share your experience...",
+        "addPhotos": "Add photos (optional)",
+        "submitting": "Submitting...",
+        "submitReview": "Submit review",
+        "cancel": "Cancel",
+        "noReviewsMessage": "No reviews yet. Be the first to review!",
+        "anonymous": "Anonymous",
+        "loadingReviews": "Loading reviews...",
+        "pleaseSelectRating": "Please select a rating",
+        "reviewSubmitted": "Review submitted!",
+        "failedToSubmit": "Failed to submit review"
+      }
     }
   },
   "home": {
@@ -307,57 +358,451 @@
     "contact": "Contact",
     "copyright": "© {year} Blinkoo. All rights reserved."
   },
-  "offers": {
-    "detail": {
-      "backToOffers": "Back to offers",
-      "offerNotFound": "Offer Not Found",
-      "browseOffers": "Browse offers",
-      "aboutThisOffer": "About this offer",
-      "noDescription": "No description available",
-      "termsAndConditions": "Terms & Conditions",
-      "whereYoullGo": "Where you'll go",
-      "timeRemaining": "Time Remaining",
-      "available": "Available",
-      "left": "left",
-      "total": "Total",
-      "kmAway": "km away",
-      "outsideGeofenceZone": "Outside Geofence Zone",
-      "outsideGeofenceMessage": "You're currently {distance} km away. You need to be within {geofenceKm} km of this venue to claim this offer.",
-      "specialOffer": "Special Offer",
-      "free": "Free",
-      "outsideGeofence": "Outside Geofence",
-      "outsideGeofenceShort": "Currently {distance} km away. Need to be within {geofenceKm} km.",
-      "claimOffer": "🎉 Claim This Offer",
-      "claimOfferOutside": "⚠️ Claim Offer (Outside Geofence)",
-      "claimWarning": "Warning: You may be too far from the venue to claim",
-      "claimInfo": "Claim this offer to get a unique QR code. Show it at the venue within 7 minutes to redeem.",
-      "termsApply": "Terms and conditions apply",
-      "ended": "Ended",
-      "endsIn": "Ends in",
-      "day": "day",
-      "days": "days",
-      "reviews": {
-        "customerReviews": "Customer Reviews",
-        "outOf5": "out of 5",
-        "review": "review",
-        "reviews": "reviews",
-        "noReviewsYet": "No reviews yet - be the first!",
-        "writeReview": "Write Review",
-        "shareExperience": "Share Your Experience",
-        "rating": "Rating",
-        "comment": "Comment (optional)",
-        "shareExperiencePlaceholder": "Share your experience...",
-        "addPhotos": "Add Photos (optional)",
-        "submitting": "Submitting...",
-        "submitReview": "Submit Review",
-        "cancel": "Cancel",
-        "noReviewsMessage": "No reviews yet. Be the first to review!",
-        "anonymous": "Anonymous",
-        "loadingReviews": "Loading reviews...",
-        "pleaseSelectRating": "Please select a rating",
-        "reviewSubmitted": "Review submitted!",
-        "failedToSubmit": "Failed to submit review"
+  "merchant": {
+    "dashboard": {
+      "loading": "Loading...",
+      "loginRequired": "Login Required",
+      "loginRequiredMessage": "Please log in to access the merchant dashboard",
+      "login": "Login",
+      "title": "Dashboard",
+      "welcome": "Welcome back, {name}! Here's what's happening today.",
+      "merchant": "Merchant",
+      "createOffer": "+ Create Offer",
+      "lowStockWarning": "Low Stock Warning",
+      "lowStockMessage": "{count, plural, =1 {# active offer has} other {# active offers have}} less than 10 remaining spots",
+      "endingSoon": "Ending Soon",
+      "endingSoonMessage": "{count, plural, =1 {# offer ends} other {# offers end}} in less than 2 hours",
+      "viewOffers": "View Offers →",
+      "metrics": {
+        "totalOffers": "Total Offers",
+        "activeNow": "active now",
+        "todayReservations": "Today's Reservations",
+        "redeemed": "redeemed",
+        "fillRate": "Fill Rate",
+        "ofCapacity": "of capacity",
+        "activeSlots": "Active Slots",
+        "activeOffersCurrentlyRunning": "Active offers currently running"
+      },
+      "liveSlots": {
+        "title": "Live Offer Slots",
+        "viewAll": "View All",
+        "noActiveSlots": "No active slots currently",
+        "createFirstOffer": "Create your first offer",
+        "unnamedOffer": "Unnamed Offer",
+        "unknownLocation": "Unknown Location",
+        "lowStock": "Low Stock",
+        "endingSoon": "Ending Soon",
+        "remaining": "remaining",
+        "of": "of"
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "viewAll": "View All",
+        "noRecentReservations": "No recent reservations",
+        "unknownOffer": "Unknown Offer"
+      },
+      "quickLinks": {
+        "title": "Quick Actions",
+        "viewAnalytics": "View Analytics",
+        "customerInsights": "Customer Insights",
+        "manageVenues": "Manage Venues",
+        "allReservations": "All Reservations"
       }
+    },
+    "offers": {
+      "loading": "Loading offers...",
+      "title": "Manage Offers",
+      "subtitle": "Create and manage your offers",
+      "createOffer": "Create Offer",
+      "searchPlaceholder": "Search offers by title, description or location...",
+      "emptyState": {
+        "title": "No offers yet",
+        "noResults": "No results for \"{query}\"",
+        "description": "Create your first offer to start attracting customers during off-peak hours.",
+        "noResultsDescription": "Try a different search term or clear the search to see all offers.",
+        "createFirstOffer": "Create Your First Offer",
+        "clearSearch": "Clear Search"
+      },
+      "card": {
+        "noImage": "No Image",
+        "unknownLocation": "Unknown Location",
+        "percentDiscount": "{value}% OFF",
+        "fixedDiscount": "€{value} OFF",
+        "bogo": "BOGO",
+        "freeAddon": "Free Addon",
+        "active": "Active",
+        "inactive": "Inactive",
+        "viewDetails": "View Details",
+        "editOffer": "Edit offer"
+      },
+      "tips": {
+        "title": "Offer Management Tips",
+        "tip1": "• Create multiple time slots for the same offer to maximize coverage",
+        "tip2": "• Track fill rates to optimize pricing and timing",
+        "tip3": "• Use drip mode to gradually release slots throughout the day",
+        "tip4": "• Adjust geofence settings to target the right customer radius"
+      },
+      "form": {
+        "backToOffers": "Back to Offers",
+        "createTitle": "Create New Offer",
+        "editTitle": "Edit Offer",
+        "createSubtitle": "Fill in the details below to create a new offer",
+        "editSubtitle": "Update your offer details and settings",
+        "basicInfo": "Basic Information",
+        "title": "Offer Title",
+        "titlePlaceholder": "e.g., Happy Hour Special",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe what makes this offer special...",
+        "terms": "Terms & Conditions",
+        "termsPlaceholder": "Terms, restrictions, or special conditions...",
+        "photo": "Offer Photo",
+        "venue": "Venue",
+        "offerDetails": "Offer Details",
+        "offerType": "Offer Type",
+        "offerTypePercent": "Percentage Discount",
+        "offerTypeFixed": "Fixed Amount Discount",
+        "offerTypeBogo": "Buy One Get One",
+        "offerTypeAddon": "Free Add-on",
+        "discountValue": "Discount Value",
+        "discountValuePercentHelp": "Percentage (e.g., 20 for 20%)",
+        "discountValueFixedHelp": "Amount in euros",
+        "initialTimeSlot": "Initial Time Slot",
+        "initialTimeSlotDescription": "Define the first available time slot. You can add more slots later from the offer details page.",
+        "startDateTime": "Start Date & Time",
+        "endDateTime": "End Date & Time",
+        "totalQuantity": "Total Quantity",
+        "releaseMode": "Release Mode",
+        "releaseModeFlash": "Flash (all at once)",
+        "releaseModeDrip": "Drip (gradual release)",
+        "dripEveryMinutes": "Drip Every (minutes)",
+        "dripQuantity": "Drip Quantity",
+        "advancedSettings": "Advanced Settings",
+        "perUserLimit": "Per User Limit",
+        "perUserLimitTooltip": "Maximum number of offers that one user can reserve for this offer. Leave empty or 0 for unlimited.",
+        "cooldownMinutes": "Cooldown (minutes)",
+        "cooldownMinutesTooltip": "Time in minutes that a user must wait between reservations for the same offer. Prevents too quick multiple reservations.",
+        "geofenceKm": "Geofence (km)",
+        "geofenceKmTooltip": "Maximum distance in kilometers from the venue where users can see and reserve this offer. 0 means no geographical restriction.",
+        "uploading": "Uploading...",
+        "photoUploadSuccess": "Photo uploaded successfully!",
+        "photoUploadError": "Photo upload failed",
+        "cancel": "Cancel",
+        "create": "Create Offer",
+        "save": "Save Changes",
+        "creating": "Creating...",
+        "saving": "Saving...",
+        "createSuccess": "Offer created successfully!",
+        "saveSuccess": "Offer updated successfully!"
+      }
+    },
+    "claims": {
+      "loading": "Loading claims...",
+      "title": "Claim Management",
+      "subtitle": "View and manage all customer claims for your offers",
+      "export": "Export",
+      "backToDashboard": "← Dashboard",
+      "summary": {
+        "totalClaims": "Total Claims",
+        "reserved": "Reserved",
+        "redeemed": "Redeemed",
+        "expired": "Expired"
+      },
+      "overview": {
+        "title": "Claims Overview"
+      },
+      "filters": {
+        "title": "Filters",
+        "search": "Search",
+        "searchPlaceholder": "Offer, customer...",
+        "status": "Status",
+        "allStatuses": "All Statuses",
+        "startDate": "Start Date",
+        "endDate": "End Date"
+      },
+      "bulkActions": {
+        "selected": "{count} claim(s) selected",
+        "markRedeemed": "Mark Redeemed",
+        "markExpired": "Mark Expired",
+        "clearSelection": "Clear Selection"
+      },
+      "table": {
+        "title": "All Claims ({count})",
+        "claimId": "Claim ID",
+        "offer": "Offer",
+        "customer": "Customer",
+        "reserved": "Reserved",
+        "status": "Status",
+        "actions": "Actions",
+        "noClaimsFound": "No claims found",
+        "tryAdjustingFilters": "Try adjusting your filters",
+        "redeem": "Redeem",
+        "expire": "Expire",
+        "qrCode": "QR Code"
+      },
+      "qrModal": {
+        "title": "QR Code - Claim #{id}",
+        "description": "Scan this QR code to verify and redeem this claim",
+        "viewDetails": "View Details"
+      },
+      "toast": {
+        "statusUpdated": "Claim status updated",
+        "statusUpdateFailed": "Failed to update claim status",
+        "noClaimsSelected": "No claims selected",
+        "bulkUpdateSuccess": "Successfully updated {count} claims",
+        "bulkUpdateFailed": "Failed to perform bulk action"
+      }
+    },
+    "settings": {
+      "loading": "Loading settings...",
+      "title": "Settings",
+      "subtitle": "Manage your account and business information",
+      "backToDashboard": "Back to dashboard",
+      "tabs": {
+        "profile": "Business Profile",
+        "account": "Account Settings",
+        "notifications": "Notifications"
+      },
+      "profile": {
+        "title": "Business Profile",
+        "subtitle": "Update business information that customers will see",
+        "businessName": "Business Name *",
+        "businessNamePlaceholder": "Your business name",
+        "businessDescription": "Business Description",
+        "businessDescriptionPlaceholder": "Tell customers something about your business...",
+        "save": "Save Changes",
+        "saving": "Saving...",
+        "success": "Profile successfully updated",
+        "error": "Updating profile failed"
+      },
+      "account": {
+        "title": "Account Information",
+        "subtitle": "Update personal account information",
+        "fullName": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "save": "Save Changes",
+        "saving": "Saving...",
+        "success": "Account successfully updated",
+        "error": "Updating account failed",
+        "changePassword": {
+          "title": "Change Password",
+          "subtitle": "Update your password to keep your account secure",
+          "currentPassword": "Current Password",
+          "newPassword": "New Password",
+          "confirmPassword": "Confirm New Password",
+          "button": "Change Password",
+          "success": "Password successfully changed",
+          "error": "Changing password failed",
+          "fieldsRequired": "Please fill in all password fields",
+          "passwordsDontMatch": "New passwords don't match",
+          "passwordTooShort": "Password must be at least 8 characters"
+        }
+      },
+      "notifications": {
+        "title": "Notification Settings",
+        "subtitle": "Control how you receive notifications about your business",
+        "inApp": {
+          "title": "In-App Notifications",
+          "description": "Receive notifications within the application"
+        },
+        "email": {
+          "title": "Email Notifications",
+          "description": "Receive notifications via email"
+        },
+        "push": {
+          "title": "Push Notifications",
+          "description": "Receive push notifications on your device"
+        },
+        "save": "Save Settings",
+        "saving": "Saving...",
+        "success": "Notification settings updated",
+        "error": "Updating settings failed"
+      },
+      "error": {
+        "loadingFailed": "Loading settings failed"
+      }
+    },
+    "venues": {
+      "loading": "Loading venues...",
+      "title": "Manage Venues",
+      "subtitle": "Add and manage your venues where offers will be available",
+      "addVenue": "Add Venue",
+      "emptyState": {
+        "title": "No venues yet",
+        "description": "Add your first venue to start creating location-based offers",
+        "addFirstVenue": "Add Your First Venue"
+      },
+      "card": {
+        "viewDetails": "View Details",
+        "editVenue": "Edit venue",
+        "deleteVenue": "Delete venue",
+        "viewAnalytics": "View Analytics",
+        "unknownAddress": "Unknown Address"
+      },
+      "deleteConfirm": "Are you sure you want to delete this venue?",
+      "deleteError": "Deleting venue failed. Please try again.",
+      "active": "Active",
+      "inactive": "Inactive",
+      "viewOnMap": "View on Map",
+      "manage": "Manage",
+      "tips": {
+        "title": "Venue Management Tips",
+        "tip1": "• Each venue can have multiple offers at different times",
+        "tip2": "• Set accurate location coordinates for better customer discovery",
+        "tip3": "• Regularly check venue analytics to optimize your offers",
+        "tip4": "• Keep venue information up to date"
+      }
+    },
+    "analytics": {
+      "loading": "Loading analytics...",
+      "title": "Analytics & Insights",
+      "subtitle": "Track your performance and optimize your offers",
+      "backToDashboard": "← Back to Dashboard",
+      "export": "Export",
+      "dateRange": {
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "apply": "Apply"
+      },
+      "metrics": {
+        "totalOffers": "Total Offers",
+        "totalClaims": "Total Claims",
+        "redeemed": "Redeemed",
+        "expired": "Expired",
+        "reserved": "Reserved",
+        "totalRevenue": "Total Revenue",
+        "redemptionRate": "Redemption Rate",
+        "fillRate": "Fill Rate",
+        "avgTimeToRedemption": "Avg Time to Redemption",
+        "repeatCustomerRate": "Repeat Customer Rate",
+        "uplift": "Traffic Uplift"
+      },
+      "badges": {
+        "topPerformer": "Top Performer",
+        "highConversion": "High Conversion",
+        "needsImprovement": "Needs Improvement"
+      }
+    },
+    "customers": {
+      "loading": "Loading customers...",
+      "title": "Customer Insights",
+      "subtitle": "Understand your customers and drive retention",
+      "backToDashboard": "← Back to Dashboard",
+      "summary": {
+        "new": "New Customers",
+        "regular": "Regular Customers",
+        "vip": "VIP Customers",
+        "dormant": "Dormant Customers"
+      },
+      "filters": {
+        "title": "Filter by Segment",
+        "all": "All",
+        "new": "New",
+        "regular": "Regular",
+        "vip": "VIP",
+        "dormant": "Dormant"
+      },
+      "emptyState": {
+        "title": "No customers found",
+        "description": "Customers will appear here as they interact with your offers"
+      }
+    },
+    "staff": {
+      "loading": "Loading staff...",
+      "title": "Staff Management",
+      "subtitle": "Manage staff members and their assigned venues",
+      "backToDashboard": "Back to dashboard",
+      "addStaff": "Add Staff Member",
+      "emptyState": {
+        "title": "No staff members yet",
+        "description": "Add staff members to help manage venues and process redemptions.",
+        "addFirstStaff": "Add Your First Staff Member"
+      },
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "venues": "Assigned Venues",
+        "actions": "Actions",
+        "noVenues": "No assigned venues",
+        "unknown": "Unknown"
+      },
+      "toast": {
+        "loadFailed": "Loading data failed",
+        "deleteConfirm": "Are you sure you want to remove this staff member?",
+        "deleteSuccess": "Staff member removed",
+        "deleteFailed": "Removing staff member failed"
+      },
+      "noPhone": "No phone",
+      "allStaff": "All Staff",
+      "tips": {
+        "title": "Staff Management Tips",
+        "tip1": "• Staff members can access the redemption interface to process claims",
+        "tip2": "• Assign staff to specific venues for better management",
+        "tip3": "• Staff can only access features for their assigned venues",
+        "tip4": "• Regularly review and update staff assignments as needed"
+      }
+    },
+    "notifications": {
+      "loading": "Loading notifications...",
+      "title": "Notifications",
+      "subtitle": "View and manage your account notifications",
+      "backToDashboard": "Back to Dashboard",
+      "filters": {
+        "all": "All",
+        "unread": "Unread"
+      },
+      "markAsRead": "Mark as read",
+      "markAllAsRead": "Mark all as read",
+      "emptyState": {
+        "title": "No notifications",
+        "description": "You're all caught up! New notifications will appear here."
+      },
+      "toast": {
+        "markedAsRead": "Marked as read",
+        "markAsReadFailed": "Failed to mark as read",
+        "allMarkedAsRead": "All notifications marked as read",
+        "markAllFailed": "Failed to mark all as read"
+      }
+    }
+  },
+  "staffRedeem": {
+    "loading": "Loading...",
+    "title": "Staff Redemption",
+    "subtitle": "Verify and redeem customer claims",
+    "backToDashboard": "Back to Dashboard",
+    "scanQRCode": "Scan QR Code",
+    "enterCodeManually": "Or Enter Code Manually",
+    "enterCode": "ENTER CODE",
+    "codeHint": "Customer can show QR code or enter the code manually",
+    "redeemClaim": "Redeem Claim",
+    "processing": "Processing...",
+    "howItWorks": "How it works:",
+    "howItWorksDescription": "Customers will show you their QR code or 6-digit code. Enter the code above to verify and redeem their claim. Make sure the customer is present at your venue before redeeming.",
+    "quickAccess": "Quick Access",
+    "scanRedeem": "Scan & Redeem",
+    "handsFree": "Hands-Free",
+    "secure": "Secure",
+    "verified": "Verified",
+    "messages": {
+      "success": "Claim redeemed successfully!",
+      "failed": "Failed to redeem claim",
+      "failedDefault": "Failed to redeem claim"
+    },
+    "voiceInput": {
+      "listening": "Listening...",
+      "heard": "Heard:",
+      "instructions": "Speak the code clearly (letters and numbers)",
+      "useVoiceInput": "Use Voice Input",
+      "cancel": "Cancel voice input",
+      "error": "Voice input error. Please try again or enter code manually."
+    },
+    "qrScanner": {
+      "title": "Scan QR Code",
+      "startCamera": "Start Camera",
+      "failedToStart": "Failed to start camera",
+      "instructions": "Position the QR code within the frame to scan",
+      "helpText": "Point your camera at the customer's QR code"
     }
   }
 }

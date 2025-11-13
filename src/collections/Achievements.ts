@@ -4,6 +4,7 @@ export const Achievements: CollectionConfig = {
   slug: 'achievements',
   admin: {
     useAsTitle: 'name',
+    group: 'Engagement',
   },
   access: {
     read: () => true,

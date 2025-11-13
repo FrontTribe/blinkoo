@@ -5,6 +5,7 @@ export const Claims: CollectionConfig = {
   slug: 'claims',
   admin: {
     useAsTitle: 'id',
+    group: 'Customer Activity',
   },
   hooks: {
     afterChange: [

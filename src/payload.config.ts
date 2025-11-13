@@ -36,6 +36,11 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  localization: {
+    locales: ['hr', 'en'],
+    defaultLocale: 'hr',
+    fallback: true,
+  },
   collections: [
     Users,
     Media,

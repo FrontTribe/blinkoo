@@ -1,0 +1,363 @@
+{
+  "nav": {
+    "login": "Prijava",
+    "signup": "Registracija",
+    "offers": "Ponude",
+    "feed": "Feed",
+    "myClaims": "Moje Rezervacije",
+    "savedOffers": "Spremljeno za Kasnije",
+    "favorites": "Favoriti",
+    "dashboard": "Nadzorni Panel",
+    "staffDashboard": "Nadzorni Panel Osoblja",
+    "redeem": "Iskoristi",
+    "redeemReservations": "Iskoristi Rezervacije",
+    "redeemCodes": "Iskoristi Kodove",
+    "history": "Povijest",
+    "redemptionHistory": "Povijest Iskorištenja",
+    "venues": "Lokacije",
+    "staff": "Osoblje",
+    "analytics": "Analitika",
+    "settings": "Postavke",
+    "account": "Račun",
+    "logout": "Odjava",
+    "browseOffers": "Pregledaj Ponude",
+    "loading": "Učitavanje..."
+  },
+  "auth": {
+    "login": {
+      "title": "Dobrodošli Natrag",
+      "subtitle": "Prijavite se na svoj Blinkoo račun",
+      "email": "E-pošta",
+      "password": "Lozinka",
+      "rememberMe": "Zapamti me",
+      "forgotPassword": "Zaboravili ste lozinku?",
+      "loginButton": "Prijava",
+      "loggingIn": "Prijavljivanje...",
+      "noAccount": "Nemate račun?",
+      "createAccount": "Kreirajte Račun",
+      "backToHome": "Natrag na početnu",
+      "agreement": "Prijavljivanjem se slažete s našim Uvjetima Korištenja i Politikom Privatnosti",
+      "enterPassword": "Unesite svoju lozinku",
+      "showPassword": "Prikaži lozinku",
+      "hidePassword": "Sakrij lozinku"
+    },
+    "signup": {
+      "title": "Kreirajte Račun",
+      "titleMerchant": "Postanite Trgovac",
+      "subtitle": "Pridružite se Blinkoo i počnite otkrivati odlične ponude",
+      "registerAs": "Registrirajte se kao:",
+      "customer": {
+        "label": "Kupac",
+        "description": "Otkrijte ekskluzivne ponude i uštedite"
+      },
+      "merchant": {
+        "label": "Trgovac",
+        "description": "Ispunite prazne sate i privucite kupce"
+      },
+      "merchantAccount": {
+        "title": "Trgovački Račun",
+        "description": "Registrirate se kao trgovac kako biste nudili ponude"
+      },
+      "fullName": "Ime i Prezime",
+      "email": "E-pošta",
+      "phone": "Broj Telefona",
+      "phoneHint": "Uključite pozivni broj (npr. +385 za Hrvatsku)",
+      "password": "Lozinka",
+      "createPassword": "Kreirajte jaku lozinku",
+      "passwordStrength": {
+        "weak": "Slaba lozinka",
+        "medium": "Srednja snaga",
+        "strong": "Jaka lozinka"
+      },
+      "agreeTerms": "Slažem se s",
+      "termsOfService": "Uvjetima Korištenja",
+      "and": "i",
+      "privacyPolicy": "Politikom Privatnosti",
+      "createAccountButton": "Kreiraj Račun",
+      "createMerchantAccount": "Kreiraj Trgovački Račun",
+      "creatingAccount": "Kreiranje računa...",
+      "haveAccount": "Već imate račun?",
+      "signIn": "Prijava",
+      "backToHome": "Natrag na početnu",
+      "signUpFree": "Registrirajte se besplatno i počnite štedjeti danas"
+    }
+  },
+  "offers": {
+    "loadingMap": "Učitavanje karte...",
+    "all": "Sve",
+    "ended": "Završeno",
+    "day": "dan",
+    "days": "dana",
+    "endsIn": "Završava za",
+    "discount": {
+      "percent": "{value}% popusta",
+      "fixed": "€{value} popusta",
+      "bogo": "BOGO",
+      "addon": "Besplatno Dodatno",
+      "special": "Posebno"
+    },
+    "offer": "ponuda",
+    "offers": "ponude",
+    "offersPlural": "ponuda",
+    "filteredFrom": "filtrirano od",
+    "filtersLabel": "Filteri",
+    "searchPlaceholder": "Pretražite ponude po naslovu, lokaciji ili opisu...",
+    "noOffersMatch": "Nema ponuda koje odgovaraju vašoj pretrazi",
+    "noOffersFound": "Nema pronađenih ponuda",
+    "tryDifferentSearch": "Pokušajte s drugim pojmom za pretragu ili očistite pretragu da vidite sve ponude",
+    "tryAdjustingFilters": "Pokušajte prilagoditi filtere ili provjerite kasnije za nove ponude",
+    "clearSearch": "Očisti Pretragu",
+    "clearFilters": "Očisti Filtere",
+    "noImage": "Nema Slike",
+    "onlyRemaining": "Preostalo samo {count}",
+    "kmAway": "{distance} km udaljeno",
+    "listView": "Pregled Popisa",
+    "list": "Popis",
+    "map": "Karta",
+    "filters": {
+      "title": "Filteri",
+      "distance": "Udaljenost",
+      "time": "Vrijeme",
+      "discount": "Popust",
+      "sort": "Sortiraj",
+      "custom": "Prilagođeno: {distance} km",
+      "anyDistance": "Bilo koja udaljenost",
+      "endingSoon": "Završava uskoro (< 1h)",
+      "allDay": "Cijeli dan",
+      "percentDiscount": "Postotak popusta",
+      "fixedAmount": "Fiksni iznos",
+      "bogo": "BOGO",
+      "freeAddon": "Besplatno dodatno",
+      "nearestFirst": "Najbliže prvo",
+      "endingSoonSort": "Završava uskoro",
+      "newest": "Najnovije",
+      "bestDiscount": "Najbolji popust",
+      "clearAll": "Očisti Sve",
+      "showResults": "Prikaži Rezultate",
+      "showResultsWithCount": "Prikaži Rezultate ({count})"
+    }
+  },
+  "home": {
+    "hero": {
+      "activeOffersBadge": "{count} Aktivnih Ponuda Dostupno Sada",
+      "title": "Otkrijte Ekskluzivne Ponude u Vašoj Okolini",
+      "subtitle": "Uštedite do 50% na restoranima, kafićima, teretanama i više. Ekskluzivne vremenski ograničene ponude u vašoj okolini.",
+      "browseOffers": "Pregledaj Ponude",
+      "signUpFree": "Registrirajte Se Besplatno"
+    },
+    "stats": {
+      "activeOffers": "Aktivne Ponude",
+      "categories": "Kategorije",
+      "freeToUse": "Besplatno za Korištenje",
+      "averageSavings": "Prosječna Ušteda"
+    },
+    "categories": {
+      "title": "Pronađite Ponude po Kategorijama",
+      "subtitle": "Otkrijte najbolje ponude u vašim omiljenim kategorijama",
+      "viewAll": "Pogledaj Sve"
+    },
+    "popular": {
+      "title": "Najpopularnije Ponude u Vašoj Blizini",
+      "subtitle": "Ponude koje drugi kupci najviše koriste",
+      "viewAll": "Pogledaj Sve"
+    },
+    "liveOffers": {
+      "title": "Trenutno Aktualne Ponude",
+      "subtitle": "Najnovije i najtraženije ponude koje ne smijete propustiti",
+      "viewAll": "Pogledaj Sve"
+    },
+    "howItWorks": {
+      "title": "Kako Funkcionira",
+      "subtitle": "Jednostavno, brzo i dizajnirano za kupce i trgovce",
+      "discover": {
+        "title": "Otkrijte",
+        "subtitle": "Pregledajte aktivne ponude",
+        "description": "Vidite ekskluzivne vremenski ograničene ponude lokalnih trgovaca u stvarnom vremenu. Pregled karte ili popis—vaš izbor."
+      },
+      "reserve": {
+        "title": "Rezervirajte",
+        "subtitle": "Rezervirajte odmah",
+        "description": "Jedan klik za rezervaciju vaše ponude. Dobijte jedinstveni QR kod i 6-znamenkasti kod za iskorištenje. Bez naknada, bez komplikacija."
+      },
+      "redeem": {
+        "title": "Iskoristite",
+        "subtitle": "Pokažite i uštedite",
+        "description": "Posjetite mjesto i pokažite svoj kod osoblju. Trenutna ušteda, bez kompliciranog procesa naplate."
+      },
+      "cta": "Pregledaj Sve Ponude"
+    },
+    "visualExamples": {
+      "title": "Vidite u Akciji",
+      "subtitle": "Iskusite Blinkoo na različitim platformama",
+      "discoverOffers": {
+        "title": "Otkrijte Ponude",
+        "description": "Pregledajte aktivne ponude na karti ili popisu",
+        "placeholder": "Pregled Karte"
+      },
+      "instantRedeem": {
+        "title": "Trenutno Iskorištenje",
+        "description": "Pokažite QR kod ili 6-znamenkasti kod osoblju",
+        "placeholder": "QR Kod Ekran"
+      },
+      "merchantDashboard": {
+        "title": "Trgovački Nadzorni Panel",
+        "description": "Pratite performanse i upravljajte ponudama",
+        "placeholder": "Analitički Nadzorni Panel"
+      }
+    },
+    "forMerchants": {
+      "badge": "Za Trgovce",
+      "title": "Ispunite Svoje Prazne Sate",
+      "subtitle": "Kreirajte vremenski ograničene ponude s ograničenom količinom koje pretvaraju prazne sate u kupce",
+      "roi": {
+        "value": "40%",
+        "label": "Prosječno povećanje prometa u praznim satima"
+      },
+      "targetedSlots": {
+        "title": "Ciljani Vremenski Slotovi",
+        "description": "Kreirajte ponude za određene prazne sate. Brza objava ili postupna objava—vi odlučujete."
+      },
+      "controlInventory": {
+        "title": "Kontrolirajte Zalihe",
+        "description": "Postavite ograničenja količine, geofencing i ograničenja po korisniku kako biste spriječili zlouporabu."
+      },
+      "trackPerformance": {
+        "title": "Pratite Performanse",
+        "description": "Analitički nadzorni panel u stvarnom vremenu za praćenje rezervacija, iskorištenja i ROI vaših ponuda."
+      },
+      "cta": "Postanite Trgovac"
+    },
+    "finalCta": {
+      "title": "Spremni Početi Štedjeti?",
+      "subtitle": "Pridružite se tisućama kupaca koji već štede na restoranima, kafićima, teretanama i više. Besplatna registracija, trenutne uštede.",
+      "browseAll": "Pregledaj Sve Ponude",
+      "signUpFree": "Registrirajte Se Besplatno"
+    }
+  },
+  "testimonials": {
+    "title": "Što Ljudi Kažu",
+    "subtitle": "Pridružite se tisućama zadovoljnih kupaca i trgovaca koji koriste Blinkoo",
+    "items": [
+      {
+        "quote": "Blinkoo nam je pomogao ispuniti naš termin od 14-16h s više od 30 kupaca dnevno. Prihod se povećao za 35% u našim praznim satima.",
+        "author": "Sarah Chen",
+        "role": "Vlasnica, Brew & Bites Cafe"
+      },
+      {
+        "quote": "Uštedio sam više od 200$ ovaj mjesec na izlascima. Ponude su stvarne i iskorištenje je super jednostavno s QR kodom.",
+        "author": "Marcus Rodriguez",
+        "role": "Gurman i Lokalni Istraživač"
+      },
+      {
+        "quote": "Kao vlasnik teretane, naš termin od 10-14h bio je mrtav. Sada je to naše drugo najprometnije vrijeme. Blinkoo je transformirao naše poslovanje.",
+        "author": "Jennifer Park",
+        "role": "Vlasnica, FitZone Studio"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Često Postavljana Pitanja",
+    "subtitle": "Sve što trebate znati o korištenju Blinkoo",
+    "items": [
+      {
+        "question": "Kako mogu rezervirati ponudu?",
+        "answer": "Jednostavno pregledajte dostupne ponude, kliknite \"Rezerviraj\" da rezervirate svoje mjesto i primite jedinstveni QR kod ili 6-znamenkasti kod za iskorištenje. Bez naknada, trenutna potvrda."
+      },
+      {
+        "question": "Postoji li naknada za korištenje Blinkoo?",
+        "answer": "Blinkoo je potpuno besplatan za kupce. Trgovci plaćaju samo malu proviziju kada se ponude uspješno iskoriste. Bez prethodnih troškova ili pretplata."
+      },
+      {
+        "question": "Što ako ne mogu stići na vrijeme?",
+        "answer": "Ponude su vremenski ograničene po dizajnu. Ako ne možete stići, vaša rezervacija će isteći i ponuda postaje dostupna drugima. Uvijek provjerite vrijeme isteka prije rezervacije."
+      },
+      {
+        "question": "Kako trgovci imaju koristi?",
+        "answer": "Trgovci ispunjavaju prazne sate ciljanim kupcima. Kontroliraju zalihe, cijene i vrijeme. Prosječni trgovci vide povećanje prometa od 35-40% u praznim satima bez prethodnih troškova."
+      },
+      {
+        "question": "Jesu li ponude stvarno ograničene?",
+        "answer": "Da! Svaka ponuda ima ograničenu količinu kako bi stvorila hitnost i ekskluzivnost. Jednom kada je ponuda rezervirana, nestaje. To osigurava da su ponude stvarne i utjecajne."
+      },
+      {
+        "question": "Kako mogu iskoristiti svoju rezervaciju?",
+        "answer": "Posjetite mjesto tijekom aktivnog vremena ponude, pokažite svoj 6-znamenkasti kod ili QR kod osoblju i uživajte u popustu. Iskorištenje je trenutno i jednostavno."
+      },
+      {
+        "question": "Mogu li rezervirati više ponuda?",
+        "answer": "Da, možete rezervirati više ponuda od različitih trgovaca. Svaka ponuda ima svoje vremensko ograničenje i proces iskorištenja. Provjerite svoj odjeljak \"Moje Rezervacije\" da upravljate svima."
+      },
+      {
+        "question": "Koje vrste poslovanja koriste Blinkoo?",
+        "answer": "Restorani, kafići, teretane, wellness centri, zabavni prostori i više. Bilo koje lokalno poslovanje koje želi privući promet tijekom praznih sati."
+      }
+    ]
+  },
+  "newsletter": {
+    "title": "Budite Obaviješteni o Novim Ponudama",
+    "subtitle": "Pridružite se više od 2.450 korisnika koji primaju ekskluzivne ponude u vašoj okolini",
+    "placeholder": "Unesite svoju e-poštu",
+    "subscribe": "Pretplatite Se",
+    "success": "✓ Hvala vam! Provjerite svoju e-poštu za potvrdu."
+  },
+  "footer": {
+    "description": "Platforma za vremenski ograničene ponude u vašim omiljenim lokalnim mjestima.",
+    "privacy": "Politika privatnosti",
+    "terms": "Uvjeti korištenja",
+    "contact": "Kontakt",
+    "copyright": "© {year} Blinkoo. Sva prava pridržana."
+  },
+  "offers": {
+    "detail": {
+      "backToOffers": "Natrag na ponude",
+      "offerNotFound": "Ponuda nije pronađena",
+      "browseOffers": "Pregledaj ponude",
+      "aboutThisOffer": "O ovoj ponudi",
+      "noDescription": "Nema opisa",
+      "termsAndConditions": "Uvjeti i odredbe",
+      "whereYoullGo": "Gdje ćete ići",
+      "timeRemaining": "Preostalo vrijeme",
+      "available": "Dostupno",
+      "left": "preostalo",
+      "total": "Ukupno",
+      "kmAway": "km udaljeno",
+      "outsideGeofenceZone": "Izvan geofence zone",
+      "outsideGeofenceMessage": "Trenutno ste {distance} km udaljeni. Morate biti unutar {geofenceKm} km od ovog objekta da biste zatražili ovu ponudu.",
+      "specialOffer": "Posebna ponuda",
+      "free": "Besplatno",
+      "outsideGeofence": "Izvan geofence",
+      "outsideGeofenceShort": "Trenutno {distance} km udaljeno. Morate biti unutar {geofenceKm} km.",
+      "claimOffer": "🎉 Zatražite ovu ponudu",
+      "claimOfferOutside": "⚠️ Zatražite ponudu (izvan geofence)",
+      "claimWarning": "Upozorenje: Možda ste predaleko od objekta da biste zatražili",
+      "claimInfo": "Zatražite ovu ponudu da biste dobili jedinstveni QR kod. Pokažite ga u objektu unutar 7 minuta za iskorištavanje.",
+      "termsApply": "Primjenjuju se uvjeti i odredbe",
+      "ended": "Završeno",
+      "endsIn": "Završava za",
+      "day": "dan",
+      "days": "dana",
+      "reviews": {
+        "customerReviews": "Recenzije kupaca",
+        "outOf5": "od 5",
+        "review": "recenzija",
+        "reviews": "recenzija",
+        "noReviewsYet": "Još nema recenzija - budite prvi!",
+        "writeReview": "Napišite recenziju",
+        "shareExperience": "Podijelite svoje iskustvo",
+        "rating": "Ocjena",
+        "comment": "Komentar (opcionalno)",
+        "shareExperiencePlaceholder": "Podijelite svoje iskustvo...",
+        "addPhotos": "Dodajte fotografije (opcionalno)",
+        "submitting": "Slanje...",
+        "submitReview": "Pošaljite recenziju",
+        "cancel": "Odustani",
+        "noReviewsMessage": "Još nema recenzija. Budite prvi koji će recenzirati!",
+        "anonymous": "Anonimno",
+        "loadingReviews": "Učitavanje recenzija...",
+        "pleaseSelectRating": "Molimo odaberite ocjenu",
+        "reviewSubmitted": "Recenzija je poslana!",
+        "failedToSubmit": "Neuspješno slanje recenzije"
+      }
+    }
+  }
+}

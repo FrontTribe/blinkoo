@@ -4,6 +4,7 @@ export const Waitlists: CollectionConfig = {
   slug: 'waitlists',
   admin: {
     useAsTitle: 'id',
+    group: 'Customer Activity',
   },
   access: {
     read: ({ req: { user } }) => {

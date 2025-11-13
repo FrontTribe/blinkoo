@@ -4,6 +4,7 @@ export const OfferCollections: CollectionConfig = {
   slug: 'offer-collections',
   admin: {
     useAsTitle: 'title',
+    group: 'Content',
   },
   access: {
     read: () => true,
@@ -16,6 +17,7 @@ export const OfferCollections: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Collection Title',
+      localized: true,
     },
     {
       name: 'slug',
@@ -31,6 +33,7 @@ export const OfferCollections: CollectionConfig = {
       name: 'description',
       type: 'textarea',
       label: 'Description',
+      localized: true,
     },
     {
       name: 'photo',

@@ -4,7 +4,7 @@ import { headers as getHeaders } from 'next/headers'
 import configPromise from '@/payload.config'
 import { getMerchantWithKYC } from '@/utilities/checkMerchantKYC'
 
-export async function GET() {
+export async function GET(request: Request) {
   const config = await configPromise
   const payload = await getPayload({ config })
   // const headers = await getHeaders()
@@ -21,19 +21,24 @@ export async function GET() {
   }
 
   try {
+    // Get locale from query params, default to 'hr'
+    const { searchParams } = new URL(request.url)
+    const locale = (searchParams.get('locale') || 'hr') as 'hr' | 'en'
 
-    // Get venues for this merchant
+    // Get venues for this merchant with locale
     const venues = await payload.find({
       collection: 'venues',
+      locale,
       where: { merchant: { equals: merchant.id } },
       limit: 100,
     })
 
     const venueIds = venues.docs.map((v) => v.id)
 
-    // Get offers for this merchant
+    // Get offers for this merchant with locale
     const offers = await payload.find({
       collection: 'offers',
+      locale,
       where: {
         venue: { in: venueIds },
       },

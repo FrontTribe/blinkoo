@@ -36,6 +36,7 @@ export async function GET(request: Request) {
       | 'newest'
       | 'best-discount'
       | 'popular') || 'nearest'
+  const locale = searchParams.get('locale') || 'hr'
 
   console.log('API filters received:', {
     lat,
@@ -73,6 +74,7 @@ export async function GET(request: Request) {
 
     const slots = await payload.find({
       collection: 'offer-slots',
+      locale: locale as 'hr' | 'en',
       where: slotsQuery,
       depth: 3, // Increase depth to get offer -> category
       overrideAccess: true, // Ensure we get all fields including category
@@ -83,6 +85,7 @@ export async function GET(request: Request) {
       // First find category by slug
       const categoryResult = await payload.find({
         collection: 'categories',
+        locale: locale as 'hr' | 'en',
         where: {
           slug: { equals: category },
         },
@@ -140,6 +143,7 @@ export async function GET(request: Request) {
     // Fetch venues with location
     const venues = await payload.find({
       collection: 'venues',
+      locale: locale as 'hr' | 'en',
       where: {
         ...(venueId ? { id: { equals: venueId } } : {}),
         ...(venueIds.size > 0 ? { id: { in: Array.from(venueIds) } } : {}),

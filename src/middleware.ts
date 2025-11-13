@@ -1,31 +1,22 @@
-import { NextResponse } from 'next/server'
+import createMiddleware from 'next-intl/middleware'
+import { routing } from './i18n/routing'
 import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname
-  const isProtectedRoute =
-    path.startsWith('/merchant/') || path.startsWith('/staff/') || path.includes('/claim')
+const intlMiddleware = createMiddleware(routing)
 
-  // Allow public access to home, offers list, and offer details
-  const isPublicRoute =
-    path === '/' ||
-    path.startsWith('/offers') ||
-    path.startsWith('/auth') ||
-    path.startsWith('/api') ||
-    path.startsWith('/admin')
+export default function middleware(request: NextRequest) {
+  // Handle i18n routing first
+  const response = intlMiddleware(request)
 
-  // Don't protect API routes, admin panel, or public routes
-  // NOTE: KYC enforcement is handled in API routes for merchant pages
-  // since most merchant pages are client components
-  if (isPublicRoute || path.includes('/offers/[id]/') || !isProtectedRoute) {
-    return NextResponse.next()
-  }
-
-  // For protected routes, we'll check auth in the page component
-  // since Payload auth requires server-side context
-  return NextResponse.next()
+  // Add any additional middleware logic here if needed
+  // For now, we're just using next-intl for locale handling
+  return response
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api/graphql|api/rest).*)'],
+  // Match all pathnames except for:
+  // - API routes
+  // - Static files (with file extensions)
+  // - Next.js internals
+  matcher: ['/((?!api|_next|_vercel|admin|.*\\..*).*)'],
 }

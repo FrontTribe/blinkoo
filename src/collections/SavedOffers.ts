@@ -4,6 +4,7 @@ export const SavedOffers: CollectionConfig = {
   slug: 'saved-offers',
   admin: {
     useAsTitle: 'id',
+    group: 'Customer Activity',
   },
   access: {
     read: ({ req: { user } }) => {

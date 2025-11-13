@@ -4,6 +4,7 @@ export const Notifications: CollectionConfig = {
   slug: 'notifications',
   admin: {
     useAsTitle: 'title',
+    group: 'Engagement',
   },
   access: {
     read: ({ req: { user } }) => {

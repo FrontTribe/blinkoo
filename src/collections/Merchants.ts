@@ -4,6 +4,7 @@ export const Merchants: CollectionConfig = {
   slug: 'merchants',
   admin: {
     useAsTitle: 'name',
+    group: 'Users',
   },
   hooks: {
     afterChange: [
@@ -115,11 +116,13 @@ export const Merchants: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Business Name',
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Description',
+      localized: true,
     },
     {
       name: 'logo',

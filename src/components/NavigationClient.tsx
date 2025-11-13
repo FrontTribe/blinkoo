@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { useRouter, usePathname } from '@/i18n/navigation'
 import { MdLogout, MdAccountCircle, MdDashboard } from 'react-icons/md'
 import {
   FiShoppingBag,
@@ -23,8 +24,7 @@ import {
 import { NotificationBell } from '@/components/NotificationBell'
 import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 import { BlinkLogo } from '@/components/BlinkLogo'
-import { useTranslation } from '@/i18n/useTranslation'
-import type { Locale } from '@/i18n/config'
+import { useTranslations } from 'next-intl'
 
 type NavigationClientProps = {
   initialUser?: any | null
@@ -37,36 +37,11 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [savedCount, setSavedCount] = useState(0)
-  const [locale, setLocale] = useState<Locale>('en')
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const userMenuRef = useRef<HTMLDivElement>(null)
-  const { t } = useTranslation(locale)
-
-  // Get locale from URL params or cookies
-  useEffect(() => {
-    // Check URL params first
-    const urlLocale = searchParams.get('locale')
-    if (urlLocale === 'en' || urlLocale === 'hr') {
-      setLocale(urlLocale)
-      return
-    }
-
-    // Check cookies
-    const cookies = document.cookie.split(';')
-    const localeCookie = cookies.find((c) => c.trim().startsWith('locale='))
-    if (localeCookie) {
-      const localeValue = localeCookie.split('=')[1]?.trim()
-      if (localeValue === 'en' || localeValue === 'hr') {
-        setLocale(localeValue)
-        return
-      }
-    }
-
-    // Default to 'en'
-    setLocale('en')
-  }, [searchParams])
+  const t = useTranslations('nav')
 
   useEffect(() => {
     function handleScroll() {
@@ -178,14 +153,14 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 href="/auth/login"
                 className="text-text-primary hover:text-text-secondary px-4 py-2 text-sm font-medium transition-colors"
               >
-                {t('nav.login')}
+                {t('login')}
               </Link>
               <Link
                 href="/auth/signup"
                 className="bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary-hover transition-colors"
                 style={{ color: 'white' }}
               >
-                {t('nav.signup')}
+                {t('signup')}
               </Link>
             </div>
           </div>
@@ -222,7 +197,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiShoppingBag
                     className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.offers')}
+                  {t('offers')}
                 </Link>
               )}
               {user && user.role === 'customer' && (
@@ -236,7 +211,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                     }`}
                   >
                     <FiUsers className={`w-4 h-4 ${isActive('/feed') ? 'text-primary' : ''}`} />
-                    {t('nav.feed')}
+                    {t('feed')}
                   </Link>
                   <Link
                     href="/my-claims"
@@ -249,7 +224,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                     <FiShoppingBag
                       className={`w-4 h-4 ${isActive('/my-claims') ? 'text-primary' : ''}`}
                     />
-                    {t('nav.myClaims')}
+                    {t('myClaims')}
                   </Link>
                 </>
               )}
@@ -269,7 +244,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/staff/dashboard' ? 'text-primary' : ''}`}
                   />
-                  {t('nav.dashboard')}
+                  {t('dashboard')}
                 </Link>
                 <Link
                   href="/staff/redeem"
@@ -282,7 +257,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiShoppingCart
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/redeem') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.redeem')}
+                  {t('redeem')}
                 </Link>
                 <Link
                   href="/staff/history"
@@ -295,7 +270,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiClock
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/history') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.history')}
+                  {t('history')}
                 </Link>
               </div>
             )}
@@ -314,7 +289,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/merchant/dashboard' ? 'text-primary' : ''}`}
                   />
-                  {t('nav.dashboard')}
+                  {t('dashboard')}
                 </Link>
                 <Link
                   href="/merchant/offers"
@@ -327,7 +302,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiShoppingBag
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/offers') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.offers')}
+                  {t('offers')}
                 </Link>
                 <Link
                   href="/merchant/venues"
@@ -340,7 +315,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiMapPin
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/venues') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.venues')}
+                  {t('venues')}
                 </Link>
                 <Link
                   href="/merchant/staff"
@@ -353,7 +328,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiUsers
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/staff') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.staff')}
+                  {t('staff')}
                 </Link>
                 <Link
                   href="/merchant/analytics"
@@ -366,20 +341,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiBarChart2
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/analytics') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.analytics')}
-                </Link>
-                <Link
-                  href="/merchant/settings"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
-                    pathname?.startsWith('/merchant/settings')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
-                  }`}
-                >
-                  <FiSettings
-                    className={`w-4 h-4 ${pathname?.startsWith('/merchant/settings') ? 'text-primary' : ''}`}
-                  />
-                  {t('nav.settings')}
+                  {t('analytics')}
                 </Link>
               </div>
             )}
@@ -403,7 +365,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   >
                     <MdAccountCircle className="w-5 h-5 text-text-secondary" />
                     <span className="hidden lg:inline text-sm text-text-primary font-medium">
-                      {user.name?.split(' ')[0] || t('nav.account')}
+                      {user.name?.split(' ')[0] || t('account')}
                     </span>
                     <FiChevronDown
                       className={`w-4 h-4 text-text-secondary transition-transform ${
@@ -430,7 +392,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingBag className="w-4 h-4" />
-                              {t('nav.browseOffers')}
+                              {t('browseOffers')}
                             </Link>
                             <Link
                               href="/my-claims"
@@ -438,7 +400,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingBag className="w-4 h-4" />
-                              {t('nav.myClaims')}
+                              {t('myClaims')}
                             </Link>
                             <Link
                               href="/saved-offers"
@@ -446,7 +408,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiBookmark className="w-4 h-4" />
-                              {t('nav.savedOffers')}
+                              {t('savedOffers')}
                               {savedCount > 0 && (
                                 <span className="ml-auto bg-primary text-white text-xs px-2 py-0.5 rounded-full">
                                   {savedCount}
@@ -459,7 +421,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiHeart className="w-4 h-4" />
-                              {t('nav.favorites')}
+                              {t('favorites')}
                             </Link>
                           </>
                         )}
@@ -471,7 +433,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiHome className="w-4 h-4" />
-                              {t('nav.staffDashboard')}
+                              {t('staffDashboard')}
                             </Link>
                             <Link
                               href="/staff/redeem"
@@ -479,7 +441,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingCart className="w-4 h-4" />
-                              {t('nav.redeemReservations')}
+                              {t('redeemReservations')}
                             </Link>
                             <Link
                               href="/staff/history"
@@ -487,7 +449,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiClock className="w-4 h-4" />
-                              {t('nav.redemptionHistory')}
+                              {t('redemptionHistory')}
                             </Link>
                           </>
                         )}
@@ -499,7 +461,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiMapPin className="w-4 h-4" />
-                              {t('nav.venues')}
+                              {t('venues')}
                             </Link>
                             <Link
                               href="/merchant/analytics"
@@ -507,7 +469,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiBarChart2 className="w-4 h-4" />
-                              {t('nav.analytics')}
+                              {t('analytics')}
                             </Link>
                             <Link
                               href="/staff/redeem"
@@ -515,7 +477,15 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                               className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
                             >
                               <FiShoppingCart className="w-4 h-4" />
-                              {t('nav.redeemCodes')}
+                              {t('redeemCodes')}
+                            </Link>
+                            <Link
+                              href="/merchant/settings"
+                              onClick={() => setShowUserMenu(false)}
+                              className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary hover:bg-bg-secondary transition-colors"
+                            >
+                              <FiSettings className="w-4 h-4" />
+                              {t('settings')}
                             </Link>
                           </>
                         )}
@@ -526,7 +496,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                           className="w-full flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-bg-secondary transition-colors"
                         >
                           <MdLogout className="w-4 h-4" />
-                          {t('nav.logout')}
+                          {t('logout')}
                         </button>
                       </div>
                     </div>
@@ -547,14 +517,14 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   href="/auth/login"
                   className="text-text-primary hover:text-text-secondary px-4 py-2 text-sm font-medium transition-colors"
                 >
-                  {t('nav.login')}
+                  {t('login')}
                 </Link>
                 <Link
                   href="/auth/signup"
                   className="bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary-hover transition-colors"
                   style={{ color: 'white' }}
                 >
-                  {t('nav.signup')}
+                  {t('signup')}
                 </Link>
                 {/* Mobile Menu Button - Show for logged-out users too */}
                 <button
@@ -583,7 +553,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 }`}
               >
                 <FiShoppingBag className={`w-4 h-4 ${isActive('/offers') ? 'text-primary' : ''}`} />
-                {t('nav.browseOffers')}
+                {t('browseOffers')}
               </Link>
             )}
 
@@ -602,7 +572,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiShoppingBag
                     className={`w-4 h-4 ${isActive('/my-claims') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.myClaims')}
+                  {t('myClaims')}
                 </Link>
               </>
             )}
@@ -620,7 +590,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/staff/dashboard' ? 'text-primary' : ''}`}
                   />
-                  {t('nav.dashboard')}
+                  {t('dashboard')}
                 </Link>
                 <Link
                   href="/staff/redeem"
@@ -634,7 +604,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiShoppingCart
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/redeem') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.redeem')}
+                  {t('redeem')}
                 </Link>
                 <Link
                   href="/staff/history"
@@ -648,7 +618,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiClock
                     className={`w-4 h-4 ${pathname?.startsWith('/staff/history') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.history')}
+                  {t('history')}
                 </Link>
               </>
             )}
@@ -666,7 +636,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <MdDashboard
                     className={`w-4 h-4 ${pathname === '/merchant/dashboard' ? 'text-primary' : ''}`}
                   />
-                  {t('nav.dashboard')}
+                  {t('dashboard')}
                 </Link>
                 <Link
                   href="/merchant/offers"
@@ -680,7 +650,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiShoppingBag
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/offers') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.offers')}
+                  {t('offers')}
                 </Link>
                 <Link
                   href="/merchant/venues"
@@ -694,7 +664,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiMapPin
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/venues') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.venues')}
+                  {t('venues')}
                 </Link>
                 <Link
                   href="/merchant/analytics"
@@ -708,7 +678,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiBarChart2
                     className={`w-4 h-4 ${pathname?.startsWith('/merchant/analytics') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.analytics')}
+                  {t('analytics')}
                 </Link>
                 <Link
                   href="/staff/redeem"
@@ -722,7 +692,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   <FiShoppingCart
                     className={`w-4 h-4 ${pathname?.startsWith('/staff') ? 'text-primary' : ''}`}
                   />
-                  {t('nav.redeemCodes')}
+                  {t('redeemCodes')}
                 </Link>
               </>
             )}

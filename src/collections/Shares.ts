@@ -4,6 +4,7 @@ export const Shares: CollectionConfig = {
   slug: 'shares',
   admin: {
     useAsTitle: 'id',
+    group: 'Engagement',
   },
   access: {
     read: () => true,
