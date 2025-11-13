@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiX, FiFilter } from 'react-icons/fi'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Locale } from '@/i18n/config'
 
 type FilterPanelProps = {
   isOpen: boolean
@@ -13,6 +15,7 @@ type FilterPanelProps = {
     discountTypes: string[]
     sortBy: 'nearest' | 'ending-soon' | 'newest' | 'best-discount'
   }
+  locale?: Locale
   onFiltersChange: (filters: {
     distance: number | null
     timeFilter: 'ending-soon' | 'all-day' | null
@@ -21,7 +24,14 @@ type FilterPanelProps = {
   }) => void
 }
 
-export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: FilterPanelProps) {
+export function FilterPanel({
+  isOpen,
+  onClose,
+  filters,
+  locale = 'en',
+  onFiltersChange,
+}: FilterPanelProps) {
+  const { t } = useTranslation(locale)
   const [localFilters, setLocalFilters] = useState(filters)
 
   useEffect(() => {
@@ -38,22 +48,22 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
   const [customDistance, setCustomDistance] = useState(5)
 
   const timeFilterOptions = [
-    { value: 'ending-soon', label: 'Završava uskoro (< 1h)' },
-    { value: 'all-day', label: 'Cijeli dan' },
+    { value: 'ending-soon', label: t('offers.filters.endingSoon') },
+    { value: 'all-day', label: t('offers.filters.allDay') },
   ]
 
   const discountTypeOptions = [
-    { value: 'percent', label: 'Postotak popusta' },
-    { value: 'fixed', label: 'Fiksni iznos' },
-    { value: 'bogo', label: 'BOGO' },
-    { value: 'addon', label: 'Besplatno dodatno' },
+    { value: 'percent', label: t('offers.filters.percentDiscount') },
+    { value: 'fixed', label: t('offers.filters.fixedAmount') },
+    { value: 'bogo', label: t('offers.filters.bogo') },
+    { value: 'addon', label: t('offers.filters.freeAddon') },
   ]
 
   const sortByOptions = [
-    { value: 'nearest', label: 'Najbliže prvo' },
-    { value: 'ending-soon', label: 'Završava uskoro' },
-    { value: 'newest', label: 'Najnovije' },
-    { value: 'best-discount', label: 'Najbolji popust' },
+    { value: 'nearest', label: t('offers.filters.nearestFirst') },
+    { value: 'ending-soon', label: t('offers.filters.endingSoonSort') },
+    { value: 'newest', label: t('offers.filters.newest') },
+    { value: 'best-discount', label: t('offers.filters.bestDiscount') },
   ]
 
   const handleDistanceChange = (distance: number | null) => {
@@ -134,7 +144,9 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-              <h2 className="text-lg font-semibold text-text-primary">Filteri</h2>
+              <h2 className="text-lg font-semibold text-text-primary">
+                {t('offers.filters.title')}
+              </h2>
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-bg-secondary transition-colors"
@@ -149,7 +161,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
               {/* Distance Filter */}
               <div>
                 <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
-                  Udaljenost
+                  {t('offers.filters.distance')}
                 </h3>
                 <div className="space-y-3">
                   {/* Quick Select Chips */}
@@ -175,12 +187,16 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                   {/* Custom Distance Slider */}
                   <div className="pt-3">
                     <div className="flex justify-between text-sm text-text-secondary mb-3">
-                      <span>Prilagođeno: {localFilters.distance || customDistance} km</span>
+                      <span>
+                        {t('offers.filters.custom', {
+                          distance: localFilters.distance || customDistance,
+                        })}
+                      </span>
                       <button
                         onClick={() => handleDistanceChange(null)}
                         className="hover:text-text-primary"
                       >
-                        Bilo koja udaljenost
+                        {t('offers.filters.anyDistance')}
                       </button>
                     </div>
                     <input
@@ -203,7 +219,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
               {/* Time Filter */}
               <div>
                 <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
-                  Vrijeme
+                  {t('offers.filters.time')}
                 </h3>
                 <div className="space-y-2">
                   {timeFilterOptions.map((option) => (
@@ -231,7 +247,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
               {/* Discount Type Filter */}
               <div>
                 <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
-                  Popust
+                  {t('offers.filters.discount')}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {discountTypeOptions.map((option) => (
@@ -253,7 +269,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
               {/* Sort By */}
               <div>
                 <h3 className="text-sm font-semibold text-text-secondary mb-4 uppercase tracking-wider">
-                  Sortiraj
+                  {t('offers.filters.sort')}
                 </h3>
                 <div className="space-y-2">
                   {sortByOptions.map((option) => (
@@ -281,7 +297,7 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                   className="flex-1 py-3 text-text-secondary font-medium hover:text-text-primary transition-colors text-sm border border-border"
                   aria-label="Clear all filters"
                 >
-                  Očisti Sve
+                  {t('offers.filters.clearAll')}
                 </button>
                 <button
                   onClick={handleApply}
@@ -289,7 +305,9 @@ export function FilterPanel({ isOpen, onClose, filters, onFiltersChange }: Filte
                   style={{ color: 'white' }}
                   aria-label={`Apply filters${countActiveFilters() > 0 ? ` (${countActiveFilters()} active)` : ''}`}
                 >
-                  Prikaži Rezultate {countActiveFilters() > 0 && `(${countActiveFilters()})`}
+                  {countActiveFilters() > 0
+                    ? t('offers.filters.showResultsWithCount', { count: countActiveFilters() })
+                    : t('offers.filters.showResults')}
                 </button>
               </div>
             </div>

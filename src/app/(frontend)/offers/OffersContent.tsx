@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { FiMap, FiList, FiFilter, FiGrid } from 'react-icons/fi'
 import { DynamicIcon } from '@/components/DynamicIcon'
 import { FavoriteButton } from '@/components/FavoriteButton'
@@ -18,16 +18,11 @@ import { EmptyState } from '@/components/EmptyState'
 import { SearchBar } from '@/components/SearchBar'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { RecentlyViewed } from '@/components/RecentlyViewed'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Locale } from '@/i18n/config'
 
 // Dynamically import MapView to avoid SSR issues with mapbox-gl
-const MapView = dynamic(() => import('./MapView'), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-[#F7F7F7] border-l border-[#EBEBEB]">
-      <p className="text-text-secondary">Učitavanje karte...</p>
-    </div>
-  ),
-})
+// MapView loading component will be created inside OffersContent to access translations
 
 type Offer = {
   slot: {
@@ -68,14 +63,15 @@ type Category = {
   icon: string
 }
 
-const defaultCategories: Category[] = [{ id: 'all', name: 'Sve', slug: 'all', icon: 'FiGrid' }]
-
-function getTimeRemaining(endsAt: string): string {
+function getTimeRemaining(
+  endsAt: string,
+  t: (key: string, params?: Record<string, string | number>) => any,
+): string {
   const now = new Date()
   const end = new Date(endsAt)
   const diff = end.getTime() - now.getTime()
 
-  if (diff <= 0) return 'Završeno'
+  if (diff <= 0) return t('offers.ended')
 
   const minutes = Math.floor(diff / 1000 / 60)
   const hours = Math.floor(minutes / 60)
@@ -83,7 +79,7 @@ function getTimeRemaining(endsAt: string): string {
 
   if (days > 0) {
     const remainingHours = hours % 24
-    return `${days}${days === 1 ? ' dan' : ' dana'} ${remainingHours}h`
+    return `${days}${days === 1 ? ` ${t('offers.day')}` : ` ${t('offers.days')}`} ${remainingHours}h`
   }
   if (hours > 0) {
     return `${hours}h ${minutes % 60}m`
@@ -92,12 +88,18 @@ function getTimeRemaining(endsAt: string): string {
 }
 
 // Client component for real-time countdown
-function CountdownDisplay({ endsAt }: { endsAt: string }) {
-  const [timeRemaining, setTimeRemaining] = useState(() => getTimeRemaining(endsAt))
+function CountdownDisplay({
+  endsAt,
+  t,
+}: {
+  endsAt: string
+  t: (key: string, params?: Record<string, string | number>) => any
+}) {
+  const [timeRemaining, setTimeRemaining] = useState(() => getTimeRemaining(endsAt, t))
 
   useEffect(() => {
     const updateTimer = () => {
-      setTimeRemaining(getTimeRemaining(endsAt))
+      setTimeRemaining(getTimeRemaining(endsAt, t))
     }
 
     // Update immediately
@@ -107,14 +109,12 @@ function CountdownDisplay({ endsAt }: { endsAt: string }) {
     const interval = setInterval(updateTimer, 30000)
 
     return () => clearInterval(interval)
-  }, [endsAt])
+  }, [endsAt, t])
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs text-text-secondary">Završava za</span>
-      <span className="text-sm font-semibold text-primary">
-        {timeRemaining}
-      </span>
+      <span className="text-xs text-text-secondary">{t('offers.endsIn')}</span>
+      <span className="text-sm font-semibold text-primary">{timeRemaining}</span>
     </div>
   )
 }
@@ -126,18 +126,22 @@ function getMinutesRemaining(endsAt: string): number {
   return Math.floor(diff / 1000 / 60)
 }
 
-function getOfferLabel(type: string, value: number): string {
+function getOfferLabel(
+  type: string,
+  value: number,
+  t: (key: string, params?: Record<string, string | number>) => any,
+): string {
   switch (type) {
     case 'percent':
-      return `${value}% popusta`
+      return t('offers.discount.percent', { value })
     case 'fixed':
-      return `€${value} popusta`
+      return t('offers.discount.fixed', { value })
     case 'bogo':
-      return 'BOGO'
+      return t('offers.discount.bogo')
     case 'addon':
-      return 'Besplatno Dodatno'
+      return t('offers.discount.addon')
     default:
-      return 'Posebno'
+      return t('offers.discount.special')
   }
 }
 
@@ -158,10 +162,34 @@ export default function OffersContent({
 }: OffersContentProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const [locale, setLocale] = useState<Locale>('en')
+  const { t } = useTranslation(locale)
+
+  // Get locale from URL params or cookies
+  useEffect(() => {
+    const urlLocale = searchParams.get('locale')
+    if (urlLocale === 'en' || urlLocale === 'hr') {
+      setLocale(urlLocale)
+      return
+    }
+
+    const cookies = document.cookie.split(';')
+    const localeCookie = cookies.find((c) => c.trim().startsWith('locale='))
+    if (localeCookie) {
+      const localeValue = localeCookie.split('=')[1]?.trim()
+      if (localeValue === 'en' || localeValue === 'hr') {
+        setLocale(localeValue)
+        return
+      }
+    }
+
+    setLocale('en')
+  }, [searchParams])
 
   const [offers, setOffers] = useState<Offer[]>(initialOffers)
   const [filteredOffers, setFilteredOffers] = useState<Offer[]>(initialOffers)
-  const [categories, setCategories] = useState<Category[]>(defaultCategories)
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -280,15 +308,19 @@ export default function OffersContent({
         const categoriesResponse = await fetch('/api/web/categories')
         if (categoriesResponse.ok) {
           const categoriesData = await categoriesResponse.json()
-          setCategories([...defaultCategories, ...categoriesData.categories])
+          setCategories([
+            { id: 'all', name: t('offers.all'), slug: 'all', icon: 'FiGrid' },
+            ...categoriesData.categories,
+          ])
         }
       } catch (error) {
         console.error('Error fetching categories:', error)
+        setCategories([{ id: 'all', name: t('offers.all'), slug: 'all', icon: 'FiGrid' }])
       }
     }
 
     fetchCategories()
-  }, [])
+  }, [t])
 
   // Keyboard shortcuts
   useKeyboardShortcuts([
@@ -319,6 +351,16 @@ export default function OffersContent({
     },
   ])
 
+  // Dynamically import MapView with translated loading message
+  const MapView = dynamic(() => import('./MapView'), {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#F7F7F7] border-l border-[#EBEBEB]">
+        <p className="text-text-secondary">{t('offers.loadingMap')}</p>
+      </div>
+    ),
+  })
+
   if (loading) {
     return (
       <div className="h-screen bg-white flex flex-col overflow-hidden">
@@ -347,230 +389,235 @@ export default function OffersContent({
       {/* Left Column - Only show when in list view */}
       {viewMode === 'list' && (
         <div className="block md:w-2/5 border-r border-border flex flex-col overflow-hidden">
-        {/* Header Row */}
-        <div className="flex items-center justify-between h-14 px-4 shrink-0 border-b border-border">
-          <h4 className="text-base font-semibold text-text-primary">
-            {filteredOffers.length} {filteredOffers.length === 1 ? 'ponuda' : filteredOffers.length < 5 ? 'ponude' : 'ponuda'}
-            {searchQuery && offers.length !== filteredOffers.length && (
-              <span className="text-text-tertiary text-sm ml-1">
-                (filtrirano od {offers.length})
-              </span>
-            )}
-          </h4>
-          <button
-            onClick={() => setShowFilters(true)}
-            className={`relative h-8 px-3 text-sm font-medium border border-border transition-colors ${
-              getActiveFilterCount() > 0
-                ? 'text-primary border-primary bg-primary/5'
-                : 'text-text-secondary hover:border-primary'
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <FiFilter className="text-sm" />
-              <span className="text-xs">Filteri</span>
-              {getActiveFilterCount() > 0 && (
-                <span className="bg-primary text-white text-[10px] px-1.5 py-0.5">
-                  {getActiveFilterCount()}
+          {/* Header Row */}
+          <div className="flex items-center justify-between h-14 px-4 shrink-0 border-b border-border">
+            <h4 className="text-base font-semibold text-text-primary">
+              {filteredOffers.length}{' '}
+              {filteredOffers.length === 1
+                ? t('offers.offer')
+                : filteredOffers.length < 5
+                  ? t('offers.offers')
+                  : t('offers.offersPlural')}
+              {searchQuery && offers.length !== filteredOffers.length && (
+                <span className="text-text-tertiary text-sm ml-1">
+                  ({t('offers.filteredFrom')} {offers.length})
                 </span>
               )}
-            </div>
-          </button>
-        </div>
-
-        {/* Search Bar */}
-        <div className="px-4 py-3 border-b border-border shrink-0">
-          <SearchBar
-            placeholder="Pretražite ponude po naslovu, lokaciji ili opisu..."
-            onSearch={setSearchQuery}
-            className="w-full"
-          />
-        </div>
-
-        {/* Categories Row */}
-        <div className="overflow-x-auto border-b border-border shrink-0">
-          <div className="flex gap-2 px-4 py-2.5">
-            {categories.map((category) => {
-              const isActive =
-                selectedCategory === (category.slug === 'all' ? 'all' : category.slug)
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => {
-                    const newCategory = category.slug === 'all' ? 'all' : category.slug
-                    const params = new URLSearchParams(window.location.search)
-                    if (newCategory === 'all') {
-                      params.delete('category')
-                    } else {
-                      params.set('category', newCategory)
-                    }
-                    router.push(`${pathname}?${params.toString()}`)
-                  }}
-                  className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors border border-border ${
-                    isActive
-                      ? 'bg-text-primary text-white border-text-primary'
-                      : 'bg-white text-text-secondary hover:bg-bg-secondary'
-                  }`}
-                >
-                  {category.slug === 'all' ? (
-                    <span className="flex items-center gap-1.5">
-                      <FiGrid className="text-sm" />
-                      <span className="text-sm">{category.name}</span>
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1.5">
-                      <DynamicIcon iconName={category.icon} className="text-sm" />
-                      <span className="text-sm">{category.name}</span>
-                    </span>
-                  )}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Recently Viewed Section */}
-        <RecentlyViewed />
-
-        {/* Offers List - Scrollable */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="px-4 py-4">
-            {filteredOffers.length === 0 ? (
-              <EmptyState
-                title={searchQuery ? 'Nema ponuda koje odgovaraju vašoj pretrazi' : 'Nema pronađenih ponuda'}
-                description={
-                  searchQuery
-                    ? `Pokušajte s drugim pojmom za pretragu ili očistite pretragu da vidite sve ponude`
-                    : 'Pokušajte prilagoditi filtere ili provjerite kasnije za nove ponude'
-                }
-                action={
-                  searchQuery
-                    ? {
-                        label: 'Očisti Pretragu',
-                        href: '#',
-                        onClick: () => setSearchQuery(''),
-                      }
-                    : {
-                        label: 'Očisti Filtere',
-                        href: pathname || '/offers',
-                      }
-                }
-                illustration={
-                  searchQuery ? (
-                    <div className="w-24 h-24 rounded-full bg-bg-secondary flex items-center justify-center">
-                      <svg
-                        className="w-12 h-12 text-text-tertiary"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </div>
-                  ) : undefined
-                }
-              />
-            ) : (
-              <div className="grid grid-cols-2 gap-3">
-                {filteredOffers.map((item) => (
-                  <Link
-                    key={item.slot.id}
-                    href={`/offers/${item.offer.id}`}
-                    className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white"
-                    aria-label={`View offer: ${item.offer.title} at ${item.venue.name}`}
-                  >
-                    {/* Action Buttons */}
-                    <div
-                      className="absolute top-2 right-2 z-10 flex gap-1"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <SavedButton offerId={item.offer.id} />
-                      <FavoriteButton offerId={item.offer.id} />
-                    </div>
-
-                    {/* Image */}
-                    <div className="aspect-square bg-bg-secondary relative overflow-hidden">
-                      {item.offer.photo ? (
-                        <Image
-                          src={
-                            typeof item.offer.photo === 'object' &&
-                            'url' in item.offer.photo &&
-                            item.offer.photo.url
-                              ? (item.offer.photo.url as string)
-                              : typeof item.offer.photo === 'string'
-                                ? item.offer.photo
-                                : ''
-                          }
-                          alt={item.offer.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 50vw, 33vw"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-bg-secondary text-text-tertiary text-sm">
-                          Nema Slike
-                        </div>
-                      )}
-
-                      {/* Discount Badge */}
-                      <div className="absolute top-2 left-2 bg-text-primary text-white px-2.5 py-1 text-xs font-semibold uppercase tracking-wider">
-                        {getOfferLabel(item.offer.type, item.offer.discountValue || 0)}
-                      </div>
-
-                      {/* Quantity Badge */}
-                      {item.slot.qtyRemaining < 10 && (
-                        <div className="absolute bottom-2 left-2 bg-error text-white px-2.5 py-1 text-xs font-semibold">
-                          Preostalo samo {item.slot.qtyRemaining}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4">
-                      {/* Offer Title */}
-                      <h3 className="text-sm font-semibold text-text-primary line-clamp-2 mb-2">
-                        {item.offer.title}
-                      </h3>
-
-                      {/* Venue Name */}
-                      <p className="text-xs text-text-secondary mb-2 line-clamp-1 !my-0">
-                        {item.venue.name}
-                      </p>
-
-                      {/* Meta Info */}
-                      <div className="space-y-1.5">
-                        {/* Time Remaining */}
-                        <CountdownDisplay endsAt={item.slot.endsAt} />
-
-                        {/* Additional Info */}
-                        <div className="flex items-center gap-2 text-xs text-text-secondary">
-                          {item.venue.category && (
-                            <>
-                              <DynamicIcon
-                                iconName={item.venue.category.icon}
-                                className="text-xs"
-                              />
-                              <span className="capitalize">{item.venue.category.name}</span>
-                              <span>•</span>
-                            </>
-                          )}
-                          {item.venue.distance !== null && (
-                            <span>{item.venue.distance.toFixed(1)} km udaljeno</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+            </h4>
+            <button
+              onClick={() => setShowFilters(true)}
+              className={`relative h-8 px-3 text-sm font-medium border border-border transition-colors ${
+                getActiveFilterCount() > 0
+                  ? 'text-primary border-primary bg-primary/5'
+                  : 'text-text-secondary hover:border-primary'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <FiFilter className="text-sm" />
+                <span className="text-xs">{t('offers.filtersLabel')}</span>
+                {getActiveFilterCount() > 0 && (
+                  <span className="bg-primary text-white text-[10px] px-1.5 py-0.5">
+                    {getActiveFilterCount()}
+                  </span>
+                )}
               </div>
-            )}
+            </button>
           </div>
-        </div>
+
+          {/* Search Bar */}
+          <div className="px-4 py-3 border-b border-border shrink-0">
+            <SearchBar
+              placeholder={t('offers.searchPlaceholder')}
+              onSearch={setSearchQuery}
+              className="w-full"
+            />
+          </div>
+
+          {/* Categories Row */}
+          <div className="overflow-x-auto border-b border-border shrink-0">
+            <div className="flex gap-2 px-4 py-2.5">
+              {categories.map((category) => {
+                const isActive =
+                  selectedCategory === (category.slug === 'all' ? 'all' : category.slug)
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => {
+                      const newCategory = category.slug === 'all' ? 'all' : category.slug
+                      const params = new URLSearchParams(window.location.search)
+                      if (newCategory === 'all') {
+                        params.delete('category')
+                      } else {
+                        params.set('category', newCategory)
+                      }
+                      router.push(`${pathname}?${params.toString()}`)
+                    }}
+                    className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors border border-border ${
+                      isActive
+                        ? 'bg-text-primary text-white border-text-primary'
+                        : 'bg-white text-text-secondary hover:bg-bg-secondary'
+                    }`}
+                  >
+                    {category.slug === 'all' ? (
+                      <span className="flex items-center gap-1.5">
+                        <FiGrid className="text-sm" />
+                        <span className="text-sm">{category.name}</span>
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1.5">
+                        <DynamicIcon iconName={category.icon} className="text-sm" />
+                        <span className="text-sm">{category.name}</span>
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Recently Viewed Section */}
+          <RecentlyViewed />
+
+          {/* Offers List - Scrollable */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="px-4 py-4">
+              {filteredOffers.length === 0 ? (
+                <EmptyState
+                  title={searchQuery ? t('offers.noOffersMatch') : t('offers.noOffersFound')}
+                  description={
+                    searchQuery ? t('offers.tryDifferentSearch') : t('offers.tryAdjustingFilters')
+                  }
+                  action={
+                    searchQuery
+                      ? {
+                          label: t('offers.clearSearch'),
+                          href: '#',
+                          onClick: () => setSearchQuery(''),
+                        }
+                      : {
+                          label: t('offers.clearFilters'),
+                          href: pathname || '/offers',
+                        }
+                  }
+                  illustration={
+                    searchQuery ? (
+                      <div className="w-24 h-24 rounded-full bg-bg-secondary flex items-center justify-center">
+                        <svg
+                          className="w-12 h-12 text-text-tertiary"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          />
+                        </svg>
+                      </div>
+                    ) : undefined
+                  }
+                />
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  {filteredOffers.map((item) => (
+                    <Link
+                      key={item.slot.id}
+                      href={`/offers/${item.offer.id}`}
+                      className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white"
+                      aria-label={`View offer: ${item.offer.title} at ${item.venue.name}`}
+                    >
+                      {/* Action Buttons */}
+                      <div
+                        className="absolute top-2 right-2 z-10 flex gap-1"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <SavedButton offerId={item.offer.id} />
+                        <FavoriteButton offerId={item.offer.id} />
+                      </div>
+
+                      {/* Image */}
+                      <div className="aspect-square bg-bg-secondary relative overflow-hidden">
+                        {item.offer.photo ? (
+                          <Image
+                            src={
+                              typeof item.offer.photo === 'object' &&
+                              'url' in item.offer.photo &&
+                              item.offer.photo.url
+                                ? (item.offer.photo.url as string)
+                                : typeof item.offer.photo === 'string'
+                                  ? item.offer.photo
+                                  : ''
+                            }
+                            alt={item.offer.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-bg-secondary text-text-tertiary text-sm">
+                            {t('offers.noImage')}
+                          </div>
+                        )}
+
+                        {/* Discount Badge */}
+                        <div className="absolute top-2 left-2 bg-text-primary text-white px-2.5 py-1 text-xs font-semibold uppercase tracking-wider">
+                          {getOfferLabel(item.offer.type, item.offer.discountValue || 0, t)}
+                        </div>
+
+                        {/* Quantity Badge */}
+                        {item.slot.qtyRemaining < 10 && (
+                          <div className="absolute bottom-2 left-2 bg-error text-white px-2.5 py-1 text-xs font-semibold">
+                            {t('offers.onlyRemaining', { count: item.slot.qtyRemaining })}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-4">
+                        {/* Offer Title */}
+                        <h3 className="text-sm font-semibold text-text-primary line-clamp-2 mb-2">
+                          {item.offer.title}
+                        </h3>
+
+                        {/* Venue Name */}
+                        <p className="text-xs text-text-secondary mb-2 line-clamp-1 !my-0">
+                          {item.venue.name}
+                        </p>
+
+                        {/* Meta Info */}
+                        <div className="space-y-1.5">
+                          {/* Time Remaining */}
+                          <CountdownDisplay endsAt={item.slot.endsAt} t={t} />
+
+                          {/* Additional Info */}
+                          <div className="flex items-center gap-2 text-xs text-text-secondary">
+                            {item.venue.category && (
+                              <>
+                                <DynamicIcon
+                                  iconName={item.venue.category.icon}
+                                  className="text-xs"
+                                />
+                                <span className="capitalize">{item.venue.category.name}</span>
+                                <span>•</span>
+                              </>
+                            )}
+                            {item.venue.distance !== null && (
+                              <span>
+                                {t('offers.kmAway', { distance: item.venue.distance.toFixed(1) })}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
@@ -585,7 +632,7 @@ export default function OffersContent({
               className="bg-white border border-border px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-sm font-semibold hover:bg-bg-secondary transition-colors"
             >
               <FiList className="w-4 h-4" />
-              Pregled Popisa
+              {t('offers.listView')}
             </button>
           </div>
           <MapView offers={filteredOffers} />
@@ -609,7 +656,7 @@ export default function OffersContent({
           >
             <div className="flex items-center gap-2">
               <FiList className="w-5 h-5" />
-              <span className="font-semibold">Popis</span>
+              <span className="font-semibold">{t('offers.list')}</span>
             </div>
           </button>
           <button
@@ -622,7 +669,7 @@ export default function OffersContent({
           >
             <div className="flex items-center gap-2">
               <FiMap className="w-5 h-5" />
-              <span className="font-semibold">Karta</span>
+              <span className="font-semibold">{t('offers.map')}</span>
             </div>
           </button>
         </div>
@@ -633,6 +680,7 @@ export default function OffersContent({
         isOpen={showFilters}
         onClose={() => setShowFilters(false)}
         filters={filters}
+        locale={locale}
         onFiltersChange={(newFilters) => {
           const params = new URLSearchParams(window.location.search)
 
