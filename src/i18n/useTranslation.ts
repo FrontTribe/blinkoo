@@ -5,7 +5,7 @@ import { translations, type Locale, defaultLocale } from './config'
 
 // Simple in-memory cache for translations
 const translationCache: Record<string, any> = {}
-const loadingPromises: Record<string, Promise<any>> = {}
+const loadingPromises: Record<string, Promise<any> | undefined> = {}
 
 export function useTranslation(locale: Locale = defaultLocale) {
   const [messages, setMessages] = useState<any>(translationCache[locale] || null)
