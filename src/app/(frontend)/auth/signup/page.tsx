@@ -1,9 +1,20 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState, Suspense, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { FiMail, FiLock, FiUser, FiPhone, FiArrowRight, FiShoppingBag, FiAlertCircle, FiCheckCircle } from 'react-icons/fi'
+import {
+  FiMail,
+  FiLock,
+  FiUser,
+  FiPhone,
+  FiArrowRight,
+  FiShoppingBag,
+  FiAlertCircle,
+  FiCheckCircle,
+} from 'react-icons/fi'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Locale } from '@/i18n/config'
 
 function SignupForm() {
   const router = useRouter()
@@ -18,6 +29,29 @@ function SignupForm() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
+  const [locale, setLocale] = useState<Locale>('en')
+  const { t } = useTranslation(locale)
+
+  // Get locale from URL params or cookies
+  useEffect(() => {
+    const urlLocale = searchParams.get('locale')
+    if (urlLocale === 'en' || urlLocale === 'hr') {
+      setLocale(urlLocale)
+      return
+    }
+
+    const cookies = document.cookie.split(';')
+    const localeCookie = cookies.find((c) => c.trim().startsWith('locale='))
+    if (localeCookie) {
+      const localeValue = localeCookie.split('=')[1]?.trim()
+      if (localeValue === 'en' || localeValue === 'hr') {
+        setLocale(localeValue)
+        return
+      }
+    }
+
+    setLocale('en')
+  }, [searchParams])
 
   function checkPasswordStrength(password: string) {
     let strength = 0
@@ -93,11 +127,9 @@ function SignupForm() {
             </div>
           </div>
           <h1 className="font-heading text-3xl font-bold text-text-primary mb-2">
-            {isMerchant ? 'Postanite Trgovac' : 'Kreirajte Račun'}
+            {isMerchant ? t('auth.signup.titleMerchant') : t('auth.signup.title')}
           </h1>
-          <p className="text-sm text-text-secondary">
-            Pridružite se Blinkoo i počnite otkrivati odlične ponude
-          </p>
+          <p className="text-sm text-text-secondary">{t('auth.signup.subtitle')}</p>
         </div>
 
         {/* Form Card */}
@@ -112,7 +144,7 @@ function SignupForm() {
           {/* Role Selection */}
           <div>
             <label className="block text-sm font-semibold text-text-primary mb-3">
-              Registrirajte se kao:
+              {t('auth.signup.registerAs')}
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
@@ -125,9 +157,11 @@ function SignupForm() {
                 }`}
               >
                 <div className="text-left">
-                  <div className="font-semibold text-text-primary mb-1">Kupac</div>
+                  <div className="font-semibold text-text-primary mb-1">
+                    {t('auth.signup.customer.label')}
+                  </div>
                   <div className="text-xs text-text-secondary">
-                    Otkrijte ekskluzivne ponude i uštedite
+                    {t('auth.signup.customer.description')}
                   </div>
                 </div>
               </button>
@@ -141,9 +175,11 @@ function SignupForm() {
                 }`}
               >
                 <div className="text-left">
-                  <div className="font-semibold text-text-primary mb-1">Trgovac</div>
+                  <div className="font-semibold text-text-primary mb-1">
+                    {t('auth.signup.merchant.label')}
+                  </div>
                   <div className="text-xs text-text-secondary">
-                    Ispunite prazne sate i privucite kupce
+                    {t('auth.signup.merchant.description')}
                   </div>
                 </div>
               </button>
@@ -154,8 +190,12 @@ function SignupForm() {
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
               <FiCheckCircle className="text-blue-600 text-xl flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-blue-900 mb-1">Trgovački Račun</p>
-                <p className="text-xs text-blue-800">Registrirate se kao trgovac kako biste nudili ponude</p>
+                <p className="text-sm font-medium text-blue-900 mb-1">
+                  {t('auth.signup.merchantAccount.title')}
+                </p>
+                <p className="text-xs text-blue-800">
+                  {t('auth.signup.merchantAccount.description')}
+                </p>
               </div>
             </div>
           )}
@@ -163,7 +203,7 @@ function SignupForm() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="name" className="block text-sm font-semibold text-text-primary mb-2">
-                Ime i Prezime
+                {t('auth.signup.fullName')}
               </label>
               <div className="relative">
                 <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -182,7 +222,7 @@ function SignupForm() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-text-primary mb-2">
-                E-pošta
+                {t('auth.signup.email')}
               </label>
               <div className="relative">
                 <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -201,7 +241,7 @@ function SignupForm() {
 
             <div>
               <label htmlFor="phone" className="block text-sm font-semibold text-text-primary mb-2">
-                Broj Telefona
+                {t('auth.signup.phone')}
               </label>
               <div className="relative">
                 <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -216,12 +256,15 @@ function SignupForm() {
                   className="block w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary placeholder:text-text-tertiary rounded-lg focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
-              <p className="mt-1 text-xs text-text-tertiary">Uključite pozivni broj (npr. +385 za Hrvatsku)</p>
+              <p className="mt-1 text-xs text-text-tertiary">{t('auth.signup.phoneHint')}</p>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-text-primary mb-2">
-                Lozinka
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-text-primary mb-2"
+              >
+                {t('auth.signup.password')}
               </label>
               <div className="relative">
                 <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary w-5 h-5" />
@@ -236,7 +279,7 @@ function SignupForm() {
                     checkPasswordStrength(e.target.value)
                   }}
                   className="block w-full pl-12 pr-4 py-3 bg-white border border-border text-text-primary placeholder:text-text-tertiary rounded-lg focus:outline-none focus:border-primary transition-colors"
-                  placeholder="Kreirajte jaku lozinku"
+                  placeholder={t('auth.signup.createPassword')}
                 />
               </div>
               {password && (
@@ -259,10 +302,10 @@ function SignupForm() {
                   </div>
                   <p className="text-xs text-text-tertiary mt-1">
                     {passwordStrength <= 2
-                      ? 'Slaba lozinka'
+                      ? t('auth.signup.passwordStrength.weak')
                       : passwordStrength <= 4
-                        ? 'Srednja snaga'
-                        : 'Jaka lozinka'}
+                        ? t('auth.signup.passwordStrength.medium')
+                        : t('auth.signup.passwordStrength.strong')}
                   </p>
                 </div>
               )}
@@ -275,13 +318,13 @@ function SignupForm() {
                 className="mt-1 w-4 h-4 border-border text-primary focus:ring-primary rounded"
               />
               <label className="text-xs text-text-secondary">
-                Slažem se s{' '}
+                {t('auth.signup.agreeTerms')}{' '}
                 <Link href="/terms" className="text-primary hover:text-primary-hover font-medium">
-                  Uvjetima Korištenja
+                  {t('auth.signup.termsOfService')}
                 </Link>{' '}
-                i{' '}
+                {t('auth.signup.and')}{' '}
                 <Link href="/privacy" className="text-primary hover:text-primary-hover font-medium">
-                  Politikom Privatnosti
+                  {t('auth.signup.privacyPolicy')}
                 </Link>
               </label>
             </div>
@@ -313,11 +356,15 @@ function SignupForm() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  <span>Kreiranje računa...</span>
+                  <span>{t('auth.signup.creatingAccount')}</span>
                 </>
               ) : (
                 <>
-                  <span>{isMerchant ? 'Kreiraj Trgovački Račun' : 'Kreiraj Račun'}</span>
+                  <span>
+                    {isMerchant
+                      ? t('auth.signup.createMerchantAccount')
+                      : t('auth.signup.createAccountButton')}
+                  </span>
                   <FiArrowRight className="w-5 h-5" />
                 </>
               )}
@@ -330,7 +377,9 @@ function SignupForm() {
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-text-secondary">Već imate račun?</span>
+              <span className="px-2 bg-white text-text-secondary">
+                {t('auth.signup.haveAccount')}
+              </span>
             </div>
           </div>
 
@@ -339,21 +388,24 @@ function SignupForm() {
             href="/auth/login"
             className="block w-full text-center py-3 px-4 border-2 border-border text-text-secondary hover:border-primary hover:text-primary font-semibold rounded-lg transition-colors"
           >
-            Prijava
+            {t('auth.signup.signIn')}
           </Link>
         </div>
 
         {/* Back to Home */}
         <div className="text-center">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+          >
             <FiArrowRight className="w-4 h-4 rotate-180" />
-            Natrag na početnu
+            {t('auth.signup.backToHome')}
           </Link>
         </div>
 
         {/* Additional Info */}
         <div className="text-center text-xs text-text-tertiary space-y-1">
-          <p>Registrirajte se besplatno i počnite štedjeti danas</p>
+          <p>{t('auth.signup.signUpFree')}</p>
         </div>
       </div>
     </div>

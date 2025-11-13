@@ -8,6 +8,8 @@ import { SavedButton } from '@/components/SavedButton'
 import { CountdownTimer } from '@/components/CountdownTimer'
 import { ShareOfferButton } from '@/components/sharing/ShareOfferButton'
 import { WaitlistButton } from '@/components/WaitlistButton'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Locale } from '@/i18n/config'
 
 type OfferDetailsClientProps = {
   slug: string
@@ -15,6 +17,7 @@ type OfferDetailsClientProps = {
   venue: any
   slot: any
   geofenceKm?: number
+  locale?: Locale
 }
 
 // Haversine formula to calculate distance between two coordinates
@@ -33,12 +36,12 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
   return distance
 }
 
-function getTimeRemaining(endsAt: string): string {
+function getTimeRemaining(endsAt: string, t: (key: string) => string): string {
   const now = new Date()
   const end = new Date(endsAt)
   const diff = end.getTime() - now.getTime()
 
-  if (diff <= 0) return 'Ended'
+  if (diff <= 0) return t('offers.detail.ended')
 
   const minutes = Math.floor(diff / 1000 / 60)
   const hours = Math.floor(minutes / 60)
@@ -46,12 +49,13 @@ function getTimeRemaining(endsAt: string): string {
 
   if (days > 0) {
     const remainingHours = hours % 24
-    return `Ends in ${days}${days === 1 ? ' day' : ' days'} ${remainingHours}h`
+    const dayText = days === 1 ? t('offers.detail.day') : t('offers.detail.days')
+    return `${t('offers.detail.endsIn')} ${days} ${dayText} ${remainingHours}h`
   }
   if (hours > 0) {
-    return `Ends in ${hours}h ${minutes % 60}m`
+    return `${t('offers.detail.endsIn')} ${hours}h ${minutes % 60}m`
   }
-  return `Ends in ${minutes}m`
+  return `${t('offers.detail.endsIn')} ${minutes}m`
 }
 
 export function OfferDetailsClient({
@@ -60,7 +64,9 @@ export function OfferDetailsClient({
   venue,
   slot,
   geofenceKm = 0,
+  locale = 'en',
 }: OfferDetailsClientProps) {
+  const { t } = useTranslation(locale)
   const { lat, lng, loading: locationLoading } = useGeolocation()
   const [distance, setDistance] = useState<number | null>(null)
 
@@ -73,7 +79,8 @@ export function OfferDetailsClient({
 
   const hasGeofence = geofenceKm > 0
   const isOutsideGeofence = hasGeofence && distance !== null && distance > geofenceKm
-  const distanceText = distance !== null ? `${distance.toFixed(1)} km away` : null
+  const distanceText =
+    distance !== null ? `${distance.toFixed(1)} ${t('offers.detail.kmAway')}` : null
 
   return (
     <div className="bg-white border border-border overflow-hidden">
@@ -122,10 +129,14 @@ export function OfferDetailsClient({
             <div className="flex items-start gap-3">
               <FiAlertCircle className="text-amber-600 mt-0.5 flex-shrink-0 text-lg" />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-amber-900 mb-1">Outside Geofence Zone</p>
+                <p className="text-sm font-semibold text-amber-900 mb-1">
+                  {t('offers.detail.outsideGeofenceZone')}
+                </p>
                 <p className="text-xs text-amber-700">
-                  You're currently {distance?.toFixed(1)} km away. You need to be within{' '}
-                  {geofenceKm} km of this venue to claim this offer.
+                  {t('offers.detail.outsideGeofenceMessage', {
+                    distance: distance?.toFixed(1) || '0',
+                    geofenceKm: geofenceKm.toString(),
+                  })}
                 </p>
               </div>
             </div>
@@ -140,7 +151,7 @@ export function OfferDetailsClient({
           <div className="flex items-center gap-2 mb-2">
             <FiClock className="text-primary text-lg" />
             <span className="text-xs font-semibold text-primary uppercase tracking-wide">
-              Time Remaining
+              {t('offers.detail.timeRemaining')}
             </span>
           </div>
           <div className="sm:hidden">
@@ -148,7 +159,7 @@ export function OfferDetailsClient({
           </div>
           <div className="hidden sm:block">
             <div className="text-2xl font-bold text-text-primary">
-              {getTimeRemaining(slot.endsAt)}
+              {getTimeRemaining(slot.endsAt, t)}
             </div>
           </div>
         </div>
@@ -158,12 +169,12 @@ export function OfferDetailsClient({
           <div className="flex items-center gap-2 mb-2">
             <FiUsers className="text-primary text-lg" />
             <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
-              Available
+              {t('offers.detail.available')}
             </span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold text-text-primary">{slot.qtyRemaining}</span>
-            <span className="text-sm text-text-tertiary">left</span>
+            <span className="text-sm text-text-tertiary">{t('offers.detail.left')}</span>
           </div>
         </div>
 
@@ -172,7 +183,7 @@ export function OfferDetailsClient({
           <div className="flex items-center gap-2 mb-2">
             <FiUsers className="text-text-secondary text-lg" />
             <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
-              Total
+              {t('offers.detail.total')}
             </span>
           </div>
           <div className="text-2xl font-bold text-text-primary">{slot.qtyTotal}</div>
@@ -190,6 +201,7 @@ export function OfferBookingCard({
   geofenceKm = 0,
   slot,
   offer,
+  locale = 'en',
 }: {
   slug: string
   offerId: string
@@ -197,7 +209,9 @@ export function OfferBookingCard({
   geofenceKm?: number
   slot?: any
   offer?: any
+  locale?: Locale
 }) {
+  const { t } = useTranslation(locale)
   const { lat, lng } = useGeolocation()
   const [distance, setDistance] = useState<number | null>(null)
 
@@ -218,10 +232,12 @@ export function OfferBookingCard({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold text-primary uppercase tracking-wider">
-              Special Offer
+              {t('offers.detail.specialOffer')}
             </p>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-4xl font-bold text-text-primary">Free</span>
+              <span className="text-4xl font-bold text-text-primary">
+                {t('offers.detail.free')}
+              </span>
             </div>
           </div>
           <SavedButton offerId={offerId} />
@@ -235,9 +251,14 @@ export function OfferBookingCard({
             <div className="flex items-start gap-2">
               <FiAlertCircle className="text-amber-600 mt-0.5 flex-shrink-0 text-lg" />
               <div>
-                <p className="text-sm font-semibold text-amber-900">Outside Geofence</p>
+                <p className="text-sm font-semibold text-amber-900">
+                  {t('offers.detail.outsideGeofence')}
+                </p>
                 <p className="text-xs text-amber-700 mt-1">
-                  Currently {distance?.toFixed(1)} km away. Need to be within {geofenceKm} km.
+                  {t('offers.detail.outsideGeofenceShort', {
+                    distance: distance?.toFixed(1) || '0',
+                    geofenceKm: geofenceKm.toString(),
+                  })}
                 </p>
               </div>
             </div>
@@ -262,12 +283,12 @@ export function OfferBookingCard({
               style={hasGeofence && isOutsideGeofence ? {} : { color: 'white' }}
             >
               {hasGeofence && isOutsideGeofence
-                ? '⚠️ Claim Offer (Outside Geofence)'
-                : '🎉 Claim This Offer'}
+                ? t('offers.detail.claimOfferOutside')
+                : t('offers.detail.claimOffer')}
             </Link>
             {hasGeofence && isOutsideGeofence && (
               <p className="text-xs text-center text-amber-700">
-                Warning: You may be too far from the venue to claim
+                {t('offers.detail.claimWarning')}
               </p>
             )}
           </>
@@ -276,13 +297,12 @@ export function OfferBookingCard({
         {/* Info Note */}
         <div className="bg-bg-secondary border border-border p-3">
           <p className="text-xs text-text-secondary text-center leading-relaxed">
-            Claim this offer to get a unique QR code. Show it at the venue within 7 minutes to
-            redeem.
+            {t('offers.detail.claimInfo')}
           </p>
         </div>
 
         {/* Terms */}
-        <p className="text-xs text-center text-text-tertiary">Terms and conditions apply</p>
+        <p className="text-xs text-center text-text-tertiary">{t('offers.detail.termsApply')}</p>
       </div>
     </div>
   )

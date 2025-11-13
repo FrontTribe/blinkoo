@@ -2,8 +2,11 @@
 
 import { useState } from 'react'
 import { MdEmail, MdArrowForward } from 'react-icons/md'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Locale } from '@/i18n/config'
 
-export function NewsletterSignup() {
+export function NewsletterSignup({ locale = 'en' }: { locale?: Locale }) {
+  const { t } = useTranslation(locale)
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -27,15 +30,13 @@ export function NewsletterSignup() {
               <MdEmail className="text-xl text-primary" />
             </div>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
-              Budite Obaviješteni o Novim Ponudama
+              {t('newsletter.title')}
             </h2>
-            <p className="text-base text-text-secondary mb-20">
-              Pridružite se više od 2.450 korisnika koji primaju ekskluzivne ponude u vašoj okolini
-            </p>
+            <p className="text-base text-text-secondary mb-20">{t('newsletter.subtitle')}</p>
 
             {subscribed ? (
               <div className="bg-success/10 border border-success/20 p-4 text-success font-medium">
-                ✓ Hvala vam! Provjerite svoju e-poštu za potvrdu.
+                {t('newsletter.success')}
               </div>
             ) : (
               <form
@@ -44,7 +45,7 @@ export function NewsletterSignup() {
               >
                 <input
                   type="email"
-                  placeholder="Unesite svoju e-poštu"
+                  placeholder={t('newsletter.placeholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -55,7 +56,7 @@ export function NewsletterSignup() {
                   className="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 font-semibold hover:bg-primary-hover transition-colors"
                   style={{ color: 'white' }}
                 >
-                  Pretplatite Se
+                  {t('newsletter.subscribe')}
                   <MdArrowForward className="text-lg" style={{ color: 'white' }} />
                 </button>
               </form>

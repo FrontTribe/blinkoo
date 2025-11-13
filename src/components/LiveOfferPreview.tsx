@@ -1,6 +1,10 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { MdArrowForward, MdAccessTime, MdLocalOffer } from 'react-icons/md'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Locale } from '@/i18n/config'
 
 type Offer = {
   id: string
@@ -32,6 +36,7 @@ type Props = {
     name: string
     distance?: number
   }
+  locale?: Locale
 }
 
 function getOfferLabel(type: string, value: number): string {
@@ -49,12 +54,12 @@ function getOfferLabel(type: string, value: number): string {
   }
 }
 
-function getTimeRemaining(endsAt: string): string {
+function getTimeRemaining(endsAt: string, t: (key: string) => string): string {
   const now = new Date()
   const end = new Date(endsAt)
   const diff = end.getTime() - now.getTime()
 
-  if (diff <= 0) return 'Expired'
+  if (diff <= 0) return t('offers.detail.ended')
 
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
@@ -62,13 +67,15 @@ function getTimeRemaining(endsAt: string): string {
 
   if (days > 0) {
     const remainingHours = hours % 24
-    return `${days}${days === 1 ? ' day' : ' days'} ${remainingHours}h`
+    const dayText = days === 1 ? t('offers.detail.day') : t('offers.detail.days')
+    return `${days} ${dayText} ${remainingHours}h`
   }
   if (hours > 0) return `${hours}h ${minutes}m`
   return `${minutes}m`
 }
 
-export function LiveOfferPreview({ offer, slot, venue }: Props) {
+export function LiveOfferPreview({ offer, slot, venue, locale = 'en' }: Props) {
+  const { t } = useTranslation(locale)
   return (
     <Link
       href={`/offers/${offer.id}`}
@@ -120,16 +127,20 @@ export function LiveOfferPreview({ offer, slot, venue }: Props) {
         <div className="flex items-center gap-3 text-xs text-text-secondary mb-3">
           <div className="flex items-center gap-1">
             <MdAccessTime className="text-sm" />
-            <span>{getTimeRemaining(slot.endsAt)} left</span>
+            <span>
+              {getTimeRemaining(slot.endsAt, t)} {t('offers.detail.left')}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <MdLocalOffer className="text-sm" />
-            <span>{slot.qtyRemaining} left</span>
+            <span>
+              {slot.qtyRemaining} {t('offers.detail.left')}
+            </span>
           </div>
         </div>
 
         <div className="flex items-center gap-2 text-sm text-primary font-semibold group-hover:text-primary-hover transition-colors">
-          View Offer
+          {t('offers.detail.browseOffers')}
           <MdArrowForward />
         </div>
       </div>

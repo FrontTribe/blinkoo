@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { FiStar, FiImage } from 'react-icons/fi'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
+import { useTranslation } from '@/i18n/useTranslation'
+import type { Locale } from '@/i18n/config'
 
 type Review = {
   id: string
@@ -20,9 +22,11 @@ type Review = {
 interface ReviewsProps {
   offerId: string
   autoOpenForm?: boolean
+  locale?: Locale
 }
 
-export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
+export function Reviews({ offerId, autoOpenForm = false, locale = 'en' }: ReviewsProps) {
+  const { t } = useTranslation(locale)
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -63,7 +67,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
     e.preventDefault()
 
     if (!rating) {
-      toast.error('Please select a rating')
+      toast.error(t('offers.detail.reviews.pleaseSelectRating'))
       return
     }
 
@@ -103,7 +107,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
       })
 
       if (response.ok) {
-        toast.success('Review submitted!')
+        toast.success(t('offers.detail.reviews.reviewSubmitted'))
         setRating(5)
         setComment('')
         setPhotos([])
@@ -111,10 +115,10 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
         fetchReviews()
       } else {
         const data = await response.json()
-        toast.error(data.error || 'Failed to submit review')
+        toast.error(data.error || t('offers.detail.reviews.failedToSubmit'))
       }
     } catch (error) {
-      toast.error('Failed to submit review')
+      toast.error(t('offers.detail.reviews.failedToSubmit'))
     } finally {
       setSubmitting(false)
     }
@@ -151,7 +155,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
   if (loading) {
     return (
       <div>
-        <p className="text-text-secondary text-sm">Loading reviews...</p>
+        <p className="text-text-secondary text-sm">{t('offers.detail.reviews.loadingReviews')}</p>
       </div>
     )
   }
@@ -165,7 +169,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
         <div>
           <h2 className="font-heading text-2xl font-bold text-text-primary mb-3 flex items-center gap-2">
             <span className="h-1 w-1 bg-primary" />
-            Customer Reviews
+            {t('offers.detail.reviews.customerReviews')}
           </h2>
           <div className="flex items-center gap-3">
             {averageRating > 0 ? (
@@ -174,14 +178,19 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
                   {renderStars(Math.round(averageRating))}
                 </div>
                 <span className="text-text-secondary text-sm font-medium">
-                  {averageRating.toFixed(1)} out of 5
+                  {averageRating.toFixed(1)} {t('offers.detail.reviews.outOf5')}
                 </span>
                 <span className="text-text-tertiary text-sm">
-                  · {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
+                  · {reviews.length}{' '}
+                  {reviews.length === 1
+                    ? t('offers.detail.reviews.review')
+                    : t('offers.detail.reviews.reviews')}
                 </span>
               </>
             ) : (
-              <span className="text-text-secondary text-sm">No reviews yet - be the first!</span>
+              <span className="text-text-secondary text-sm">
+                {t('offers.detail.reviews.noReviewsYet')}
+              </span>
             )}
           </div>
         </div>
@@ -191,7 +200,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
             className="bg-primary text-white px-4 py-2 hover:bg-primary-hover transition-colors text-sm font-semibold"
             style={{ color: 'white' }}
           >
-            Write Review
+            {t('offers.detail.reviews.writeReview')}
           </button>
         )}
       </div>
@@ -199,11 +208,13 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
       {showForm && (
         <div className="mb-8 bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20 p-6">
           <h3 className="font-heading text-lg font-bold text-text-primary mb-4">
-            Share Your Experience
+            {t('offers.detail.reviews.shareExperience')}
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-xs font-medium text-text-secondary mb-2">Rating</label>
+              <label className="block text-xs font-medium text-text-secondary mb-2">
+                {t('offers.detail.reviews.rating')}
+              </label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -225,7 +236,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
                 htmlFor="comment"
                 className="block text-xs font-medium text-text-secondary mb-2"
               >
-                Comment (optional)
+                {t('offers.detail.reviews.comment')}
               </label>
               <textarea
                 id="comment"
@@ -233,14 +244,14 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
                 onChange={(e) => setComment(e.target.value)}
                 rows={4}
                 className="w-full px-3 py-2 bg-white border border-border text-text-primary text-sm placeholder-text-tertiary focus:border-text-primary focus:outline-none resize-none"
-                placeholder="Share your experience..."
+                placeholder={t('offers.detail.reviews.shareExperiencePlaceholder')}
               />
             </div>
 
             {/* Photo Upload */}
             <div className="mb-4">
               <label className="block text-xs font-medium text-text-secondary mb-2">
-                Add Photos (optional)
+                {t('offers.detail.reviews.addPhotos')}
               </label>
               <input
                 type="file"
@@ -278,7 +289,9 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
                 className="bg-text-primary text-white px-4 py-2 hover:bg-text-secondary transition-colors text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ color: 'white' }}
               >
-                {submitting ? 'Submitting...' : 'Submit Review'}
+                {submitting
+                  ? t('offers.detail.reviews.submitting')
+                  : t('offers.detail.reviews.submitReview')}
               </button>
               <button
                 type="button"
@@ -290,7 +303,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
                 }}
                 className="bg-white text-text-primary border border-border px-4 py-2 hover:bg-bg-secondary transition-colors text-xs font-medium"
               >
-                Cancel
+                {t('offers.detail.reviews.cancel')}
               </button>
             </div>
           </form>
@@ -299,7 +312,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
 
       {reviews.length === 0 ? (
         <p className="text-text-tertiary text-sm text-center py-8">
-          No reviews yet. Be the first to review!
+          {t('offers.detail.reviews.noReviewsMessage')}
         </p>
       ) : (
         <div className="space-y-3">
@@ -308,7 +321,7 @@ export function Reviews({ offerId, autoOpenForm = false }: ReviewsProps) {
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <p className="text-text-primary text-sm font-medium">
-                    {review.user.name || 'Anonymous'}
+                    {review.user.name || t('offers.detail.reviews.anonymous')}
                   </p>
                   <p className="text-xs text-text-tertiary">{formatDate(review.createdAt)}</p>
                 </div>

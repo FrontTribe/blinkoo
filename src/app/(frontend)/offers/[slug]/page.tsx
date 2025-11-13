@@ -10,6 +10,8 @@ import { OfferDetailsClient, OfferBookingCard } from './OfferDetailsClient'
 import { RecommendedOffers } from '@/components/RecommendedOffers'
 import { TrackViewWrapper } from './TrackViewWrapper'
 import { FiArrowLeft } from 'react-icons/fi'
+import { getTranslation } from '@/i18n/getTranslation'
+import { getLocale } from '@/i18n/getLocale'
 
 async function getOffer(idOrSlug: string) {
   const cookieStore = await cookies()
@@ -75,6 +77,10 @@ export default async function OfferDetailPage({
   const shouldShowReview = resolvedSearchParams.review === 'true'
   const data = await getOffer(slug)
 
+  // Get locale and translations
+  const locale = await getLocale(resolvedSearchParams)
+  const t = await getTranslation(locale)
+
   // Get user for recommendations
   const cookieStore = await cookies()
   const config = await configPromise
@@ -85,9 +91,11 @@ export default async function OfferDetailPage({
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <h2 className="font-heading text-2xl font-bold text-white">Offer Not Found</h2>
+          <h2 className="font-heading text-2xl font-bold text-white">
+            {t('offers.detail.offerNotFound')}
+          </h2>
           <Link href="/offers" className="mt-4 text-orange-primary hover:text-orange-light">
-            Browse offers
+            {t('offers.detail.browseOffers')}
           </Link>
         </div>
       </div>
@@ -121,7 +129,7 @@ export default async function OfferDetailPage({
               className="inline-flex items-center gap-2 text-text-primary hover:text-text-secondary transition-colors text-sm font-medium"
             >
               <FiArrowLeft className="text-base" />
-              <span>Back to offers</span>
+              <span>{t('offers.detail.backToOffers')}</span>
             </Link>
 
             <div className="hidden sm:block">
@@ -146,6 +154,7 @@ export default async function OfferDetailPage({
               venue={venue}
               slot={slot}
               geofenceKm={offer.geofenceKm}
+              locale={locale}
             />
 
             {/* Photo */}
@@ -177,10 +186,10 @@ export default async function OfferDetailPage({
             <div className="bg-white border border-border p-8">
               <h2 className="font-heading text-2xl font-bold text-text-primary mb-4 flex items-center gap-2">
                 <span className="h-1 w-1 bg-primary" />
-                About this offer
+                {t('offers.detail.aboutThisOffer')}
               </h2>
               <p className="text-text-secondary leading-relaxed whitespace-pre-line">
-                {offer.description || 'No description available'}
+                {offer.description || t('offers.detail.noDescription')}
               </p>
             </div>
 
@@ -189,7 +198,7 @@ export default async function OfferDetailPage({
               <div className="bg-amber-50 border border-amber-200 p-8">
                 <h2 className="font-heading text-2xl font-bold text-text-primary mb-4 flex items-center gap-2">
                   <span className="h-1 w-1 bg-amber-600" />
-                  Terms & Conditions
+                  {t('offers.detail.termsAndConditions')}
                 </h2>
                 <p className="text-text-secondary text-sm whitespace-pre-line leading-relaxed">
                   {offer.terms}
@@ -202,7 +211,7 @@ export default async function OfferDetailPage({
               <div className="bg-white border border-border p-8">
                 <h2 className="font-heading text-2xl font-bold text-text-primary mb-4 flex items-center gap-2">
                   <span className="h-1 w-1 bg-primary" />
-                  Where you'll go
+                  {t('offers.detail.whereYoullGo')}
                 </h2>
                 <div className="h-80 overflow-hidden border border-border bg-bg-secondary">
                   <OfferMap
@@ -226,7 +235,7 @@ export default async function OfferDetailPage({
 
             {/* Reviews */}
             <div id="reviews-section" className="bg-white border border-border p-8">
-              <Reviews offerId={offer.id} autoOpenForm={shouldShowReview} />
+              <Reviews offerId={offer.id} autoOpenForm={shouldShowReview} locale={locale} />
             </div>
 
             {/* Recommended Offers */}
@@ -251,6 +260,7 @@ export default async function OfferDetailPage({
               geofenceKm={offer.geofenceKm}
               slot={slot}
               offer={offer}
+              locale={locale}
             />
           </div>
         </div>

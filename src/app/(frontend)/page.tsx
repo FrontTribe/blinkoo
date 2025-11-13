@@ -13,12 +13,23 @@ import { FAQ } from '@/components/FAQ'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { LiveOfferPreview } from '@/components/LiveOfferPreview'
 import { Footer } from '@/components/Footer'
+import { getTranslation } from '@/i18n/getTranslation'
+import { getLocale } from '@/i18n/getLocale'
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const headers = await getHeaders()
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
   const { user } = await payload.auth({ headers })
+
+  // Get locale and translations
+  const resolvedSearchParams = await searchParams
+  const locale = await getLocale(resolvedSearchParams)
+  const t = await getTranslation(locale)
 
   // Fetch categories
   const categories = await payload.find({
@@ -77,20 +88,20 @@ export default async function HomePage() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-border hover:border-text-primary transition-colors">
                 <span className="w-1.5 h-1.5 bg-primary" />
                 <span className="font-body text-xs font-medium text-text-primary uppercase tracking-wider">
-                  {offers.totalDocs} Aktivnih Ponuda Dostupno Sada
+                  {t('home.hero.activeOffersBadge', { count: offers.totalDocs })}
                 </span>
               </div>
             </div>
 
             {/* Main Heading */}
             <h1 className="font-heading text-5xl md:text-6xl font-bold mb-6 leading-tight text-text-primary text-center">
-              Otkrijte Ekskluzivne Ponude u Vašoj Okolini
+              {t('home.hero.title')}
             </h1>
 
             {/* Subtitle */}
             <div className="flex justify-center mb-12">
               <p className="font-body text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed text-center">
-                Uštedite do 50% na restoranima, kafićima, teretanama i više. Ekskluzivne vremenski ograničene ponude u vašoj okolini.
+                {t('home.hero.subtitle')}
               </p>
             </div>
 
@@ -101,7 +112,7 @@ export default async function HomePage() {
                 className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
                 style={{ color: 'white' }}
               >
-                <span style={{ color: 'white' }}>Pregledaj Ponude</span>
+                <span style={{ color: 'white' }}>{t('home.hero.browseOffers')}</span>
                 <MdArrowForward className="text-lg" style={{ color: 'white' }} />
               </Link>
               {!user && (
@@ -109,7 +120,7 @@ export default async function HomePage() {
                   href="/auth/signup"
                   className="inline-flex items-center justify-center gap-2 bg-white text-text-primary px-6 py-3 text-base font-semibold border border-text-primary hover:bg-bg-secondary transition-colors"
                 >
-                  Registrirajte Se Besplatno
+                  {t('home.hero.signUpFree')}
                   <BiTrendingUp className="text-lg" />
                 </Link>
               )}
@@ -127,7 +138,7 @@ export default async function HomePage() {
                 {offers.totalDocs}+
               </div>
               <div className="text-xs text-text-secondary uppercase tracking-wider font-medium">
-                Aktivne Ponude
+                {t('home.stats.activeOffers')}
               </div>
             </div>
             <div className="text-center border-r border-[#EBEBEB] last:border-r-0">
@@ -135,19 +146,19 @@ export default async function HomePage() {
                 {categories.totalDocs}+
               </div>
               <div className="text-xs text-text-secondary uppercase tracking-wider font-medium">
-                Kategorije
+                {t('home.stats.categories')}
               </div>
             </div>
             <div className="text-center border-r border-[#EBEBEB] last:border-r-0">
               <div className="text-3xl md:text-4xl font-bold text-text-primary mb-2">100%</div>
               <div className="text-xs text-text-secondary uppercase tracking-wider font-medium">
-                Besplatno za Korištenje
+                {t('home.stats.freeToUse')}
               </div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-primary mb-2">35%</div>
               <div className="text-xs text-text-secondary uppercase tracking-wider font-medium">
-                Prosječna Ušteda
+                {t('home.stats.averageSavings')}
               </div>
             </div>
           </div>
@@ -161,17 +172,17 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-1">
-                  Pronađite Ponude po Kategorijama
+                  {t('home.categories.title')}
                 </h2>
                 <p className="text-sm md:text-base text-text-secondary">
-                  Otkrijte najbolje ponude u vašim omiljenim kategorijama
+                  {t('home.categories.subtitle')}
                 </p>
               </div>
               <Link
                 href="/offers"
                 className="hidden md:inline-flex items-center gap-2 text-primary hover:text-primary-hover font-semibold"
               >
-                Pogledaj Sve
+                {t('home.categories.viewAll')}
                 <MdArrowForward />
               </Link>
             </div>
@@ -201,17 +212,17 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-1">
-                  Najpopularnije Ponude u Vašoj Blizini
+                  {t('home.popular.title')}
                 </h2>
                 <p className="text-sm md:text-base text-text-secondary">
-                  Ponude koje drugi kupci najviše koriste
+                  {t('home.popular.subtitle')}
                 </p>
               </div>
               <Link
                 href="/offers?sortBy=popular"
                 className="hidden md:inline-flex items-center gap-2 text-primary hover:text-primary-hover font-semibold"
               >
-                Pogledaj Sve
+                {t('home.popular.viewAll')}
                 <MdArrowForward />
               </Link>
             </div>
@@ -223,6 +234,7 @@ export default async function HomePage() {
                   offer={item.offer}
                   slot={item.slot}
                   venue={item.venue}
+                  locale={locale}
                 />
               ))}
             </div>
@@ -237,24 +249,24 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-1">
-                  Trenutno Aktualne Ponude
+                  {t('home.liveOffers.title')}
                 </h2>
                 <p className="text-sm md:text-base text-text-secondary">
-                  Najnovije i najtraženije ponude koje ne smijete propustiti
+                  {t('home.liveOffers.subtitle')}
                 </p>
               </div>
               <Link
                 href="/offers"
                 className="hidden md:inline-flex items-center gap-2 text-primary hover:text-primary-hover font-semibold"
               >
-                Pogledaj Sve
+                {t('home.liveOffers.viewAll')}
                 <MdArrowForward />
               </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {sampleOffers.docs.slice(0, 4).map((slot: any) => (
-                <LiveOfferPreview key={slot.id} offer={slot.offer} slot={slot} />
+                <LiveOfferPreview key={slot.id} offer={slot.offer} slot={slot} locale={locale} />
               ))}
             </div>
           </div>
@@ -266,11 +278,11 @@ export default async function HomePage() {
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
-              Kako Funkcionira
+              {t('home.howItWorks.title')}
             </h2>
             <div className="flex justify-center">
               <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
-                Jednostavno, brzo i dizajnirano za kupce i trgovce
+                {t('home.howItWorks.subtitle')}
               </p>
             </div>
           </div>
@@ -284,13 +296,15 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <h3 className="font-heading text-lg font-bold text-text-primary mb-0.5">
-                    Otkrijte
+                    {t('home.howItWorks.discover.title')}
                   </h3>
-                  <div className="text-xs text-text-secondary">Pregledajte aktivne ponude</div>
+                  <div className="text-xs text-text-secondary">
+                    {t('home.howItWorks.discover.subtitle')}
+                  </div>
                 </div>
               </div>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Vidite ekskluzivne vremenski ograničene ponude lokalnih trgovaca u stvarnom vremenu. Pregled karte ili popis—vaš izbor.
+                {t('home.howItWorks.discover.description')}
               </p>
             </div>
 
@@ -300,12 +314,16 @@ export default async function HomePage() {
                   <TbBolt className="text-xl text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-bold text-text-primary mb-0.5">Rezervirajte</h3>
-                  <div className="text-xs text-text-secondary">Rezervirajte odmah</div>
+                  <h3 className="font-heading text-lg font-bold text-text-primary mb-0.5">
+                    {t('home.howItWorks.reserve.title')}
+                  </h3>
+                  <div className="text-xs text-text-secondary">
+                    {t('home.howItWorks.reserve.subtitle')}
+                  </div>
                 </div>
               </div>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Jedan klik za rezervaciju vaše ponude. Dobijte jedinstveni QR kod i 6-znamenkasti kod za iskorištenje. Bez naknada, bez komplikacija.
+                {t('home.howItWorks.reserve.description')}
               </p>
             </div>
 
@@ -316,13 +334,15 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <h3 className="font-heading text-lg font-bold text-text-primary mb-0.5">
-                    Iskoristite
+                    {t('home.howItWorks.redeem.title')}
                   </h3>
-                  <div className="text-xs text-text-secondary">Pokažite i uštedite</div>
+                  <div className="text-xs text-text-secondary">
+                    {t('home.howItWorks.redeem.subtitle')}
+                  </div>
                 </div>
               </div>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Posjetite mjesto i pokažite svoj kod osoblju. Trenutna ušteda, bez kompliciranog procesa naplate.
+                {t('home.howItWorks.redeem.description')}
               </p>
             </div>
           </div>
@@ -334,7 +354,7 @@ export default async function HomePage() {
               className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
               style={{ color: 'white' }}
             >
-              <span style={{ color: 'white' }}>Pregledaj Sve Ponude</span>
+              <span style={{ color: 'white' }}>{t('home.howItWorks.cta')}</span>
               <MdArrowForward className="text-lg" style={{ color: 'white' }} />
             </Link>
           </div>
@@ -346,11 +366,11 @@ export default async function HomePage() {
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="text-center mb-10">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
-              Vidite u Akciji
+              {t('home.visualExamples.title')}
             </h2>
             <div className="flex justify-center">
               <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
-                Iskusite Blinkoo na različitim platformama
+                {t('home.visualExamples.subtitle')}
               </p>
             </div>
           </div>
@@ -361,13 +381,15 @@ export default async function HomePage() {
                 <BiSearch className="text-2xl text-primary" />
               </div>
               <h3 className="font-heading text-lg font-bold text-text-primary mb-2">
-                Otkrijte Ponude
+                {t('home.visualExamples.discoverOffers.title')}
               </h3>
               <p className="text-sm text-text-secondary mb-4">
-                Pregledajte aktivne ponude na karti ili popisu
+                {t('home.visualExamples.discoverOffers.description')}
               </p>
               <div className="aspect-video bg-gray-200 border border-[#EBEBEB] flex items-center justify-center">
-                <span className="text-xs text-text-tertiary">Pregled Karte</span>
+                <span className="text-xs text-text-tertiary">
+                  {t('home.visualExamples.discoverOffers.placeholder')}
+                </span>
               </div>
             </div>
 
@@ -376,13 +398,15 @@ export default async function HomePage() {
                 <MdQrCode className="text-2xl text-primary" />
               </div>
               <h3 className="font-heading text-lg font-bold text-text-primary mb-2">
-                Trenutno Iskorištenje
+                {t('home.visualExamples.instantRedeem.title')}
               </h3>
               <p className="text-sm text-text-secondary mb-4">
-                Pokažite QR kod ili 6-znamenkasti kod osoblju
+                {t('home.visualExamples.instantRedeem.description')}
               </p>
               <div className="aspect-video bg-gray-200 border border-[#EBEBEB] flex items-center justify-center">
-                <span className="text-xs text-text-tertiary">QR Kod Ekran</span>
+                <span className="text-xs text-text-tertiary">
+                  {t('home.visualExamples.instantRedeem.placeholder')}
+                </span>
               </div>
             </div>
 
@@ -391,13 +415,15 @@ export default async function HomePage() {
                 <BiLineChart className="text-2xl text-primary" />
               </div>
               <h3 className="font-heading text-lg font-bold text-text-primary mb-2">
-                Trgovački Nadzorni Panel
+                {t('home.visualExamples.merchantDashboard.title')}
               </h3>
               <p className="text-sm text-text-secondary mb-4">
-                Pratite performanse i upravljajte ponudama
+                {t('home.visualExamples.merchantDashboard.description')}
               </p>
               <div className="aspect-video bg-gray-200 border border-[#EBEBEB] flex items-center justify-center">
-                <span className="text-xs text-text-tertiary">Analitički Nadzorni Panel</span>
+                <span className="text-xs text-text-tertiary">
+                  {t('home.visualExamples.merchantDashboard.placeholder')}
+                </span>
               </div>
             </div>
           </div>
@@ -405,7 +431,7 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <Testimonials />
+      <Testimonials locale={locale} />
 
       {/* For Merchants Section */}
       <section className="py-12 bg-white border-b border-[#EBEBEB]">
@@ -415,26 +441,28 @@ export default async function HomePage() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 mb-3">
                 <BiStore className="text-sm text-primary" />
                 <span className="font-body text-xs font-medium text-primary uppercase tracking-wider">
-                  Za Trgovce
+                  {t('home.forMerchants.badge')}
                 </span>
               </div>
               <h2
                 id="merchant-benefits"
                 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3"
               >
-                Ispunite Svoje Prazne Sate
+                {t('home.forMerchants.title')}
               </h2>
               <div className="flex justify-center">
                 <p className="text-base md:text-lg text-text-secondary max-w-2xl text-center">
-                  Kreirajte vremenski ograničene ponude s ograničenom količinom koje pretvaraju prazne sate u kupce
+                  {t('home.forMerchants.subtitle')}
                 </p>
               </div>
 
               {/* ROI Callout */}
               <div className="mt-6 inline-block bg-primary/10 border border-primary/20 px-6 py-3">
-                <div className="text-2xl font-bold text-primary mb-1">40%</div>
+                <div className="text-2xl font-bold text-primary mb-1">
+                  {t('home.forMerchants.roi.value')}
+                </div>
                 <div className="text-xs text-text-secondary uppercase tracking-wider">
-                  Prosječno povećanje prometa u praznim satima
+                  {t('home.forMerchants.roi.label')}
                 </div>
               </div>
             </div>
@@ -446,10 +474,10 @@ export default async function HomePage() {
                   <MdLocationOn className="text-lg text-primary" />
                 </div>
                 <h3 className="font-heading text-lg font-bold text-text-primary mb-2">
-                  Ciljni Vremenski Slotovi
+                  {t('home.forMerchants.targetedSlots.title')}
                 </h3>
                 <p className="text-sm text-text-secondary leading-relaxed">
-                  Kreirajte ponude za određene prazne sate. Brza objava ili postupna objava—vi odlučujete.
+                  {t('home.forMerchants.targetedSlots.description')}
                 </p>
               </div>
 
@@ -458,10 +486,10 @@ export default async function HomePage() {
                   <TbUsers className="text-lg text-primary" />
                 </div>
                 <h3 className="font-heading text-lg font-bold text-text-primary mb-2">
-                  Kontrolirajte Zalihe
+                  {t('home.forMerchants.controlInventory.title')}
                 </h3>
                 <p className="text-sm text-text-secondary leading-relaxed">
-                  Postavite ograničenja količine, geofencing i ograničenja po korisniku kako biste spriječili zlouporabu.
+                  {t('home.forMerchants.controlInventory.description')}
                 </p>
               </div>
 
@@ -470,10 +498,10 @@ export default async function HomePage() {
                   <BiTrendingUp className="text-lg text-primary" />
                 </div>
                 <h3 className="font-heading text-lg font-bold text-text-primary mb-2">
-                  Pratite Performanse
+                  {t('home.forMerchants.trackPerformance.title')}
                 </h3>
                 <p className="text-sm text-text-secondary leading-relaxed">
-                  Analitički nadzorni panel u stvarnom vremenu za praćenje rezervacija, iskorištenja i ROI vaših ponuda.
+                  {t('home.forMerchants.trackPerformance.description')}
                 </p>
               </div>
             </div>
@@ -485,7 +513,7 @@ export default async function HomePage() {
                 className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
                 style={{ color: 'white' }}
               >
-                <span style={{ color: 'white' }}>Postanite Trgovac</span>
+                <span style={{ color: 'white' }}>{t('home.forMerchants.cta')}</span>
                 <MdArrowForward className="text-lg" style={{ color: 'white' }} />
               </Link>
             </div>
@@ -494,25 +522,23 @@ export default async function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <NewsletterSignup />
+      <NewsletterSignup locale={locale} />
 
       {/* Final CTA - For Customers */}
       <section className="py-16 bg-primary text-white border-b border-primary-hover">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="font-heading text-2xl md:text-3xl font-bold mb-4">
-              Spremni Početi Štedjeti?
+              {t('home.finalCta.title')}
             </h2>
-            <p className="text-base md:text-lg mb-12 opacity-90">
-              Pridružite se tisućama kupaca koji već štede na restoranima, kafićima, teretanama i više. Besplatna registracija, trenutne uštede.
-            </p>
+            <p className="text-base md:text-lg mb-12 opacity-90">{t('home.finalCta.subtitle')}</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/offers"
                 className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-base font-semibold hover:bg-white/90 transition-colors border border-transparent"
                 style={{ color: '#ff385c' }}
               >
-                <span style={{ color: '#ff385c' }}>Pregledaj Sve Ponude</span>
+                <span style={{ color: '#ff385c' }}>{t('home.finalCta.browseAll')}</span>
                 <MdArrowForward className="text-lg" style={{ color: '#ff385c' }} />
               </Link>
               {!user && (
@@ -521,7 +547,7 @@ export default async function HomePage() {
                   className="inline-flex items-center justify-center gap-2 bg-transparent px-6 py-3 text-base font-semibold border border-white hover:bg-white/10 transition-colors"
                   style={{ color: 'white' }}
                 >
-                  <span style={{ color: 'white' }}>Registrirajte Se Besplatno</span>
+                  <span style={{ color: 'white' }}>{t('home.finalCta.signUpFree')}</span>
                 </Link>
               )}
             </div>
@@ -530,7 +556,7 @@ export default async function HomePage() {
       </section>
 
       {/* Footer */}
-      <Footer />
+      <Footer locale={locale} />
     </div>
   )
 }
