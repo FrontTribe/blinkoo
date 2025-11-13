@@ -22,6 +22,7 @@ import {
 } from 'react-icons/fi'
 import { NotificationBell } from '@/components/NotificationBell'
 import { LocaleSwitcher } from '@/components/LocaleSwitcher'
+import { BlinkLogo } from '@/components/BlinkLogo'
 import { useTranslation } from '@/i18n/useTranslation'
 import type { Locale } from '@/i18n/config'
 
@@ -169,11 +170,8 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
       >
         <div className="max-w-[1760px] mx-auto px-4">
           <div className="flex justify-between items-center h-16">
-            <Link
-              href="/"
-              className="font-heading text-xl font-bold text-primary hover:text-primary-hover transition-colors"
-            >
-              Blinkoo
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <BlinkLogo size="md" />
             </Link>
             <div className="flex items-center gap-3">
               <Link
@@ -206,12 +204,8 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
         <div className="flex justify-between items-center h-16">
           {/* Left: Logo + Main Navigation */}
           <div className="flex items-center gap-6">
-            <Link
-              href="/"
-              className="font-heading text-xl font-bold text-primary hover:text-primary-hover transition-colors flex items-center gap-2"
-            >
-              <FiHome className="w-5 h-5" />
-              Blinkoo
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <BlinkLogo size="md" />
             </Link>
 
             {/* Main Navigation Links - For all users (offers), and logged-in customers */}
