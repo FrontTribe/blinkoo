@@ -41,29 +41,29 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
   const getStepVisual = (key: string) => {
     if (key === 'limitedTime') {
       return (
-        <div className="flex items-center gap-4 mt-6 text-sm text-text-secondary">
+      <div className="flex items-center gap-4 mt-6 text-sm text-text-secondary">
           <div className="bg-bg-secondary border border-border px-3 py-2 rounded-lg">
-            <div className="font-semibold text-text-primary">20:00 - 21:30</div>
+          <div className="font-semibold text-text-primary">20:00 - 21:30</div>
             <div className="text-xs">{t('steps.limitedTime.timeWindow')}</div>
           </div>
           <div className="bg-error text-white px-3 py-2 rounded-lg">
             <div className="font-semibold">{t('steps.limitedTime.onlyLeft', { count: 5 })}</div>
             <div className="text-xs opacity-90">{t('steps.limitedTime.limitedSlots')}</div>
-          </div>
+        </div>
         </div>
       )
     }
     if (key === 'howItWorks') {
       return (
-        <div className="mt-6 space-y-3">
+      <div className="mt-6 space-y-3">
           <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3 rounded-lg">
-            <div
+          <div
               className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 rounded-lg"
-              style={{ color: 'white' }}
-            >
-              1
-            </div>
-            <div className="flex-1">
+            style={{ color: 'white' }}
+          >
+            1
+          </div>
+          <div className="flex-1">
               <div className="font-semibold text-text-primary text-sm">
                 {t('steps.howItWorks.step1.title')}
               </div>
@@ -73,13 +73,13 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
             </div>
           </div>
           <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3 rounded-lg">
-            <div
+          <div
               className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 rounded-lg"
-              style={{ color: 'white' }}
-            >
-              2
-            </div>
-            <div className="flex-1">
+            style={{ color: 'white' }}
+          >
+            2
+          </div>
+          <div className="flex-1">
               <div className="font-semibold text-text-primary text-sm">
                 {t('steps.howItWorks.step2.title')}
               </div>
@@ -89,13 +89,13 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
             </div>
           </div>
           <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3 rounded-lg">
-            <div
+          <div
               className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 rounded-lg"
-              style={{ color: 'white' }}
-            >
-              3
-            </div>
-            <div className="flex-1">
+            style={{ color: 'white' }}
+          >
+            3
+          </div>
+          <div className="flex-1">
               <div className="font-semibold text-text-primary text-sm">
                 {t('steps.howItWorks.step3.title')}
               </div>

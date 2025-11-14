@@ -123,15 +123,15 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     // Prepare update data
     const updateData: any = {
-      title: body.title,
-      description: body.description,
-      terms: body.terms,
-      type: body.type,
-      discountValue: parseFloat(body.discountValue),
-      perUserLimit: parseInt(body.perUserLimit) || 1,
-      cooldownMinutes: parseInt(body.cooldownMinutes) || 0,
-      geofenceKm: parseFloat(body.geofenceKm) || 0,
-      status: body.status || 'active',
+        title: body.title,
+        description: body.description,
+        terms: body.terms,
+        type: body.type,
+        discountValue: parseFloat(body.discountValue),
+        perUserLimit: parseInt(body.perUserLimit) || 1,
+        cooldownMinutes: parseInt(body.cooldownMinutes) || 0,
+        geofenceKm: parseFloat(body.geofenceKm) || 0,
+        status: body.status || 'active',
     }
 
     // Include venue if provided (venueId from form becomes venue for Payload)

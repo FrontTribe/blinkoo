@@ -83,7 +83,7 @@ export function LocaleSwitcher() {
                     ? 'bg-primary/10 text-primary font-medium'
                     : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
                 }`}
-              >
+        >
                 <span className="text-lg">{language.flag}</span>
                 <span className="flex-1 text-left">{language.label}</span>
                 {locale === language.code && (
@@ -92,7 +92,7 @@ export function LocaleSwitcher() {
               </button>
             ))}
           </div>
-        </div>
+      </div>
       )}
     </div>
   )
