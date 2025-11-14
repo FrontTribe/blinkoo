@@ -79,7 +79,7 @@ export function LiveOfferPreview({ offer, slot, venue, locale = 'en' }: Props) {
   return (
     <Link
       href={`/offers/${offer.id}`}
-      className="bg-white border border-[#EBEBEB] hover:border-primary transition-colors group block"
+      className="bg-white border border-[#EBEBEB] hover:border-primary transition-colors group block rounded-lg overflow-hidden"
     >
       {offer.photo && (
         <div className="aspect-video overflow-hidden bg-gray-200 relative">
@@ -119,7 +119,7 @@ export function LiveOfferPreview({ offer, slot, venue, locale = 'en' }: Props) {
               {venue?.name || (typeof offer.venue === 'object' && offer.venue?.name) || 'Venue'}
             </p>
           </div>
-          <span className="bg-primary/10 text-primary px-3 py-1 text-xs font-semibold border border-primary/20">
+          <span className="bg-primary/10 text-primary px-3 py-1 text-xs font-semibold border border-primary/20 rounded-lg">
             {getOfferLabel(offer.type, offer.discountValue || 0)}
           </span>
         </div>

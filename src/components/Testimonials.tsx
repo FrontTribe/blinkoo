@@ -42,7 +42,7 @@ export function Testimonials({ locale = 'en' }: { locale?: Locale }) {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors"
+              className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors rounded-lg"
             >
               <div className="mb-4">{renderStars(5)}</div>
               <p className="text-sm text-text-secondary leading-relaxed mb-4">

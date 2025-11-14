@@ -87,7 +87,7 @@ export default async function HomePage({
           <div className="max-w-3xl mx-auto text-center">
             {/* Badge */}
             <div className="flex justify-center mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-border hover:border-text-primary transition-colors">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-border hover:border-text-primary transition-colors rounded-lg">
                 <span className="w-1.5 h-1.5 bg-primary" />
                 <span className="font-body text-xs font-medium text-text-primary uppercase tracking-wider">
                   {t('hero.activeOffersBadge', { count: offers.totalDocs })}
@@ -111,7 +111,7 @@ export default async function HomePage({
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <IntlLink
                 href="/offers"
-                className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors rounded-lg"
                 style={{ color: 'white' }}
               >
                 <span style={{ color: 'white' }}>{t('hero.browseOffers')}</span>
@@ -120,7 +120,7 @@ export default async function HomePage({
               {!user && (
                 <IntlLink
                   href="/auth/signup"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-text-primary px-6 py-3 text-base font-semibold border border-text-primary hover:bg-bg-secondary transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-text-primary px-6 py-3 text-base font-semibold border border-text-primary hover:bg-bg-secondary transition-colors rounded-lg"
                 >
                   {t('hero.signUpFree')}
                   <BiTrendingUp className="text-lg" />
@@ -194,7 +194,7 @@ export default async function HomePage({
                 <Link
                   key={category.id}
                   href={`/${locale}/offers?category=${category.slug}`}
-                  className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors text-center group"
+                  className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors text-center group rounded-lg"
                 >
                   <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-colors">
                     <DynamicIcon iconName={category.icon} className="text-2xl text-primary" />
@@ -291,7 +291,7 @@ export default async function HomePage({
 
           {/* Feature Cards Grid */}
           <div className="grid md:grid-cols-3 gap-6 mb-10">
-            <div className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors">
+            <div className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors rounded-lg">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 flex items-center justify-center bg-primary/10 border border-primary/20">
                   <BiSearch className="text-xl text-primary" />
@@ -310,7 +310,7 @@ export default async function HomePage({
               </p>
             </div>
 
-            <div className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors">
+            <div className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors rounded-lg">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 flex items-center justify-center bg-primary/10 border border-primary/20">
                   <TbBolt className="text-xl text-primary" />
@@ -329,7 +329,7 @@ export default async function HomePage({
               </p>
             </div>
 
-            <div className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors">
+            <div className="bg-white p-6 border border-[#EBEBEB] hover:border-primary transition-colors rounded-lg">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 flex items-center justify-center bg-primary/10 border border-primary/20">
                   <MdQrCode className="text-xl text-primary" />
@@ -378,7 +378,7 @@ export default async function HomePage({
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 text-center">
+            <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 text-center rounded-lg">
               <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary/10 border border-primary/20">
                 <BiSearch className="text-2xl text-primary" />
               </div>
@@ -395,7 +395,7 @@ export default async function HomePage({
               </div>
             </div>
 
-            <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 text-center">
+            <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 text-center rounded-lg">
               <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary/10 border border-primary/20">
                 <MdQrCode className="text-2xl text-primary" />
               </div>
@@ -412,7 +412,7 @@ export default async function HomePage({
               </div>
             </div>
 
-            <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 text-center">
+            <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 text-center rounded-lg">
               <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary/10 border border-primary/20">
                 <BiLineChart className="text-2xl text-primary" />
               </div>
@@ -440,7 +440,7 @@ export default async function HomePage({
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 mb-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 mb-3 rounded-lg">
                 <BiStore className="text-sm text-primary" />
                 <span className="font-body text-xs font-medium text-primary uppercase tracking-wider">
                   {t('forMerchants.badge')}
@@ -459,7 +459,7 @@ export default async function HomePage({
               </div>
 
               {/* ROI Callout */}
-              <div className="mt-6 inline-block bg-primary/10 border border-primary/20 px-6 py-3">
+              <div className="mt-6 inline-block bg-primary/10 border border-primary/20 px-6 py-3 rounded-lg">
                 <div className="text-2xl font-bold text-primary mb-1">
                   {t('forMerchants.roi.value')}
                 </div>
@@ -471,7 +471,7 @@ export default async function HomePage({
 
             {/* Merchant Features Grid */}
             <div className="grid md:grid-cols-3 gap-6 mb-10">
-              <div className="bg-[#F7F7F7] p-6 border border-[#EBEBEB]">
+              <div className="bg-[#F7F7F7] p-6 border border-[#EBEBEB] rounded-lg">
                 <div className="w-10 h-10 flex items-center justify-center bg-primary/10 border border-primary/20 mb-3">
                   <MdLocationOn className="text-lg text-primary" />
                 </div>
@@ -483,7 +483,7 @@ export default async function HomePage({
                 </p>
               </div>
 
-              <div className="bg-[#F7F7F7] p-6 border border-[#EBEBEB]">
+              <div className="bg-[#F7F7F7] p-6 border border-[#EBEBEB] rounded-lg">
                 <div className="w-10 h-10 flex items-center justify-center bg-primary/10 border border-primary/20 mb-3">
                   <TbUsers className="text-lg text-primary" />
                 </div>
@@ -495,7 +495,7 @@ export default async function HomePage({
                 </p>
               </div>
 
-              <div className="bg-[#F7F7F7] p-6 border border-[#EBEBEB]">
+              <div className="bg-[#F7F7F7] p-6 border border-[#EBEBEB] rounded-lg">
                 <div className="w-10 h-10 flex items-center justify-center bg-primary/10 border border-primary/20 mb-3">
                   <BiTrendingUp className="text-lg text-primary" />
                 </div>
@@ -512,7 +512,7 @@ export default async function HomePage({
             <div className="text-center">
               <IntlLink
                 href="/auth/signup"
-                className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-primary px-6 py-3 text-base font-semibold hover:bg-primary-hover transition-colors rounded-lg"
                 style={{ color: 'white' }}
               >
                 <span style={{ color: 'white' }}>{t('forMerchants.cta')}</span>
@@ -537,7 +537,7 @@ export default async function HomePage({
             <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
               <IntlLink
                 href="/offers"
-                className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-base font-semibold hover:bg-white/90 transition-colors border border-transparent"
+                className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-base font-semibold hover:bg-white/90 transition-colors border border-transparent rounded-lg"
                 style={{ color: '#ff385c' }}
               >
                 <span style={{ color: '#ff385c' }}>{t('finalCta.browseAll')}</span>
@@ -546,7 +546,7 @@ export default async function HomePage({
               {!user && (
                 <IntlLink
                   href="/auth/signup"
-                  className="inline-flex items-center justify-center gap-2 bg-transparent px-6 py-3 text-base font-semibold border border-white hover:bg-white/10 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-transparent px-6 py-3 text-base font-semibold border border-white hover:bg-white/10 transition-colors rounded-lg"
                   style={{ color: 'white' }}
                 >
                   <span style={{ color: 'white' }}>{t('finalCta.signUpFree')}</span>

@@ -35,7 +35,7 @@ export function FAQ({ locale = 'en' }: { locale?: Locale }) {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white border border-[#EBEBEB] hover:border-primary transition-colors"
+              className="bg-white border border-[#EBEBEB] hover:border-primary transition-colors rounded-lg overflow-hidden"
             >
               <button
                 onClick={() => toggleQuestion(index)}

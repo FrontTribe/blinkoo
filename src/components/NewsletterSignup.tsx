@@ -24,9 +24,9 @@ export function NewsletterSignup({ locale = 'en' }: { locale?: Locale }) {
   return (
     <section className="py-12 bg-white border-b border-[#EBEBEB]">
       <div className="max-w-[1280px] mx-auto px-6">
-        <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 md:p-12">
+        <div className="bg-[#F7F7F7] border border-[#EBEBEB] p-8 md:p-12 rounded-lg">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 border border-primary/20 mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 border border-primary/20 mb-4 rounded-lg">
               <MdEmail className="text-xl text-primary" />
             </div>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-3">
@@ -35,7 +35,7 @@ export function NewsletterSignup({ locale = 'en' }: { locale?: Locale }) {
             <p className="text-base text-text-secondary mb-20">{t('newsletter.subtitle')}</p>
 
             {subscribed ? (
-              <div className="bg-success/10 border border-success/20 p-4 text-success font-medium">
+              <div className="bg-success/10 border border-success/20 p-4 text-success font-medium rounded-lg">
                 {t('newsletter.success')}
               </div>
             ) : (
@@ -49,11 +49,11 @@ export function NewsletterSignup({ locale = 'en' }: { locale?: Locale }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="flex-1 px-4 py-3 bg-white border border-[#EBEBEB] text-text-primary placeholder-text-tertiary focus:outline-none focus:border-primary"
+                  className="flex-1 px-4 py-3 bg-white border border-[#EBEBEB] text-text-primary placeholder-text-tertiary focus:outline-none focus:border-primary rounded-lg"
                 />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 font-semibold hover:bg-primary-hover transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 font-semibold hover:bg-primary-hover transition-colors rounded-lg"
                   style={{ color: 'white' }}
                 >
                   {t('newsletter.subscribe')}
