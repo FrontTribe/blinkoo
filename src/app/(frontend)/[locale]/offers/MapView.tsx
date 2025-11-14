@@ -210,6 +210,53 @@ export default function MapView({ offers }: MapViewProps) {
   const setupClustering = () => {
     if (!map.current) return
 
+    // Add custom CSS for popup close button to match design system
+    if (!document.getElementById('mapbox-popup-styles')) {
+      const style = document.createElement('style')
+      style.id = 'mapbox-popup-styles'
+      style.textContent = `
+        .mapboxgl-popup-close-button {
+          font-size: 20px;
+          padding: 6px 8px;
+          color: #717171 !important;
+          background: transparent !important;
+          border: none !important;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+          cursor: pointer;
+          right: 8px;
+          top: 8px;
+          width: 28px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+        }
+        .mapboxgl-popup-close-button:hover {
+          color: #222222 !important;
+          background: #f7f7f7 !important;
+        }
+        .mapboxgl-popup-close-button:active {
+          background: #f0f0f0 !important;
+        }
+        .mapboxgl-popup {
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+          max-width: none;
+        }
+        .mapboxgl-popup-content {
+          border-radius: 8px;
+          padding: 0;
+          box-shadow: none;
+        }
+        .mapboxgl-popup-tip {
+          border-top-color: #ffffff;
+        }
+      `
+      document.head.appendChild(style)
+    }
+
     const geoJSON = createGeoJSON()
 
     // Add source for clustering
@@ -226,7 +273,7 @@ export default function MapView({ offers }: MapViewProps) {
       clusterRadius: 50, // Radius of each cluster when clustering points
     })
 
-    // Add cluster circles
+    // Add cluster circles - styled to match design system
     map.current.addLayer({
       id: 'clusters',
       type: 'circle',
@@ -236,23 +283,24 @@ export default function MapView({ offers }: MapViewProps) {
         'circle-color': [
           'step',
           ['get', 'point_count'],
-          '#fbbf24', // Yellow for small clusters
-          10,
-          '#f59e0b', // Orange for medium clusters
-          30,
-          '#ef4444', // Red for large clusters
+          '#ff385c', // Primary color for small clusters
+          5,
+          '#ff5a8c', // Primary light for medium clusters
+          15,
+          '#e61e4d', // Primary hover (darker) for large clusters
         ],
         'circle-radius': [
           'step',
           ['get', 'point_count'],
-          20, // Small cluster size
-          10,
-          30, // Medium cluster size
-          30,
+          24, // Small cluster size
+          5,
+          32, // Medium cluster size
+          15,
           40, // Large cluster size
         ],
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff',
+        'circle-stroke-width': 3,
+        'circle-stroke-color': '#ffffff',
+        'circle-opacity': 0.95,
       },
     })
 
@@ -272,17 +320,18 @@ export default function MapView({ offers }: MapViewProps) {
       },
     })
 
-    // Add unclustered point layer (individual offers)
+    // Add unclustered point layer (individual offers) - styled to match design system
     map.current.addLayer({
       id: 'unclustered-point',
       type: 'circle',
       source: 'offers-cluster',
       filter: ['!', ['has', 'point_count']],
       paint: {
-        'circle-color': '#ef4444',
-        'circle-radius': 8,
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#fff',
+        'circle-color': '#ff385c', // Primary color
+        'circle-radius': 10,
+        'circle-stroke-width': 3,
+        'circle-stroke-color': '#ffffff',
+        'circle-opacity': 0.95,
       },
     })
 
@@ -323,27 +372,29 @@ export default function MapView({ offers }: MapViewProps) {
           f.properties.venueKey === properties.venueKey
         )
 
-        // Create popup with all offers - each offer is clickable
+        // Create popup with all offers - styled to match design system
         const offersList = allFeatures.map((feature: any) => {
           const props = feature.properties
           return `
-            <div style="padding: 8px; border-bottom: 1px solid #eee; cursor: pointer; transition: background-color 0.2s;" 
-                 onmouseover="this.style.backgroundColor='#f5f5f5'" 
+            <div style="padding: 10px 12px; border-bottom: 1px solid #dddddd; cursor: pointer; transition: background-color 0.2s; border-radius: 4px;" 
+                 onmouseover="this.style.backgroundColor='#f7f7f7'" 
                  onmouseout="this.style.backgroundColor='transparent'"
                  onclick="window.location.href='/offers/${props.offerId}'">
-              <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">${props.offerTitle}</div>
-              <div style="font-size: 12px; color: #666; margin-bottom: 4px;">${props.venueName}</div>
-              <div style="font-size: 12px; color: #ef4444; font-weight: 600;">${getOfferLabel(props.offerType, props.discountValue)}</div>
+              <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #222222;">${props.offerTitle}</div>
+              <div style="font-size: 12px; color: #717171; margin-bottom: 4px;">${props.venueName}</div>
+              <div style="font-size: 12px; color: #ff385c; font-weight: 600;">${getOfferLabel(props.offerType, props.discountValue)}</div>
             </div>
           `
         }).join('')
 
         const popupHTML = `
-          <div style="min-width: 200px; max-height: 300px; overflow-y: auto;">
-            <div style="padding: 8px; font-weight: bold; border-bottom: 2px solid #ef4444; margin-bottom: 4px;">
+          <div style="min-width: 220px; max-height: 320px; overflow-y: auto; border-radius: 8px;">
+            <div style="padding: 12px; font-weight: bold; font-size: 15px; border-bottom: 2px solid #ff385c; margin-bottom: 4px; color: #222222; background: #ffffff;">
               ${properties.totalOffers} Offers at ${properties.venueName}
             </div>
-            ${offersList}
+            <div style="padding: 4px;">
+              ${offersList}
+            </div>
           </div>
         `
 
@@ -353,13 +404,13 @@ export default function MapView({ offers }: MapViewProps) {
           .setHTML(popupHTML)
           .addTo(map.current!)
       } else {
-        // Single offer - show simple popup with link to offer
+        // Single offer - show simple popup styled to match design system
         const popupHTML = `
-          <div style="padding: 8px; min-width: 150px;">
-            <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">${properties.offerTitle}</div>
-            <div style="font-size: 12px; color: #666; margin-bottom: 6px;">${properties.venueName}</div>
-            <div style="font-size: 12px; color: #ef4444; font-weight: 600; margin-bottom: 8px;">${getOfferLabel(properties.offerType, properties.discountValue)}</div>
-            <a href="/offers/${properties.offerId}" style="font-size: 12px; color: #ef4444; text-decoration: underline; cursor: pointer;">View Details →</a>
+          <div style="padding: 12px; min-width: 180px; border-radius: 8px; background: #ffffff;">
+            <div style="font-weight: bold; font-size: 15px; margin-bottom: 6px; color: #222222;">${properties.offerTitle}</div>
+            <div style="font-size: 13px; color: #717171; margin-bottom: 8px;">${properties.venueName}</div>
+            <div style="font-size: 13px; color: #ff385c; font-weight: 600; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #dddddd;">${getOfferLabel(properties.offerType, properties.discountValue)}</div>
+            <a href="/offers/${properties.offerId}" style="font-size: 13px; color: #ff385c; text-decoration: none; font-weight: 500; cursor: pointer; display: inline-block; padding: 4px 0; transition: color 0.2s;" onmouseover="this.style.color='#e61e4d'" onmouseout="this.style.color='#ff385c'">View Details →</a>
           </div>
         `
 
