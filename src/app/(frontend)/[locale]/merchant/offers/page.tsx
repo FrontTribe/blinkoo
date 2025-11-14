@@ -138,10 +138,10 @@ export default function ManageOffersPage() {
               return (
                 <div
                   key={offer.id}
-                  className="bg-white border border-border rounded-lg overflow-hidden hover:border-primary transition-all group"
+                  className="bg-white border border-border rounded-lg overflow-hidden hover:border-primary transition-all group flex flex-col h-full"
                 >
                   {/* Card Header */}
-                  <div className="p-6 border-b border-border">
+                  <div className="p-6 border-b border-border flex-shrink-0">
                     <div className="flex items-start gap-4">
                       {offerData.photo ? (
                         <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-border">
@@ -176,7 +176,7 @@ export default function ManageOffersPage() {
                   </div>
 
                   {/* Card Body */}
-                  <div className="p-6 space-y-4">
+                  <div className="p-6 space-y-4 flex-1">
                     {/* Description */}
                     {offerData.description && (
                       <p className="text-sm text-text-secondary line-clamp-2">
@@ -216,7 +216,7 @@ export default function ManageOffersPage() {
                   </div>
 
                   {/* Card Footer */}
-                  <div className="px-6 py-4 bg-bg-secondary border-t border-border flex items-center justify-between">
+                  <div className="px-6 py-4 bg-bg-secondary border-t border-border flex items-center justify-between flex-shrink-0">
                     <Link
                       href={`/merchant/offers/${offer.id}`}
                       className="text-sm font-semibold text-primary hover:text-primary-hover flex items-center gap-1"
