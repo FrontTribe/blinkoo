@@ -2,92 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { FiClock, FiMapPin, FiCheckCircle, FiArrowRight, FiArrowLeft, FiX } from 'react-icons/fi'
+import { useTranslations, useLocale } from 'next-intl'
 
 type OnboardingStep = {
-  title: string
-  content: string
+  key: string
   icon: React.ReactNode
-  visual?: React.ReactNode
+  visual?: (t: any) => React.ReactNode
 }
-
-const steps: OnboardingStep[] = [
-  {
-    title: 'Welcome to Blinkoo!',
-    content:
-      'Discover exclusive time-limited offers at local venues near you. Save money and explore your city.',
-    icon: <FiCheckCircle className="text-6xl text-primary" />,
-  },
-  {
-    title: 'Limited Time, Limited Quantity',
-    content:
-      'Each offer has a specific time window and limited slots. Act fast to secure your deal before it expires!',
-    icon: <FiClock className="text-6xl text-primary" />,
-    visual: (
-      <div className="flex items-center gap-4 mt-6 text-sm text-text-secondary">
-        <div className="bg-bg-secondary border border-border px-3 py-2">
-          <div className="font-semibold text-text-primary">20:00 - 21:30</div>
-          <div className="text-xs">Time window</div>
-        </div>
-        <div className="bg-error text-white px-3 py-2">
-          <div className="font-semibold">Only 5 left</div>
-          <div className="text-xs opacity-90">Limited slots</div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: 'How Claiming Works',
-    content:
-      'Claim an offer and you get 7 minutes to visit the venue. Show your QR code or 6-digit code to redeem.',
-    icon: <FiMapPin className="text-6xl text-primary" />,
-    visual: (
-      <div className="mt-6 space-y-3">
-        <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3">
-          <div
-            className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0"
-            style={{ color: 'white' }}
-          >
-            1
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold text-text-primary text-sm">Find an offer you like</div>
-            <div className="text-xs text-text-secondary mt-0.5">Browse by category or location</div>
-          </div>
-        </div>
-        <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3">
-          <div
-            className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0"
-            style={{ color: 'white' }}
-          >
-            2
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold text-text-primary text-sm">Claim it</div>
-            <div className="text-xs text-text-secondary mt-0.5">You get 7 minutes to decide</div>
-          </div>
-        </div>
-        <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3">
-          <div
-            className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0"
-            style={{ color: 'white' }}
-          >
-            3
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold text-text-primary text-sm">Show QR at venue</div>
-            <div className="text-xs text-text-secondary mt-0.5">Staff scans or you enter code</div>
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: 'Share Your Experience',
-    content:
-      'After redeeming, leave a review to help others discover great deals and improve the platform.',
-    icon: <FiCheckCircle className="text-6xl text-primary" />,
-  },
-]
 
 type OnboardingModalProps = {
   isOpen: boolean
@@ -95,9 +16,99 @@ type OnboardingModalProps = {
   onSkip?: () => void
 }
 
+const stepKeys = ['welcome', 'limitedTime', 'howItWorks', 'shareExperience'] as const
+
 export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalProps) {
+  const t = useTranslations('onboarding')
+  const locale = useLocale()
   const [currentStep, setCurrentStep] = useState(0)
   const [isClosing, setIsClosing] = useState(false)
+
+  const getStepIcon = (key: string) => {
+    switch (key) {
+      case 'welcome':
+      case 'shareExperience':
+        return <FiCheckCircle className="text-6xl text-primary" />
+      case 'limitedTime':
+        return <FiClock className="text-6xl text-primary" />
+      case 'howItWorks':
+        return <FiMapPin className="text-6xl text-primary" />
+      default:
+        return <FiCheckCircle className="text-6xl text-primary" />
+    }
+  }
+
+  const getStepVisual = (key: string) => {
+    if (key === 'limitedTime') {
+      return (
+        <div className="flex items-center gap-4 mt-6 text-sm text-text-secondary">
+          <div className="bg-bg-secondary border border-border px-3 py-2 rounded-lg">
+            <div className="font-semibold text-text-primary">20:00 - 21:30</div>
+            <div className="text-xs">{t('steps.limitedTime.timeWindow')}</div>
+          </div>
+          <div className="bg-error text-white px-3 py-2 rounded-lg">
+            <div className="font-semibold">{t('steps.limitedTime.onlyLeft', { count: 5 })}</div>
+            <div className="text-xs opacity-90">{t('steps.limitedTime.limitedSlots')}</div>
+          </div>
+        </div>
+      )
+    }
+    if (key === 'howItWorks') {
+      return (
+        <div className="mt-6 space-y-3">
+          <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3 rounded-lg">
+            <div
+              className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 rounded-lg"
+              style={{ color: 'white' }}
+            >
+              1
+            </div>
+            <div className="flex-1">
+              <div className="font-semibold text-text-primary text-sm">
+                {t('steps.howItWorks.step1.title')}
+              </div>
+              <div className="text-xs text-text-secondary mt-0.5">
+                {t('steps.howItWorks.step1.description')}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3 rounded-lg">
+            <div
+              className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 rounded-lg"
+              style={{ color: 'white' }}
+            >
+              2
+            </div>
+            <div className="flex-1">
+              <div className="font-semibold text-text-primary text-sm">
+                {t('steps.howItWorks.step2.title')}
+              </div>
+              <div className="text-xs text-text-secondary mt-0.5">
+                {t('steps.howItWorks.step2.description')}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 bg-bg-secondary border border-border p-3 rounded-lg">
+            <div
+              className="bg-primary text-white w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 rounded-lg"
+              style={{ color: 'white' }}
+            >
+              3
+            </div>
+            <div className="flex-1">
+              <div className="font-semibold text-text-primary text-sm">
+                {t('steps.howItWorks.step3.title')}
+              </div>
+              <div className="text-xs text-text-secondary mt-0.5">
+                {t('steps.howItWorks.step3.description')}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+    return null
+  }
 
   // Reset when modal opens
   useEffect(() => {
@@ -117,7 +128,7 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
   if (!isOpen) return null
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
+    if (currentStep < stepKeys.length - 1) {
       setCurrentStep(currentStep + 1)
     } else {
       handleComplete()
@@ -145,9 +156,9 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
     handleComplete()
   }
 
-  const step = steps[currentStep]
+  const currentStepKey = stepKeys[currentStep]
   const isFirstStep = currentStep === 0
-  const isLastStep = currentStep === steps.length - 1
+  const isLastStep = currentStep === stepKeys.length - 1
 
   return (
     <div
@@ -175,15 +186,15 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
           {/* Skip button */}
           <button
             onClick={handleSkip}
-            className="absolute top-4 right-4 text-text-secondary hover:text-text-primary transition-colors p-2"
-            aria-label="Skip tutorial"
+            className="absolute top-4 right-4 text-text-secondary hover:text-text-primary transition-colors p-2 rounded-lg"
+            aria-label={t('buttons.skip')}
           >
             <FiX className="text-xl" />
           </button>
 
           {/* Progress dots */}
           <div className="flex gap-2 justify-center mb-8">
-            {steps.map((_, index) => (
+            {stepKeys.map((_, index) => (
               <div
                 key={index}
                 className={`h-1 transition-all duration-300 ${
@@ -199,7 +210,7 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
           </div>
 
           {/* Icon */}
-          <div className="flex justify-center mb-6">{step.icon}</div>
+          <div className="flex justify-center mb-6">{getStepIcon(currentStepKey)}</div>
 
           {/* Content */}
           <div className="text-center mb-8">
@@ -207,10 +218,14 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
               id="onboarding-title"
               className="font-heading text-2xl font-bold text-text-primary mb-3"
             >
-              {step.title}
+              {t(`steps.${currentStepKey}.title`)}
             </h2>
-            <p className="text-text-secondary leading-relaxed">{step.content}</p>
-            {step.visual && <div className="mt-6">{step.visual}</div>}
+            <p className="text-text-secondary leading-relaxed">
+              {t(`steps.${currentStepKey}.content`)}
+            </p>
+            {getStepVisual(currentStepKey) && (
+              <div className="mt-6">{getStepVisual(currentStepKey)}</div>
+            )}
           </div>
 
           {/* Actions */}
@@ -218,25 +233,25 @@ export function OnboardingModal({ isOpen, onComplete, onSkip }: OnboardingModalP
             {!isFirstStep && (
               <button
                 onClick={handleBack}
-                className="flex-1 bg-white border-2 border-border text-text-primary py-3 px-6 hover:bg-bg-secondary font-semibold transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-white border-2 border-border text-text-primary py-3 px-6 hover:bg-bg-secondary font-semibold transition-colors flex items-center justify-center gap-2 rounded-lg"
               >
                 <FiArrowLeft />
-                Back
+                {t('buttons.back')}
               </button>
             )}
             <button
               onClick={handleNext}
-              className="flex-1 bg-text-primary text-white py-3 px-6 hover:bg-text-secondary font-semibold transition-colors flex items-center justify-center gap-2"
+              className="flex-1 bg-text-primary text-white py-3 px-6 hover:bg-text-secondary font-semibold transition-colors flex items-center justify-center gap-2 rounded-lg"
               style={{ color: 'white' }}
             >
-              {isLastStep ? 'Get Started' : 'Next'}
+              {isLastStep ? t('buttons.getStarted') : t('buttons.next')}
               {!isLastStep && <FiArrowRight />}
             </button>
           </div>
 
           {/* Step indicator */}
           <div className="text-center mt-4 text-xs text-text-tertiary">
-            Step {currentStep + 1} of {steps.length}
+            {t('stepIndicator', { current: currentStep + 1, total: stepKeys.length })}
           </div>
         </div>
       </div>

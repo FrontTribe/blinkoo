@@ -804,5 +804,47 @@
       "instructions": "Postavite QR kod unutar okvira za skeniranje",
       "helpText": "Usmjerite kameru na QR kod kupca"
     }
+  },
+  "onboarding": {
+    "steps": {
+      "welcome": {
+        "title": "Dobrodošli u Blinkoo!",
+        "content": "Otkrijte ekskluzivne vremenski ograničene ponude u lokalnim lokacijama u vašoj blizini. Uštedite novac i istražite svoj grad."
+      },
+      "limitedTime": {
+        "title": "Ograničeno Vrijeme, Ograničena Količina",
+        "content": "Svaka ponuda ima određeni vremenski okvir i ograničene slotove. Djelujte brzo kako biste osigurali svoj dogovor prije nego što istekne!",
+        "timeWindow": "Vremenski okvir",
+        "limitedSlots": "Ograničeni slotovi",
+        "onlyLeft": "Samo {count} preostalo"
+      },
+      "howItWorks": {
+        "title": "Kako Funkcionira Rezervacija",
+        "content": "Rezervirajte ponudu i imate 7 minuta da posjetite lokaciju. Pokažite svoj QR kod ili 6-znamenkasti kod za iskorištavanje.",
+        "step1": {
+          "title": "Pronađite ponudu koja vam se sviđa",
+          "description": "Pregledajte po kategoriji ili lokaciji"
+        },
+        "step2": {
+          "title": "Rezervirajte je",
+          "description": "Imate 7 minuta da odlučite"
+        },
+        "step3": {
+          "title": "Pokažite QR kod u lokaciji",
+          "description": "Osoblje skenira ili unesete kod"
+        }
+      },
+      "shareExperience": {
+        "title": "Podijelite Svoje Iskustvo",
+        "content": "Nakon iskorištavanja, ostavite recenziju kako biste pomogli drugima otkriti odlične ponude i poboljšati platformu."
+      }
+    },
+    "buttons": {
+      "back": "Natrag",
+      "next": "Dalje",
+      "getStarted": "Započni",
+      "skip": "Preskoči vodič"
+    },
+    "stepIndicator": "Korak {current} od {total}"
   }
 }

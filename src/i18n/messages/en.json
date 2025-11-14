@@ -804,5 +804,47 @@
       "instructions": "Position the QR code within the frame to scan",
       "helpText": "Point your camera at the customer's QR code"
     }
+  },
+  "onboarding": {
+    "steps": {
+      "welcome": {
+        "title": "Welcome to Blinkoo!",
+        "content": "Discover exclusive time-limited offers at local venues near you. Save money and explore your city."
+      },
+      "limitedTime": {
+        "title": "Limited Time, Limited Quantity",
+        "content": "Each offer has a specific time window and limited slots. Act fast to secure your deal before it expires!",
+        "timeWindow": "Time window",
+        "limitedSlots": "Limited slots",
+        "onlyLeft": "Only {count} left"
+      },
+      "howItWorks": {
+        "title": "How Claiming Works",
+        "content": "Claim an offer and you get 7 minutes to visit the venue. Show your QR code or 6-digit code to redeem.",
+        "step1": {
+          "title": "Find an offer you like",
+          "description": "Browse by category or location"
+        },
+        "step2": {
+          "title": "Claim it",
+          "description": "You get 7 minutes to decide"
+        },
+        "step3": {
+          "title": "Show QR at venue",
+          "description": "Staff scans or you enter code"
+        }
+      },
+      "shareExperience": {
+        "title": "Share Your Experience",
+        "content": "After redeeming, leave a review to help others discover great deals and improve the platform."
+      }
+    },
+    "buttons": {
+      "back": "Back",
+      "next": "Next",
+      "getStarted": "Get Started",
+      "skip": "Skip tutorial"
+    },
+    "stepIndicator": "Step {current} of {total}"
   }
 }
