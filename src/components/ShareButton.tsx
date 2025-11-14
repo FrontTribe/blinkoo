@@ -71,7 +71,7 @@ export function ShareButton({ offerId, slug, title, className = '' }: ShareButto
   return (
     <button
       onClick={handleShare}
-      className={`inline-flex items-center gap-2 px-4 py-2 bg-white border border-border hover:border-primary hover:bg-primary hover:text-white transition-colors ${className}`}
+      className={`inline-flex items-center gap-2 px-4 py-2 bg-white border border-border hover:border-primary hover:bg-primary hover:text-white transition-colors rounded-lg ${className}`}
     >
       {copied ? <FiCheck className="w-4 h-4" /> : <FiShare2 className="w-4 h-4" />}
       <span className="text-sm font-medium">{copied ? 'Copied!' : 'Share'}</span>

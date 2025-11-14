@@ -117,7 +117,7 @@ export default function StaffPage() {
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors rounded-lg"
             style={{ color: 'white' }}
           >
             <FiPlus className="w-5 h-5" />
@@ -143,7 +143,7 @@ export default function StaffPage() {
             </p>
             <button
               onClick={() => setShowModal(true)}
-              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors rounded-lg"
               style={{ color: 'white' }}
             >
               <FiPlus className="w-5 h-5" />

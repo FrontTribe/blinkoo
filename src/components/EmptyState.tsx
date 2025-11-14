@@ -17,7 +17,7 @@ type EmptyStateProps = {
 
 export function EmptyState({ icon, title, description, action, illustration }: EmptyStateProps) {
   return (
-    <div className="bg-white border border-border p-12 text-center">
+    <div className="bg-white border border-border p-12 text-center rounded-lg">
       {illustration || (
         <div className="mb-6 flex justify-center">
           {icon || (
@@ -45,7 +45,7 @@ export function EmptyState({ icon, title, description, action, illustration }: E
         (action.onClick ? (
           <button
             onClick={action.onClick}
-            className="inline-block bg-primary text-white px-6 py-3 hover:bg-primary-hover transition-colors font-semibold"
+            className="inline-block bg-primary text-white px-6 py-3 hover:bg-primary-hover transition-colors font-semibold rounded-lg"
             style={{ color: 'white' }}
           >
             {action.label}
@@ -53,7 +53,7 @@ export function EmptyState({ icon, title, description, action, illustration }: E
         ) : (
           <Link
             href={action.href}
-            className="inline-block bg-primary text-white px-6 py-3 hover:bg-primary-hover transition-colors font-semibold"
+            className="inline-block bg-primary text-white px-6 py-3 hover:bg-primary-hover transition-colors font-semibold rounded-lg"
             style={{ color: 'white' }}
           >
             {action.label}

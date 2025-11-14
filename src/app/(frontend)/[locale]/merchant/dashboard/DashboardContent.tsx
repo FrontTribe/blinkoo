@@ -102,7 +102,7 @@ export default function DashboardContent() {
           <div className="flex gap-3">
             <Link
               href="/merchant/offers/create"
-              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors rounded-lg"
               style={{ color: 'white' }}
             >
               {t('createOffer')}

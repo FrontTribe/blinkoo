@@ -146,7 +146,7 @@ export function VoiceInputButton({ onResult, onCancel }: VoiceInputButtonProps) 
   return (
     <button
       onClick={startListening}
-      className="w-full bg-primary/10 border-2 border-primary text-primary py-4 px-6 hover:bg-primary/20 transition-colors font-semibold flex items-center justify-center gap-3"
+      className="w-full bg-primary/10 border-2 border-primary text-primary py-4 px-6 hover:bg-primary/20 transition-colors font-semibold flex items-center justify-center gap-3 rounded-lg"
       aria-label={t('useVoiceInput')}
     >
       <FiMic className="w-5 h-5" />

@@ -72,7 +72,7 @@ export default function ManageOffersPage() {
           </div>
           <Link
             href="/merchant/offers/create"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors rounded-lg"
             style={{ color: 'white' }}
           >
             <FiPlus className="w-5 h-5" />
@@ -113,7 +113,7 @@ export default function ManageOffersPage() {
             {offers.length === 0 ? (
               <Link
                 href="/merchant/offers/create"
-                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors"
+                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors rounded-lg"
                 style={{ color: 'white' }}
               >
                 <FiPlus className="w-5 h-5" />

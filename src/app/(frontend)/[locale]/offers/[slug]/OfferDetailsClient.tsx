@@ -83,7 +83,7 @@ export function OfferDetailsClient({
     distance !== null ? `${distance.toFixed(1)} ${t('offers.detail.kmAway')}` : null
 
   return (
-    <div className="bg-white border border-border overflow-hidden">
+    <div className="bg-white border border-border overflow-hidden rounded-lg">
       {/* Header Section with Title */}
       <div className="p-6 border-b border-border">
         <div className="flex items-start justify-between gap-4 mb-4">
@@ -125,7 +125,7 @@ export function OfferDetailsClient({
 
         {/* Geofence Warning */}
         {hasGeofence && isOutsideGeofence && (
-          <div className="bg-amber-50 border border-amber-200 p-4">
+          <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
             <div className="flex items-start gap-3">
               <FiAlertCircle className="text-amber-600 mt-0.5 flex-shrink-0 text-lg" />
               <div className="flex-1">
@@ -226,7 +226,7 @@ export function OfferBookingCard({
   const isOutsideGeofence = hasGeofence && distance !== null && distance > geofenceKm
 
   return (
-    <div className="lg:sticky lg:top-32 bg-gradient-to-br from-white to-bg-secondary border-2 border-primary/20 overflow-hidden">
+    <div className="lg:sticky lg:top-32 bg-gradient-to-br from-white to-bg-secondary border-2 border-primary/20 overflow-hidden rounded-lg">
       {/* Header Badge */}
       <div className="bg-primary/10 border-b border-primary/20 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -247,7 +247,7 @@ export function OfferBookingCard({
       <div className="p-6 space-y-4">
         {/* Geofence Warning in Booking Card */}
         {hasGeofence && isOutsideGeofence && (
-          <div className="bg-amber-50 border border-amber-200 p-4">
+          <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
             <div className="flex items-start gap-2">
               <FiAlertCircle className="text-amber-600 mt-0.5 flex-shrink-0 text-lg" />
               <div>
@@ -275,7 +275,7 @@ export function OfferBookingCard({
           <>
             <Link
               href={`/offers/${slug}/claim`}
-              className={`block w-full text-center py-4 px-6 font-bold text-base transition-colors ${
+              className={`block w-full text-center py-4 px-6 font-bold text-base transition-colors rounded-lg ${
                 hasGeofence && isOutsideGeofence
                   ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 hover:bg-amber-200'
                   : 'bg-primary text-white hover:bg-primary-hover transform hover:-translate-y-0.5'
@@ -295,7 +295,7 @@ export function OfferBookingCard({
         )}
 
         {/* Info Note */}
-        <div className="bg-bg-secondary border border-border p-3">
+        <div className="bg-bg-secondary border border-border p-3 rounded-lg">
           <p className="text-xs text-text-secondary text-center leading-relaxed">
             {t('offers.detail.claimInfo')}
           </p>

@@ -380,7 +380,7 @@ export default function OffersContent({
             </h4>
             <button
               onClick={() => setShowFilters(true)}
-              className={`relative h-8 px-3 text-sm font-medium border border-border transition-colors ${
+              className={`relative h-8 px-3 text-sm font-medium border border-border transition-colors rounded-lg ${
                 getActiveFilterCount() > 0
                   ? 'text-primary border-primary bg-primary/5'
                   : 'text-text-secondary hover:border-primary'
@@ -426,7 +426,7 @@ export default function OffersContent({
                       }
                       router.push(`${pathname}?${params.toString()}`)
                     }}
-                    className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors border border-border ${
+                    className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors border border-border rounded-lg ${
                       isActive
                         ? 'bg-text-primary text-white border-text-primary'
                         : 'bg-white text-text-secondary hover:bg-bg-secondary'
@@ -499,7 +499,7 @@ export default function OffersContent({
                     <Link
                       key={item.slot.id}
                       href={`/offers/${item.offer.id}`}
-                      className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white"
+                      className="group relative overflow-hidden border border-border hover:border-text-primary transition-all bg-white rounded-lg"
                       aria-label={`View offer: ${item.offer.title} at ${item.venue.name}`}
                     >
                       {/* Action Buttons */}

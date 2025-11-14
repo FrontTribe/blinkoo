@@ -117,7 +117,7 @@ export default function VenueAnalyticsPage() {
 
         {/* Stats */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          <div className="bg-white border border-border p-6">
+          <div className="bg-white border border-border p-6 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <FiCalendar className="text-primary" />
               <h3 className="text-xs font-medium text-text-secondary uppercase">Ukupno Ponuda</h3>
@@ -126,7 +126,7 @@ export default function VenueAnalyticsPage() {
               {stats?.totalOffers || 0}
             </p>
           </div>
-          <div className="bg-white border border-border p-6">
+          <div className="bg-white border border-border p-6 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <FiUsers className="text-green-600" />
               <h3 className="text-xs font-medium text-text-secondary uppercase">Stopa Iskorištenja</h3>
@@ -135,7 +135,7 @@ export default function VenueAnalyticsPage() {
               {stats?.redemptionRate || 0}%
             </p>
           </div>
-          <div className="bg-white border border-border p-6">
+          <div className="bg-white border border-border p-6 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <FiTrendingUp className="text-yellow-600" />
               <h3 className="text-xs font-medium text-text-secondary uppercase">Stopa Ispunjenosti</h3>
@@ -144,7 +144,7 @@ export default function VenueAnalyticsPage() {
               {stats?.fillRate || 0}%
             </p>
           </div>
-          <div className="bg-white border border-border p-6">
+          <div className="bg-white border border-border p-6 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <FiUsers className="text-blue-600" />
               <h3 className="text-xs font-medium text-text-secondary uppercase">Ukupno Rezervacija</h3>
@@ -157,7 +157,7 @@ export default function VenueAnalyticsPage() {
 
         {/* Charts */}
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="bg-white border border-border p-6">
+          <div className="bg-white border border-border p-6 rounded-lg">
             <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
               Najprometniji Sati
             </h2>
@@ -173,7 +173,7 @@ export default function VenueAnalyticsPage() {
             )}
           </div>
 
-          <div className="bg-white border border-border p-6">
+          <div className="bg-white border border-border p-6 rounded-lg">
             <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
               Najbolje Ponude
             </h2>
@@ -191,7 +191,7 @@ export default function VenueAnalyticsPage() {
         </div>
 
         {/* Detailed Stats */}
-        <div className="mt-8 bg-white border border-border p-6">
+        <div className="mt-8 bg-white border border-border p-6 rounded-lg">
           <h2 className="font-heading text-lg font-semibold text-text-primary mb-4">
             Detaljna Statistika
           </h2>

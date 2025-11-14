@@ -115,29 +115,29 @@ export function ShareOfferButton({
       <button
         onClick={handleShare}
         disabled={sharing}
-        className="flex items-center gap-2 px-4 py-2 bg-white border border-border hover:border-primary transition-colors font-medium text-text-primary disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 bg-white border border-border hover:border-primary transition-colors font-medium text-text-primary disabled:opacity-50 rounded-lg"
       >
         <FiShare2 />
         {sharing ? 'Sharing...' : 'Share'}
       </button>
 
       {/* Share options dropdown - can be enhanced */}
-      <div className="hidden group-hover:block absolute top-full mt-2 bg-white border border-border shadow-lg p-2 z-10">
+      <div className="hidden group-hover:block absolute top-full mt-2 bg-white border border-border shadow-lg p-2 z-10 rounded-lg">
         <button
           onClick={handleWhatsAppShare}
-          className="block w-full text-left px-4 py-2 hover:bg-bg-secondary text-sm"
+          className="block w-full text-left px-4 py-2 hover:bg-bg-secondary text-sm rounded"
         >
           Share on WhatsApp
         </button>
         <button
           onClick={handleFacebookShare}
-          className="block w-full text-left px-4 py-2 hover:bg-bg-secondary text-sm"
+          className="block w-full text-left px-4 py-2 hover:bg-bg-secondary text-sm rounded"
         >
           Share on Facebook
         </button>
         <button
           onClick={handleTwitterShare}
-          className="block w-full text-left px-4 py-2 hover:bg-bg-secondary text-sm"
+          className="block w-full text-left px-4 py-2 hover:bg-bg-secondary text-sm rounded"
         >
           Share on Twitter
         </button>

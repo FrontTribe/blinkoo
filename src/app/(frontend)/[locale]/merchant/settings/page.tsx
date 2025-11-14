@@ -348,7 +348,7 @@ export default function SettingsPage() {
                 <button
                   onClick={handleSaveProfile}
                   disabled={saving}
-                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
                   style={{ color: 'white' }}
                 >
                   <FiSave />
@@ -419,7 +419,7 @@ export default function SettingsPage() {
                 <button
                   onClick={handleSaveAccount}
                   disabled={saving}
-                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
                   style={{ color: 'white' }}
                 >
                   <FiSave />
@@ -576,7 +576,7 @@ export default function SettingsPage() {
                 <button
                   onClick={handleSaveNotifications}
                   disabled={saving}
-                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary-hover font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
                   style={{ color: 'white' }}
                 >
                   <FiSave />

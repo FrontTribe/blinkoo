@@ -25,9 +25,9 @@ export function ConfirmModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-      <div className="bg-black border border-gray-800 p-8 max-w-md w-full mx-4">
+      <div className="bg-black border border-gray-800 p-8 max-w-md w-full mx-4 rounded-lg">
         <div className="flex items-start gap-4 mb-6">
-          <div className="bg-orange-primary/20 p-3 border border-orange-primary/30">
+          <div className="bg-orange-primary/20 p-3 border border-orange-primary/30 rounded-lg">
             <MdWarning className="text-orange-primary text-2xl" />
           </div>
           <div className="flex-1">
@@ -39,13 +39,13 @@ export function ConfirmModal({
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
-            className="px-6 py-2 bg-transparent text-gray-300 border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all"
+            className="px-6 py-2 bg-transparent text-gray-300 border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all rounded-lg"
           >
             {cancelText}
           </button>
           <button
             onClick={onConfirm}
-            className="px-6 py-2 bg-orange-primary text-white hover:bg-orange-light transition-colors"
+            className="px-6 py-2 bg-orange-primary text-white hover:bg-orange-light transition-colors rounded-lg"
           >
             {confirmText}
           </button>

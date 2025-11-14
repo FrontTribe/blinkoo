@@ -35,7 +35,7 @@ export function MobileOfferCard({
   }
 
   return (
-    <div className="bg-white border border-border mb-4 overflow-hidden md:hidden">
+    <div className="bg-white border border-border mb-4 overflow-hidden md:hidden rounded-lg">
       {/* Card Header with Image */}
       <div className="relative">
         {offer.photo ? (
@@ -96,14 +96,14 @@ export function MobileOfferCard({
         <div className="flex gap-2">
           <Link
             href={`/merchant/offers/${offer.id}`}
-            className="flex-1 bg-primary text-white py-2.5 px-4 text-center text-sm font-semibold hover:bg-primary-hover transition-colors"
+            className="flex-1 bg-primary text-white py-2.5 px-4 text-center text-sm font-semibold hover:bg-primary-hover transition-colors rounded-lg"
             style={{ color: 'white' }}
           >
             View
           </Link>
           <button
             onClick={() => handleAction('edit')}
-            className="flex items-center justify-center px-4 py-2.5 border border-border hover:border-primary transition-colors"
+            className="flex items-center justify-center px-4 py-2.5 border border-border hover:border-primary transition-colors rounded-lg"
             aria-label="Edit offer"
           >
             <FiEdit2 className="w-4 h-4" />
@@ -111,7 +111,7 @@ export function MobileOfferCard({
           {onTogglePause && (
             <button
               onClick={() => handleAction('pause')}
-              className="flex items-center justify-center px-4 py-2.5 border border-border hover:border-primary transition-colors"
+              className="flex items-center justify-center px-4 py-2.5 border border-border hover:border-primary transition-colors rounded-lg"
               aria-label={isActive ? 'Pause offer' : 'Activate offer'}
             >
               {isActive ? <FiPause className="w-4 h-4" /> : <FiPlay className="w-4 h-4" />}
@@ -125,7 +125,7 @@ export function MobileOfferCard({
         <div className="border-t border-border p-2 space-y-1">
           <button
             onClick={() => handleAction('edit')}
-            className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary transition-colors flex items-center gap-2"
+            className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary transition-colors flex items-center gap-2 rounded"
           >
             <FiEdit2 className="w-4 h-4" />
             Edit Offer
@@ -133,7 +133,7 @@ export function MobileOfferCard({
           {onDuplicate && (
             <button
               onClick={() => handleAction('duplicate')}
-              className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary transition-colors flex items-center gap-2"
+              className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary transition-colors flex items-center gap-2 rounded"
             >
               <FiCopy className="w-4 h-4" />
               Duplicate
@@ -142,7 +142,7 @@ export function MobileOfferCard({
           {onTogglePause && (
             <button
               onClick={() => handleAction('pause')}
-              className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary transition-colors flex items-center gap-2"
+              className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary transition-colors flex items-center gap-2 rounded"
             >
               {isActive ? (
                 <>

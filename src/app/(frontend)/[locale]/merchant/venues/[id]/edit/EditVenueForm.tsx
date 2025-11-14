@@ -223,7 +223,7 @@ export function EditVenueForm({ venue }: Props) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-3 bg-white text-text-primary border border-border hover:border-primary transition-colors font-semibold"
+          className="px-6 py-3 bg-white text-text-primary border border-border hover:border-primary transition-colors font-semibold rounded-lg"
         >
           Cancel
         </button>
