@@ -164,6 +164,7 @@ export default function OffersContent({
   const [offers, setOffers] = useState<Offer[]>(initialOffers)
   const [filteredOffers, setFilteredOffers] = useState<Offer[]>(initialOffers)
   const [categories, setCategories] = useState<Category[]>([])
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   // Get initial search query from URL params
   const [searchQuery, setSearchQuery] = useState(
@@ -289,6 +290,7 @@ export default function OffersContent({
   // Fetch categories on mount
   useEffect(() => {
     async function fetchCategories() {
+      setCategoriesLoading(true)
       try {
         const categoriesResponse = await fetch(`/api/web/categories?locale=${locale}`)
         if (categoriesResponse.ok) {
@@ -301,6 +303,8 @@ export default function OffersContent({
       } catch (error) {
         console.error('Error fetching categories:', error)
         setCategories([{ id: 'all', name: t('all'), slug: 'all', icon: 'FiGrid' }])
+      } finally {
+        setCategoriesLoading(false)
       }
     }
 
@@ -412,42 +416,51 @@ export default function OffersContent({
           {/* Categories Row */}
           <div className="overflow-x-auto border-b border-border shrink-0">
             <div className="flex gap-2 px-4 py-2.5">
-              {categories.map((category) => {
-                const isActive =
-                  selectedCategory === (category.slug === 'all' ? 'all' : category.slug)
-                return (
-                  <button
-                    key={category.id}
-                    onClick={() => {
-                      const newCategory = category.slug === 'all' ? 'all' : category.slug
-                      const params = new URLSearchParams(window.location.search)
-                      if (newCategory === 'all') {
-                        params.delete('category')
-                      } else {
-                        params.set('category', newCategory)
-                      }
-                      router.push(`${pathname}?${params.toString()}`)
-                    }}
-                    className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors border border-border rounded-lg ${
-                      isActive
-                        ? 'bg-text-primary text-white border-text-primary'
-                        : 'bg-white text-text-secondary hover:bg-bg-secondary'
-                    }`}
-                  >
-                    {category.slug === 'all' ? (
-                      <span className="flex items-center gap-1.5">
-                        <FiGrid className="text-sm" />
-                        <span className="text-sm">{category.name}</span>
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1.5">
-                        <DynamicIcon iconName={category.icon} className="text-sm" />
-                        <span className="text-sm">{category.name}</span>
-                      </span>
-                    )}
-                  </button>
-                )
-              })}
+              {categoriesLoading ? (
+                // Show skeleton loaders while categories are loading
+                <>
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <SkeletonLoader key={i} className="h-8 w-20 rounded-lg" />
+                  ))}
+                </>
+              ) : (
+                categories.map((category) => {
+                  const isActive =
+                    selectedCategory === (category.slug === 'all' ? 'all' : category.slug)
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => {
+                        const newCategory = category.slug === 'all' ? 'all' : category.slug
+                        const params = new URLSearchParams(window.location.search)
+                        if (newCategory === 'all') {
+                          params.delete('category')
+                        } else {
+                          params.set('category', newCategory)
+                        }
+                        router.push(`${pathname}?${params.toString()}`)
+                      }}
+                      className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-colors border border-border rounded-lg ${
+                        isActive
+                          ? 'bg-text-primary text-white border-text-primary'
+                          : 'bg-white text-text-secondary hover:bg-bg-secondary'
+                      }`}
+                    >
+                      {category.slug === 'all' ? (
+                        <span className="flex items-center gap-1.5">
+                          <FiGrid className="text-sm" />
+                          <span className="text-sm">{category.name}</span>
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1.5">
+                          <DynamicIcon iconName={category.icon} className="text-sm" />
+                          <span className="text-sm">{category.name}</span>
+                        </span>
+                      )}
+                    </button>
+                  )
+                })
+              )}
             </div>
           </div>
 
