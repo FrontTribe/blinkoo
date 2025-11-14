@@ -169,13 +169,20 @@ export default function MapView({ offers }: MapViewProps) {
     }
 
     return () => {
+      if (popupRef.current) {
+        popupRef.current.remove()
+      }
       if (map.current) {
+        // Remove event listeners and sources before removing map
+        if (map.current.getSource('offers-cluster')) {
+          map.current.removeLayer('clusters')
+          map.current.removeLayer('cluster-count')
+          map.current.removeLayer('unclustered-point')
+          map.current.removeSource('offers-cluster')
+        }
         map.current.remove()
         map.current = null
       }
-      // Clear markers
-      markersRef.current.forEach((marker) => marker.remove())
-      markersRef.current = []
     }
   }, [])
 
