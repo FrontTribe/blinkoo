@@ -295,11 +295,11 @@ export default function MapView({ offers }: MapViewProps) {
       const source = map.current!.getSource('offers-cluster') as mapboxgl.GeoJSONSource
       
       source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-        if (err) return
+        if (err || zoom === null || zoom === undefined) return
 
         map.current!.easeTo({
           center: (features[0].geometry as any).coordinates,
-          zoom: zoom,
+          zoom: zoom as number,
         })
       })
     })
