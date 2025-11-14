@@ -23,7 +23,7 @@ export function LocaleSwitcher() {
       <select
         value={locale}
         onChange={(e) => changeLocale(e.target.value as Locale)}
-        className="text-xs px-2 py-1.5 bg-white border border-border text-text-primary rounded focus:outline-none focus:border-primary cursor-pointer appearance-none pr-6"
+        className="text-xs px-2 py-1.5 bg-white border border-border text-text-primary rounded-lg focus:outline-none focus:border-primary cursor-pointer appearance-none pr-6"
         aria-label="Select language"
       >
         <option value="en">EN</option>

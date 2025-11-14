@@ -188,7 +188,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
               {(!user || user.role === 'customer') && (
                 <Link
                   href="/offers"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
                     isActive('/offers')
                       ? 'bg-primary/10 text-primary'
                       : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
@@ -361,7 +361,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 <div className="relative" ref={userMenuRef}>
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-2.5 py-1.5 border border-border hover:border-text-primary transition-all"
+                    className="flex items-center gap-2 px-2.5 py-1.5 border border-border hover:border-text-primary transition-all rounded-lg"
                   >
                     <MdAccountCircle className="w-5 h-5 text-text-secondary" />
                     <span className="hidden lg:inline text-sm text-text-primary font-medium">
@@ -376,7 +376,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
 
                   {/* Dropdown Menu */}
                   {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-56 bg-white border border-border shadow-lg overflow-hidden z-50">
+                    <div className="absolute right-0 mt-2 w-56 bg-white border border-border shadow-lg overflow-hidden z-50 rounded-lg">
                       <div className="px-4 py-3 border-b border-border">
                         <p className="text-sm font-semibold text-text-primary">
                           {user.name || 'User'}
@@ -506,7 +506,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 {/* Mobile Menu Button - Show for everyone (logged in or out) */}
                 <button
                   onClick={() => setShowMobileMenu(!showMobileMenu)}
-                  className="md:hidden p-2 text-text-secondary hover:text-text-primary"
+                  className="md:hidden p-2 text-text-secondary hover:text-text-primary rounded-lg"
                 >
                   {showMobileMenu ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
                 </button>
@@ -515,13 +515,13 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
               <>
                 <Link
                   href="/auth/login"
-                  className="text-text-primary hover:text-text-secondary px-4 py-2 text-sm font-medium transition-colors"
+                  className="text-text-primary hover:text-text-secondary px-4 py-2 text-sm font-medium transition-colors rounded-lg"
                 >
                   {t('login')}
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary-hover transition-colors"
+                  className="bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary-hover transition-colors rounded-lg"
                   style={{ color: 'white' }}
                 >
                   {t('signup')}
@@ -529,7 +529,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 {/* Mobile Menu Button - Show for logged-out users too */}
                 <button
                   onClick={() => setShowMobileMenu(!showMobileMenu)}
-                  className="md:hidden p-2 text-text-secondary hover:text-text-primary"
+                  className="md:hidden p-2 text-text-secondary hover:text-text-primary rounded-lg"
                 >
                   {showMobileMenu ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
                 </button>
@@ -546,7 +546,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
               <Link
                 href="/offers"
                 onClick={() => setShowMobileMenu(false)}
-                className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${
                   isActive('/offers')
                     ? 'bg-primary/10 text-primary'
                     : 'text-text-secondary hover:bg-bg-secondary'

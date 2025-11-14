@@ -116,7 +116,7 @@ export function NotificationBell() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-text-secondary hover:text-primary transition-colors"
+        className="relative p-2 text-text-secondary hover:text-primary transition-colors rounded-lg"
         aria-label="Notifications"
       >
         <FiBell className="w-6 h-6" />

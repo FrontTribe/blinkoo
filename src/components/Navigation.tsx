@@ -120,7 +120,7 @@ export async function Navigation() {
                 </div>
                 <Link
                   href="/api/auth/logout"
-                  className="group flex items-center gap-2 bg-gray-900 text-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-800 transition-all duration-300 border-2 border-transparent hover:border-gray-700"
+                  className="group flex items-center gap-2 bg-gray-900 text-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-800 transition-all duration-300 border-2 border-transparent hover:border-gray-700 rounded-lg"
                 >
                   <MdLogout className="transform group-hover:translate-x-1 transition-transform" />
                   Odjava
@@ -130,13 +130,13 @@ export async function Navigation() {
               <div className="flex items-center space-x-3">
                 <Link
                   href="/auth/login"
-                  className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300"
+                  className="font-body text-gray-300 hover:text-orange-primary px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-lg"
                 >
                   Prijava
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="group bg-orange-primary text-white px-6 py-2.5 text-sm font-medium border-2 border-orange-primary hover:bg-orange-light hover:border-orange-light transition-all duration-300 inline-flex items-center gap-2"
+                  className="group bg-orange-primary text-white px-6 py-2.5 text-sm font-medium border-2 border-orange-primary hover:bg-orange-light hover:border-orange-light transition-all duration-300 inline-flex items-center gap-2 rounded-lg"
                 >
                   Registracija
                   <span className="transform group-hover:translate-x-0.5 transition-transform">
