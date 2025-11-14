@@ -362,10 +362,10 @@ export default function MapView({ offers }: MapViewProps) {
     source.setData(geoJSON)
   }
 
-  // Update markers when offers change
+  // Update clustering when offers change
   useEffect(() => {
     if (map.current && map.current.loaded()) {
-      updateMarkers()
+      updateClustering()
     }
   }, [offers])
 
