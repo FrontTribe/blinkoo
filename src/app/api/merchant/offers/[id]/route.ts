@@ -105,7 +105,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       limit: 100,
     })
 
-    const venueIds = venues.docs.map((v) => v.id)
+    // Normalize venue IDs to strings for comparison (Payload IDs can be numbers or strings)
+    const venueIds = venues.docs.map((v) => String(v.id))
 
     // Get the specific offer
     const offer = await payload.findByID({
@@ -116,8 +117,44 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const offerVenueId = typeof offer.venue === 'object' ? offer.venue.id : offer.venue
 
     // Check if offer belongs to merchant's venues
-    if (!venueIds.includes(offerVenueId)) {
+    if (!venueIds.includes(String(offerVenueId))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+    }
+
+    // Prepare update data
+    const updateData: any = {
+      title: body.title,
+      description: body.description,
+      terms: body.terms,
+      type: body.type,
+      discountValue: parseFloat(body.discountValue),
+      perUserLimit: parseInt(body.perUserLimit) || 1,
+      cooldownMinutes: parseInt(body.cooldownMinutes) || 0,
+      geofenceKm: parseFloat(body.geofenceKm) || 0,
+      status: body.status || 'active',
+    }
+
+    // Include venue if provided (venueId from form becomes venue for Payload)
+    if (body.venueId) {
+      // Normalize the new venue ID to string for comparison
+      const newVenueId = String(body.venueId)
+      
+      // Validate that the new venue belongs to the merchant
+      if (!venueIds.includes(newVenueId)) {
+        console.error('Venue validation failed:', {
+          newVenueId,
+          venueIds,
+          bodyVenueId: body.venueId,
+          venueIdsType: typeof venueIds[0],
+          newVenueIdType: typeof newVenueId,
+        })
+        return NextResponse.json({ error: 'Venue does not belong to your merchant account' }, { status: 403 })
+      }
+      
+      // Convert back to the original ID type (number if original was number, string if string)
+      // Payload expects the ID in its original format
+      const venue = venues.docs.find((v) => String(v.id) === newVenueId)
+      updateData.venue = venue ? venue.id : newVenueId
     }
 
     // Update offer with locale context
@@ -125,17 +162,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       collection: 'offers',
       id,
       locale, // Pass locale to update the correct localized fields
-      data: {
-        title: body.title,
-        description: body.description,
-        terms: body.terms,
-        type: body.type,
-        discountValue: parseFloat(body.discountValue),
-        perUserLimit: parseInt(body.perUserLimit) || 1,
-        cooldownMinutes: parseInt(body.cooldownMinutes) || 0,
-        geofenceKm: parseFloat(body.geofenceKm) || 0,
-        status: body.status || 'active',
-      },
+      data: updateData,
     })
 
     return NextResponse.json({ offer: updatedOffer })

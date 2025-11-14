@@ -176,7 +176,8 @@ export const Offers: CollectionConfig = {
         console.log('BeforeChange - Locale:', req.locale)
         console.log('BeforeChange - Data keys:', Object.keys(data))
 
-        if (operation === 'create' && data.venue) {
+        // Handle venue updates for both create and update operations
+        if (data.venue && (operation === 'create' || operation === 'update')) {
           // Fetch the venue to get its category
           // data.venue can be a number, string, or object with id property
           let venueId: number | string
