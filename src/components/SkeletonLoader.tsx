@@ -3,7 +3,7 @@
 export function SkeletonLoader({ className = '' }: { className?: string }) {
   return (
     <div
-      className={`animate-pulse bg-gray-200 rounded ${className}`}
+      className={`animate-pulse bg-bg-secondary rounded ${className}`}
       role="status"
       aria-label="Loading"
     >

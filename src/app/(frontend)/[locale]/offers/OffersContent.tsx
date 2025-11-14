@@ -164,8 +164,8 @@ export default function OffersContent({
   const [offers, setOffers] = useState<Offer[]>(initialOffers)
   const [filteredOffers, setFilteredOffers] = useState<Offer[]>(initialOffers)
   const [categories, setCategories] = useState<Category[]>([])
-  const [categoriesLoading, setCategoriesLoading] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
   // Get initial search query from URL params
   const [searchQuery, setSearchQuery] = useState(
     searchParams?.get('search') || '',
@@ -417,12 +417,10 @@ export default function OffersContent({
           <div className="overflow-x-auto border-b border-border shrink-0">
             <div className="flex gap-2 px-4 py-2.5">
               {categoriesLoading ? (
-                // Show skeleton loaders while categories are loading
-                <>
-                  {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <SkeletonLoader key={i} className="h-8 w-20 rounded-lg" />
-                  ))}
-                </>
+                // Show skeleton while categories are loading
+                [1, 2, 3, 4, 5, 6].map((i) => (
+                  <SkeletonLoader key={i} className="w-20 h-8 rounded-lg" />
+                ))
               ) : (
                 categories.map((category) => {
                   const isActive =

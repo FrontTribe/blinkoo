@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useRouter, usePathname, Link } from '@/i18n/navigation'
+import { useRouter, usePathname } from '@/i18n/navigation'
 import { MdLogout, MdAccountCircle, MdDashboard } from 'react-icons/md'
 import {
   FiShoppingBag,
@@ -45,6 +46,12 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
 
   // Handle search - navigate to offers page with search query
   function handleSearch(query: string) {
+    // Don't navigate if query is empty and we're not on the offers page
+    // This prevents auto-redirect from homepage when SearchBar initializes
+    if (!query.trim() && !pathname?.startsWith('/offers')) {
+      return
+    }
+
     if (pathname?.startsWith('/offers')) {
       // If already on offers page, update URL params
       const params = new URLSearchParams(searchParams?.toString() || '')
@@ -58,9 +65,8 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
       // Navigate to offers page with search query
       if (query.trim()) {
         router.push(`/offers?search=${encodeURIComponent(query.trim())}`)
-      } else {
-        router.push('/offers')
       }
+      // Don't redirect to /offers if query is empty - user should stay on current page
     }
   }
 
