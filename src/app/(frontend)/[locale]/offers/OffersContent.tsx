@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import dynamic from 'next/dynamic'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
@@ -20,9 +19,13 @@ import { SearchBar } from '@/components/SearchBar'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { RecentlyViewed } from '@/components/RecentlyViewed'
 import { useTranslations, useLocale } from 'next-intl'
+import dynamic from 'next/dynamic'
 
 // Dynamically import MapView to avoid SSR issues with mapbox-gl
-// MapView loading component will be created inside OffersContent to access translations
+// Import it outside component to prevent recreation on every render
+const MapView = dynamic(() => import('./MapView'), {
+  ssr: false,
+})
 
 type Offer = {
   slot: {
@@ -340,15 +343,14 @@ export default function OffersContent({
     },
   ])
 
-  // Dynamically import MapView with translated loading message
-  const MapView = dynamic(() => import('./MapView'), {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full flex items-center justify-center bg-[#F7F7F7] border-l border-[#EBEBEB]">
-        <p className="text-text-secondary">{t('loadingMap')}</p>
-      </div>
-    ),
-  })
+  // Memoize filteredOffers array to prevent map re-renders when filters panel opens/closes
+  // Only create new array reference if offer IDs actually change
+  const memoizedFilteredOffers = useMemo(() => {
+    return filteredOffers
+  }, [
+    // Create stable dependency key from offer IDs
+    filteredOffers.map(o => o.slot.id).sort().join(','),
+  ])
 
   if (loading) {
     return (
@@ -622,11 +624,11 @@ export default function OffersContent({
               {t('listView')}
             </button>
           </div>
-          <MapView offers={filteredOffers} />
+          <MapView offers={memoizedFilteredOffers} />
         </div>
       ) : (
         <div className="hidden md:block md:w-3/5 relative bg-bg-secondary">
-          <MapView offers={filteredOffers} />
+          <MapView offers={memoizedFilteredOffers} />
         </div>
       )}
 

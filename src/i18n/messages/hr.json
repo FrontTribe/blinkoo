@@ -135,7 +135,9 @@
       "bestDiscount": "Najbolji popust",
       "clearAll": "Očisti Sve",
       "showResults": "Prikaži Rezultate",
-      "showResultsWithCount": "Prikaži Rezultate ({count})"
+      "showResultsWithCount": "Prikaži Rezultate ({count})",
+      "filterActive": "filter aktivan",
+      "filtersActive": "filtera aktivno"
     },
     "detail": {
       "backToOffers": "Natrag na ponude",

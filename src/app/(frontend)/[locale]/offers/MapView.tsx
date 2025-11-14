@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -32,7 +32,7 @@ type MapViewProps = {
   offers: Offer[]
 }
 
-export default function MapView({ offers }: MapViewProps) {
+function MapView({ offers }: MapViewProps) {
   const router = useRouter()
   const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
   const mapContainer = useRef<HTMLDivElement>(null)
@@ -42,11 +42,14 @@ export default function MapView({ offers }: MapViewProps) {
     return mapboxToken ? null : 'Mapbox token not configured'
   })
 
-  // Calculate initial viewport
-  const venuesWithCoords = offers.filter((item) => item.venue.lat && item.venue.lng)
+  // Memoize venues with coords to prevent recalculation on every render
+  const venuesWithCoords = useMemo(
+    () => offers.filter((item) => item.venue.lat && item.venue.lng),
+    [offers],
+  )
 
-  // Create GeoJSON from offers with clustering support
-  const createGeoJSON = () => {
+  // Memoize GeoJSON creation to prevent recalculation on every render
+  const createGeoJSON = useMemo(() => {
     // Group offers by venue (same lat/lng)
     const venueGroups = new Map<string, typeof venuesWithCoords>()
     
@@ -100,7 +103,7 @@ export default function MapView({ offers }: MapViewProps) {
       type: 'FeatureCollection' as const,
       features,
     }
-  }
+  }, [venuesWithCoords])
 
   // Calculate center point for initial view
   const calculateCenter = () => {
@@ -257,7 +260,7 @@ export default function MapView({ offers }: MapViewProps) {
       document.head.appendChild(style)
     }
 
-    const geoJSON = createGeoJSON()
+    const geoJSON = createGeoJSON
 
     // Add source for clustering
     if (map.current.getSource('offers-cluster')) {
@@ -265,9 +268,11 @@ export default function MapView({ offers }: MapViewProps) {
       return
     }
 
+    // geoJSON is now a memoized value, not a function
+
     map.current.addSource('offers-cluster', {
       type: 'geojson',
-      data: geoJSON,
+      data: geoJSON, // geoJSON is now a memoized value
       cluster: true,
       clusterMaxZoom: 16, // Max zoom to cluster points on - increased to show individual offers sooner
       clusterRadius: 50, // Radius of each cluster when clustering points
@@ -473,16 +478,28 @@ export default function MapView({ offers }: MapViewProps) {
       return
     }
 
-    const geoJSON = createGeoJSON()
+    const geoJSON = createGeoJSON // createGeoJSON is now a memoized value
     const source = map.current.getSource('offers-cluster') as mapboxgl.GeoJSONSource
     source.setData(geoJSON)
   }
 
-  // Update clustering when offers change
+  // Track previous offers to prevent unnecessary updates
+  const prevOffersRef = useRef<string>('')
+
+  // Update clustering only when offers actually change
   useEffect(() => {
-    if (map.current && map.current.loaded()) {
-      updateClustering()
+    if (!map.current || !map.current.loaded()) return
+    
+    // Create a stable key from offer IDs
+    const offersKey = offers.map(o => o.slot.id).sort().join(',')
+    
+    // Only update if offers actually changed
+    if (prevOffersRef.current === offersKey) {
+      return
     }
+    
+    prevOffersRef.current = offersKey
+    updateClustering()
   }, [offers])
 
   // Handle map error state
@@ -502,3 +519,26 @@ export default function MapView({ offers }: MapViewProps) {
 
   return errorDisplay
 }
+
+// Memoize MapView to prevent unnecessary re-rendering
+// Only re-render when offers actually change
+const MemoizedMapView = memo(MapView, (prevProps, nextProps) => {
+  // If references are the same, skip re-render
+  if (prevProps.offers === nextProps.offers) {
+    return true // Skip re-render
+  }
+
+  // Re-render if offers length changed
+  if (prevProps.offers.length !== nextProps.offers.length) {
+    return false // Don't skip re-render
+  }
+  
+  // Check if offer IDs are the same (deep comparison of IDs)
+  const prevIds = prevProps.offers.map(o => o.slot.id).sort().join(',')
+  const nextIds = nextProps.offers.map(o => o.slot.id).sort().join(',')
+  
+  // Return true if props are equal (skip re-render), false if different (re-render)
+  return prevIds === nextIds
+})
+
+export default MemoizedMapView

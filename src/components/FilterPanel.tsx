@@ -140,16 +140,26 @@ export function FilterPanel({
               damping: 30,
               stiffness: 300,
             }}
-            className="fixed right-0 top-0 h-full bg-white z-[70] w-full md:w-[400px] border-l border-border"
+            className="fixed right-0 top-0 h-full bg-white z-[70] w-full md:w-[400px] border-l border-border shadow-xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-              <h2 className="text-lg font-semibold text-text-primary">
-                {t('offers.filters.title')}
-              </h2>
+            <div className="flex items-center justify-between px-6 py-5 border-b border-border bg-white sticky top-0 z-10">
+              <div>
+                <h2 className="text-lg font-semibold text-text-primary">
+                  {t('offers.filters.title')}
+                </h2>
+                {countActiveFilters() > 0 && (
+                  <p className="text-xs text-text-secondary mt-1">
+                    {countActiveFilters()}{' '}
+                    {countActiveFilters() === 1
+                      ? t('offers.filters.filterActive')
+                      : t('offers.filters.filtersActive')}
+                  </p>
+                )}
+              </div>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-bg-secondary transition-colors"
+                className="p-2 hover:bg-bg-secondary transition-colors rounded-lg"
                 aria-label="Close filters"
               >
                 <FiX className="text-lg text-text-secondary" />
@@ -173,7 +183,7 @@ export function FilterPanel({
                           handleDistanceChange(option.value)
                           setCustomDistance(option.value)
                         }}
-                        className={`px-3 py-2 text-sm font-medium transition-colors border border-border ${
+                        className={`px-3 py-2 text-sm font-medium transition-colors border border-border rounded-lg ${
                           localFilters.distance === option.value
                             ? 'bg-text-primary text-white border-text-primary'
                             : 'bg-white text-text-primary hover:bg-bg-secondary'
@@ -210,8 +220,12 @@ export function FilterPanel({
                         setCustomDistance(value)
                         handleDistanceChange(value)
                       }}
-                      className="w-full h-1 bg-bg-secondary accent-primary"
+                      className="w-full h-1.5 bg-bg-secondary rounded-full accent-primary cursor-pointer"
                     />
+                    <div className="flex justify-between text-xs text-text-tertiary mt-1">
+                      <span>1 km</span>
+                      <span>50 km</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -232,7 +246,7 @@ export function FilterPanel({
                             : (option.value as 'ending-soon' | 'all-day'),
                         )
                       }
-                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors border border-border ${
+                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors border border-border rounded-lg ${
                         localFilters.timeFilter === option.value
                           ? 'bg-text-primary text-white border-text-primary'
                           : 'bg-white text-text-primary hover:bg-bg-secondary'
@@ -254,7 +268,7 @@ export function FilterPanel({
                     <button
                       key={option.value}
                       onClick={() => handleDiscountTypeToggle(option.value)}
-                      className={`px-3 py-2 text-sm font-medium transition-colors border border-border ${
+                      className={`px-3 py-2 text-sm font-medium transition-colors border border-border rounded-lg ${
                         localFilters.discountTypes?.includes(option.value)
                           ? 'bg-text-primary text-white border-text-primary'
                           : 'bg-white text-text-primary hover:bg-bg-secondary'
@@ -276,7 +290,7 @@ export function FilterPanel({
                     <button
                       key={option.value}
                       onClick={() => handleSortByChange(option.value as typeof localFilters.sortBy)}
-                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors border border-border ${
+                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors border border-border rounded-lg ${
                         localFilters.sortBy === option.value
                           ? 'bg-text-primary text-white border-text-primary'
                           : 'bg-white text-text-primary hover:bg-bg-secondary'
@@ -294,14 +308,14 @@ export function FilterPanel({
               <div className="flex gap-3">
                 <button
                   onClick={handleClear}
-                  className="flex-1 py-3 text-text-secondary font-medium hover:text-text-primary transition-colors text-sm border border-border"
+                  className="flex-1 py-3 text-text-secondary font-medium hover:text-text-primary transition-colors text-sm border border-border rounded-lg"
                   aria-label="Clear all filters"
                 >
                   {t('offers.filters.clearAll')}
                 </button>
                 <button
                   onClick={handleApply}
-                  className="flex-1 py-3 bg-text-primary text-white font-semibold hover:bg-text-secondary transition-colors text-sm"
+                  className="flex-1 py-3 bg-primary text-white font-semibold hover:bg-primary-hover transition-colors text-sm rounded-lg"
                   style={{ color: 'white' }}
                   aria-label={`Apply filters${countActiveFilters() > 0 ? ` (${countActiveFilters()} active)` : ''}`}
                 >

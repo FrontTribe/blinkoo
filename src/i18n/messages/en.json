@@ -135,7 +135,9 @@
       "bestDiscount": "Best discount",
       "clearAll": "Clear All",
       "showResults": "Show Results",
-      "showResultsWithCount": "Show Results ({count})"
+      "showResultsWithCount": "Show Results ({count})",
+      "filterActive": "filter active",
+      "filtersActive": "filters active"
     },
     "detail": {
       "backToOffers": "Back to offers",
