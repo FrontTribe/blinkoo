@@ -58,23 +58,43 @@ export default function MapView({ offers }: MapViewProps) {
       venueGroups.get(key)!.push(item)
     })
 
-    // Create features - one per offer for clustering
-    const features = venuesWithCoords.map((item) => ({
-      type: 'Feature' as const,
-      geometry: {
-        type: 'Point' as const,
-        coordinates: [item.venue.lng!, item.venue.lat!],
-      },
-      properties: {
-        id: item.slot.id,
-        offerId: item.offer.id,
-        offerTitle: item.offer.title,
-        venueName: item.venue.name,
-        offerType: item.offer.type,
-        discountValue: item.offer.discountValue || 0,
-        venueKey: `${item.venue.lat?.toFixed(6)},${item.venue.lng?.toFixed(6)}`,
-      },
-    }))
+    // Create features with slight offset for offers at same location
+    const features: Array<{
+      type: 'Feature'
+      geometry: { type: 'Point'; coordinates: [number, number] }
+      properties: any
+    }> = []
+
+    venueGroups.forEach((group, venueKey) => {
+      const baseLng = group[0].venue.lng!
+      const baseLat = group[0].venue.lat!
+
+      // All offers at same location use exact same coordinates
+      // This ensures they cluster together and show as one pin
+      group.forEach((item, index) => {
+        features.push({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [baseLng, baseLat],
+          },
+          properties: {
+            id: item.slot.id,
+            offerId: item.offer.id,
+            offerTitle: item.offer.title,
+            venueName: item.venue.name,
+            offerType: item.offer.type,
+            discountValue: item.offer.discountValue || 0,
+            venueKey: venueKey,
+            originalLng: baseLng,
+            originalLat: baseLat,
+            hasMultipleOffers: group.length > 1,
+            offerIndex: index,
+            totalOffers: group.length,
+          },
+        })
+      })
+    })
 
     return {
       type: 'FeatureCollection' as const,
@@ -202,7 +222,7 @@ export default function MapView({ offers }: MapViewProps) {
       type: 'geojson',
       data: geoJSON,
       cluster: true,
-      clusterMaxZoom: 14, // Max zoom to cluster points on
+      clusterMaxZoom: 16, // Max zoom to cluster points on - increased to show individual offers sooner
       clusterRadius: 50, // Radius of each cluster when clustering points
     })
 
@@ -284,32 +304,70 @@ export default function MapView({ offers }: MapViewProps) {
       })
     })
 
-    // Click on unclustered point to navigate to offer
+    // Click on unclustered point to show popup (tooltip)
     map.current.on('click', 'unclustered-point', (e) => {
-      const coordinates = (e.features![0].geometry as any).coordinates.slice()
-      const properties = e.features![0].properties!
+      const clickedPoint = e.features![0]
+      const coordinates = (clickedPoint.geometry as any).coordinates.slice()
+      const properties = clickedPoint.properties!
 
       // Close existing popup
       if (popupRef.current) {
         popupRef.current.remove()
       }
 
-      // Create popup
-      const popupHTML = `
-        <div style="padding: 8px; min-width: 150px;">
-          <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">${properties.offerTitle}</div>
-          <div style="font-size: 12px; color: #666; margin-bottom: 6px;">${properties.venueName}</div>
-          <div style="font-size: 12px; color: #ef4444; font-weight: 600;">${getOfferLabel(properties.offerType, properties.discountValue)}</div>
-        </div>
-      `
+      // If there are multiple offers at this location, show all of them
+      if (properties.hasMultipleOffers) {
+        // Find all offers at the same venue
+        const source = map.current!.getSource('offers-cluster') as mapboxgl.GeoJSONSource
+        const allFeatures = (source._data as any).features.filter((f: any) => 
+          f.properties.venueKey === properties.venueKey
+        )
 
-      popupRef.current = new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(popupHTML)
+        // Create popup with all offers - each offer is clickable
+        const offersList = allFeatures.map((feature: any) => {
+          const props = feature.properties
+          return `
+            <div style="padding: 8px; border-bottom: 1px solid #eee; cursor: pointer; transition: background-color 0.2s;" 
+                 onmouseover="this.style.backgroundColor='#f5f5f5'" 
+                 onmouseout="this.style.backgroundColor='transparent'"
+                 onclick="window.location.href='/offers/${props.offerId}'">
+              <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">${props.offerTitle}</div>
+              <div style="font-size: 12px; color: #666; margin-bottom: 4px;">${props.venueName}</div>
+              <div style="font-size: 12px; color: #ef4444; font-weight: 600;">${getOfferLabel(props.offerType, props.discountValue)}</div>
+            </div>
+          `
+        }).join('')
+
+        const popupHTML = `
+          <div style="min-width: 200px; max-height: 300px; overflow-y: auto;">
+            <div style="padding: 8px; font-weight: bold; border-bottom: 2px solid #ef4444; margin-bottom: 4px;">
+              ${properties.totalOffers} Offers at ${properties.venueName}
+            </div>
+            ${offersList}
+          </div>
+        `
+
+        // Use original coordinates (not offset) for popup
+        popupRef.current = new mapboxgl.Popup({ closeOnClick: true })
+          .setLngLat([properties.originalLng, properties.originalLat])
+          .setHTML(popupHTML)
+          .addTo(map.current!)
+      } else {
+        // Single offer - show simple popup with link to offer
+        const popupHTML = `
+          <div style="padding: 8px; min-width: 150px;">
+            <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">${properties.offerTitle}</div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 6px;">${properties.venueName}</div>
+            <div style="font-size: 12px; color: #ef4444; font-weight: 600; margin-bottom: 8px;">${getOfferLabel(properties.offerType, properties.discountValue)}</div>
+            <a href="/offers/${properties.offerId}" style="font-size: 12px; color: #ef4444; text-decoration: underline; cursor: pointer;">View Details →</a>
+          </div>
+        `
+
+        popupRef.current = new mapboxgl.Popup({ closeOnClick: true })
+          .setLngLat(coordinates)
+          .setHTML(popupHTML)
         .addTo(map.current!)
-
-      // Navigate to offer on click
-      router.push(`/offers/${properties.offerId}`)
+      }
     })
 
     // Change cursor on hover
