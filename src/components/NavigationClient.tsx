@@ -24,6 +24,7 @@ import {
 import { NotificationBell } from '@/components/NotificationBell'
 import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 import { BlinkLogo } from '@/components/BlinkLogo'
+import { SearchBar } from '@/components/SearchBar'
 import { useTranslations } from 'next-intl'
 
 type NavigationClientProps = {
@@ -42,6 +43,31 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
   const searchParams = useSearchParams()
   const userMenuRef = useRef<HTMLDivElement>(null)
   const t = useTranslations('nav')
+
+  // Handle search - navigate to offers page with search query
+  function handleSearch(query: string) {
+    if (pathname?.startsWith('/offers')) {
+      // If already on offers page, update URL params
+      const params = new URLSearchParams(searchParams?.toString() || '')
+      if (query.trim()) {
+        params.set('search', query.trim())
+      } else {
+        params.delete('search')
+      }
+      router.push(`${pathname}?${params.toString()}`)
+    } else {
+      // Navigate to offers page with search query
+      if (query.trim()) {
+        router.push(`/offers?search=${encodeURIComponent(query.trim())}`)
+      } else {
+        router.push('/offers')
+      }
+    }
+  }
+
+  // Get initial search value from URL if on offers page
+  const initialSearchValue =
+    pathname?.startsWith('/offers') ? searchParams?.get('search') || '' : ''
 
   useEffect(() => {
     function handleScroll() {
@@ -280,7 +306,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
               <div className="hidden md:flex items-center gap-1">
                 <Link
                   href="/merchant/dashboard"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
                     pathname === '/merchant/dashboard'
                       ? 'bg-primary/10 text-primary'
                       : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
@@ -293,7 +319,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 </Link>
                 <Link
                   href="/merchant/offers"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
                     pathname?.startsWith('/merchant/offers')
                       ? 'bg-primary/10 text-primary'
                       : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
@@ -306,7 +332,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 </Link>
                 <Link
                   href="/merchant/venues"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
                     pathname?.startsWith('/merchant/venues')
                       ? 'bg-primary/10 text-primary'
                       : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
@@ -319,7 +345,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 </Link>
                 <Link
                   href="/merchant/staff"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
                     pathname?.startsWith('/merchant/staff')
                       ? 'bg-primary/10 text-primary'
                       : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
@@ -332,7 +358,7 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                 </Link>
                 <Link
                   href="/merchant/analytics"
-                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
                     pathname?.startsWith('/merchant/analytics')
                       ? 'bg-primary/10 text-primary'
                       : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
@@ -343,6 +369,20 @@ export default function NavigationClient({ initialUser = null }: NavigationClien
                   />
                   {t('analytics')}
                 </Link>
+              </div>
+            )}
+
+            {/* Search Bar - Show for customer pages and logged out users */}
+            {(!user || user.role === 'customer') && (
+              <div className="hidden lg:block ml-4">
+                <div className="w-64">
+                  <SearchBar
+                    placeholder={t('searchPlaceholder')}
+                    onSearch={handleSearch}
+                    initialValue={initialSearchValue}
+                    className="w-full"
+                  />
+                </div>
               </div>
             )}
           </div>

@@ -165,7 +165,10 @@ export default function OffersContent({
   const [filteredOffers, setFilteredOffers] = useState<Offer[]>(initialOffers)
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
+  // Get initial search query from URL params
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams?.get('search') || '',
+  )
 
   // Onboarding
   const { showOnboarding, setShowOnboarding, completeOnboarding, skipOnboarding } = useOnboarding()
@@ -256,6 +259,14 @@ export default function OffersContent({
     setFilteredOffers(initialOffers)
     console.log('Client: Offers updated from server:', initialOffers.length)
   }, [initialOffers])
+
+  // Sync search query with URL params
+  useEffect(() => {
+    const urlSearch = searchParams?.get('search') || ''
+    if (urlSearch !== searchQuery) {
+      setSearchQuery(urlSearch)
+    }
+  }, [searchParams])
 
   // Filter offers based on search query
   useEffect(() => {
@@ -396,15 +407,6 @@ export default function OffersContent({
                 )}
               </div>
             </button>
-          </div>
-
-          {/* Search Bar */}
-          <div className="px-4 py-3 border-b border-border shrink-0">
-            <SearchBar
-              placeholder={t('searchPlaceholder')}
-              onSearch={setSearchQuery}
-              className="w-full"
-            />
           </div>
 
           {/* Categories Row */}

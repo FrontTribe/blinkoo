@@ -21,7 +21,8 @@
     "account": "Račun",
     "logout": "Odjava",
     "browseOffers": "Pregledaj Ponude",
-    "loading": "Učitavanje..."
+    "loading": "Učitavanje...",
+    "searchPlaceholder": "Pretraži ponude..."
   },
   "auth": {
     "login": {

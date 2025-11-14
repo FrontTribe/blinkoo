@@ -51,7 +51,7 @@ export function SearchBar({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-10 pr-10 py-2.5 border border-border focus:border-primary focus:outline-none text-text-primary bg-white"
+        className="w-full pl-10 pr-10 py-2.5 border border-border focus:border-primary focus:outline-none text-text-primary bg-white rounded-lg text-sm"
         aria-label={placeholder}
         onKeyDown={(e) => {
           if (e.key === 'Escape') {

@@ -21,7 +21,8 @@
     "account": "Account",
     "logout": "Logout",
     "browseOffers": "Browse Offers",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "searchPlaceholder": "Search offers..."
   },
   "auth": {
     "login": {
