@@ -557,8 +557,9 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer locale={locale as 'en' | 'hr'} />
-    </div>
+        {/* Footer */}
+        <Footer locale={locale as 'en' | 'hr'} />
+      </div>
+    </LandingPageClient>
   )
 }

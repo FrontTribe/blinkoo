@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useRouter, usePathname } from '@/i18n/navigation'
+import { useRouter, usePathname, Link } from '@/i18n/navigation'
 import { MdLogout, MdAccountCircle, MdDashboard } from 'react-icons/md'
 import {
   FiShoppingBag,
